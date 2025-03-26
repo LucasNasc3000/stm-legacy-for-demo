@@ -10,8 +10,15 @@ class EmployeeController {
   async Store(req, res, next) {
     try {
       const { headerid } = req.headers;
+      const { email } = req.headers;
 
       if (headerid) throw new Forbidden('Ação não autorizada para funcionários');
+
+      if (!req.body.boss) throw new Forbidden('Ação não autorizada');
+
+      const bossId = await EmployeeSearch.SearchByEmail(email);
+
+      if (bossId.dataValues.id !== req.body.boss) throw new Forbidden('Ação não autorizada. Somente os próprios funcionários podem ser cadastrados pelo gerente');
 
       const validations = Validation.MainValidations(req.body, true);
       const employeesValidations = Validation.EmployeeValidation(req.body, false, false);
