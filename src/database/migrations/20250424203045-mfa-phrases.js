@@ -2,17 +2,16 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('authtempdata', {
+    await queryInterface.createTable('mfaphrases', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV1,
         allowNull: false,
         primaryKey: true,
       },
-      email: {
+      phrase: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       sequence_hash: {
         type: Sequelize.STRING,
@@ -30,6 +29,6 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('authtempdata');
+    await queryInterface.dropTable('mfaphrases');
   },
 };

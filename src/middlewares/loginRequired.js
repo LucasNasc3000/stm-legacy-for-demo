@@ -30,7 +30,7 @@ export default async (req, res, next) => {
 
     if (!employee) {
       return res.status(401).json({
-        errors: ['Funcionário inválido ou inativo'], // Este erro quer dizer que o usuário que mudou seu próprio email precisa logar denovo porque o email não vai bater com o token
+        errors: ['Funcionário inválido'], // Este erro quer dizer que o usuário que mudou seu próprio email precisa logar denovo porque o email não vai bater com o token
       });
     }
 
