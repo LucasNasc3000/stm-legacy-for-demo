@@ -2,14 +2,14 @@
 import Sequelize from 'sequelize';
 import databaseConfig from '../config/database';
 import Advice from '../models/Advice';
-import AuthTempData from '../models/AuthTempData';
 import Employee from '../models/Employee';
 import Input from '../models/Input';
 import Log from '../models/Log';
+import MfaSuperAdmin from '../models/MfaSuperAdmin';
 import Output from '../models/Output';
 import Sale from '../models/Sale';
 
-const models = [Input, Output, Employee, Log, Sale, Advice, AuthTempData];
+const models = [Input, Output, Employee, Log, Sale, Advice, MfaSuperAdmin];
 
 const connection = new Sequelize(databaseConfig);
 

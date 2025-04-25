@@ -22,6 +22,9 @@ import inputSearchBySupplier from './routes/input/inputSearchBySupplier';
 import inputSearchByTotalWeight from './routes/input/inputSearchByTotalWeight';
 import inputSearchByType from './routes/input/inputSearchByType';
 import inputSearchByWeightPerUnit from './routes/input/inputSearchByWeightPerUnit';
+
+// auth routes
+import mfaSuperAdmin from './routes/mfa/preMfaSuperAdmin';
 import tokenRoutes from './routes/token';
 
 // output routes
@@ -130,6 +133,9 @@ class App {
     // advice routes
     this.app.use('/advices/', adviceRoutes);
     this.app.use('/advices/search/employeeid', adviceSearchEmployeeId);
+
+    // auth routes
+    this.app.use('/spadmin/', mfaSuperAdmin);
 
     this.app.use(errorHandler);
   }

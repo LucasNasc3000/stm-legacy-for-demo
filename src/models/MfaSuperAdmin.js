@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Sequelize, { Model } from 'sequelize';
 
-export default class MfaPhrases extends Model {
+export default class MfaSuperAdmin extends Model {
   static init(sequelize) {
     super.init({
       id: {
