@@ -30,7 +30,7 @@ export default class Employee extends Model {
         },
         validate: {
           isEmail: {
-            args: [3, 255],
+            args: [13, 255],
             msg: 'Email inválido',
           },
         },

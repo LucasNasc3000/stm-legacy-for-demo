@@ -10,6 +10,16 @@ export default class MfaSuperAdmin extends Model {
         primaryKey: true,
         allowNull: false,
       },
+      email: {
+        type: Sequelize.STRING,
+        defaultValue: '',
+        validate: {
+          isEmail: {
+            args: [13, 255],
+            msg: 'Email inválido',
+          },
+        },
+      },
       phrase: {
         type: Sequelize.STRING,
         defaultValue: '',
