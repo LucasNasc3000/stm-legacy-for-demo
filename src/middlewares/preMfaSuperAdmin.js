@@ -5,22 +5,22 @@ import Employee from '../models/Employee';
 export default async (req, res, next) => {
   try {
     const {
-      permission, email, adminpassword, password1, password2, password3,
+      permission, verifyEmail, adminpassword, password1, password2, password3,
     } = req.headers;
 
-    if (!permission || !email || !adminpassword || !password1 || !password2) {
+    if (!permission || !verifyEmail || !adminpassword || !password1 || !password2) {
     // mudar esta mensagem?
       throw new Unauthorized('Dados de autenticação não enviados');
     }
 
     if (password1 !== process.env.PASSWORD_1 && password2
-        !== process.env.PASSWORD_2 && email !== process.env.CORRECT_EMAIL) {
+        !== process.env.PASSWORD_2 && verifyEmail !== process.env.CORRECT_EMAIL) {
       throw new Unauthorized('Credenciais inválidas');
     }
 
     const superAdmin = await Employee.findOne({
       where: {
-        email,
+        email: verifyEmail,
         is_active: 1,
       },
     });

@@ -9,6 +9,8 @@ class MfaSuperAdminController {
   // associar um email às linhas do mfasuperadmin no BD pra usar em outras partes do código
   async GenerateCode(req, res, next) {
     try {
+      const { verifyEmail } = req.headers;
+
       const randomNumber = Math.random() * (phrases.length - 0) + 0;
 
       const getPhrase = phrases[randomNumber];
@@ -17,6 +19,7 @@ class MfaSuperAdminController {
 
       const dataForStore = {
         phrase: getPhrase,
+        email: verifyEmail,
         sequence_hash: generateHash,
       };
 

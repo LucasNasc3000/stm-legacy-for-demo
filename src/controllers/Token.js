@@ -9,6 +9,7 @@ import Employee from '../models/Employee';
 class TokenController {
   async Store(req, res, next) {
     try {
+      const { verifyEmail } = req.headers;
       const {
         email = '', password = '', adminpassword = '', permission = '',
       } = req.body;
