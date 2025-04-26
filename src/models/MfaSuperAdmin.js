@@ -13,6 +13,9 @@ export default class MfaSuperAdmin extends Model {
       email: {
         type: Sequelize.STRING,
         defaultValue: '',
+        unique: {
+          msg: 'Email já existente',
+        },
         validate: {
           isEmail: {
             args: [13, 255],

@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 import { BadRequest } from '../../errors/clientErrors';
+import { Conflict } from '../../errors/conflict';
 import { Forbidden } from '../../errors/forbidden';
 import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
@@ -28,7 +29,7 @@ class EmployeeController {
 
       const emailExists = await EmployeeSearch.SearchByEmail(req.body.email);
 
-      if (emailExists) throw new BadRequest('E-mail em uso, tente cadastrar outro');
+      if (emailExists) throw new Conflict('E-mail em uso, tente cadastrar outro');
 
       const employeeStore = await Employees.Store(req.body);
 

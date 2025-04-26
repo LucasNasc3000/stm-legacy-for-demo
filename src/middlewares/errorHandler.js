@@ -1,5 +1,6 @@
 import { Unauthorized } from '../errors/authErrors';
 import { BadRequest } from '../errors/clientErrors';
+import { Conflict } from '../errors/conflict';
 import { EmailErrors } from '../errors/emailsErrors';
 import { Forbidden } from '../errors/forbidden';
 import { LogError } from '../errors/logErrors';
@@ -33,6 +34,11 @@ const errorHandler = (err, req, res, next) => {
 
     case (err instanceof Unauthorized):
       return res.status(401).json({
+        error: [err.message],
+      });
+
+    case (err instanceof Conflict):
+      return res.status(409).json({
         error: [err.message],
       });
 
