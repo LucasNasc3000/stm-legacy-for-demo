@@ -29,7 +29,7 @@ class EmployeeController {
 
       const emailExists = await EmployeeSearch.SearchByEmail(req.body.email);
 
-      if (emailExists) throw new Conflict('E-mail em uso, tente cadastrar outro');
+      if (emailExists) throw new Conflict('E-mail em uso, cadastre outro');
 
       const employeeStore = await Employees.Store(req.body);
 

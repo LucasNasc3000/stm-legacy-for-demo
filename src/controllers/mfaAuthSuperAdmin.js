@@ -4,6 +4,7 @@ import Hashing from '../hashing/hash';
 import { phrases } from '../hashing/phrases';
 import MfaSuperAdminSendEmail from '../Notifications/MfaSuperAdminSendEmail';
 import MfaList from '../repositories/MfaSuperAdmin/MfaSuperAdmin';
+import SearchMfaData from '../repositories/MfaSuperAdmin/SearchMfaData';
 
 class MfaSuperAdminController {
   // associar um email às linhas do mfasuperadmin no BD pra usar em outras partes do código
@@ -11,9 +12,11 @@ class MfaSuperAdminController {
     try {
       const { verifyEmail } = req.headers;
 
-      const randomNumber = Math.random() * (phrases.length - 0) + 0;
+      const getPhrase = this.PhraseVerify();
 
-      const getPhrase = phrases[randomNumber];
+      const searchPhrase = await SearchMfaData.SearchByPhrase(getPhrase);
+
+      while (getPhrase === searchPhrase.dataValues.phrase) this.PhraseVerify();
 
       const generateHash = Hashing.Generate(getPhrase);
 
@@ -31,6 +34,14 @@ class MfaSuperAdminController {
     } catch (err) {
       next(err);
     }
+  }
+
+  PhraseVerify() {
+    const randomNumber = Math.random() * (phrases.length - 0) + 0;
+
+    const getPhrase = phrases[randomNumber];
+
+    return getPhrase;
   }
 }
 
