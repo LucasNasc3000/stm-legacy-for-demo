@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Sequelize, { Model } from 'sequelize';
 
-export default class MfaSuperAdmin extends Model {
+export default class Mfaphrase extends Model {
   static init(sequelize) {
     super.init({
       id: {
@@ -9,19 +9,6 @@ export default class MfaSuperAdmin extends Model {
         defaultValue: Sequelize.DataTypes.UUIDV1,
         primaryKey: true,
         allowNull: false,
-      },
-      email: {
-        type: Sequelize.STRING,
-        defaultValue: '',
-        unique: {
-          msg: 'Email já existente',
-        },
-        validate: {
-          isEmail: {
-            args: [13, 255],
-            msg: 'Email inválido',
-          },
-        },
       },
       phrase: {
         type: Sequelize.STRING,
@@ -40,6 +27,19 @@ export default class MfaSuperAdmin extends Model {
           len: {
             args: [1, 255],
             msg: 'O código deve ter no máximo 255 caracteres',
+          },
+        },
+      },
+      email: {
+        type: Sequelize.STRING,
+        defaultValue: '',
+        unique: {
+          msg: 'Email já existente',
+        },
+        validate: {
+          isEmail: {
+            args: [13, 255],
+            msg: 'Email inválido',
           },
         },
       },

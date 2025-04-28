@@ -1,4 +1,4 @@
-import MfaSuperAdmin from '../../models/MfaSuperAdmin';
+import MfaSuperAdmin from '../../models/MfaPhrase';
 
 class MfaList {
   async Store(data) {

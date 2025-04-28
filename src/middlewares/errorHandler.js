@@ -53,11 +53,7 @@ const errorHandler = (err, req, res, next) => {
       });
 
     default:
-      next(
-        res.status(500).json({
-          error: 'Erro interno. Contate o suporte ou tente denovo mais tarde',
-        }),
-      );
+      next(err);
   }
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Unauthorized } from '../errors/authErrors';
 import Employee from '../models/Employee';
 
@@ -5,22 +6,22 @@ import Employee from '../models/Employee';
 export default async (req, res, next) => {
   try {
     const {
-      permission, verifyEmail, adminpassword, password1, password2, password3,
+      permission, verify_email, adminpassword, password1, password2, password3,
     } = req.headers;
 
-    if (!permission || !verifyEmail || !adminpassword || !password1 || !password2) {
-    // mudar esta mensagem?
+    if (!permission || !verify_email || !adminpassword || !password1 || !password2 || !password3) {
+      // mudar esta mensagem?
       throw new Unauthorized('Dados de autenticação não enviados');
     }
 
     if (password1 !== process.env.PASSWORD_1 && password2
-        !== process.env.PASSWORD_2 && verifyEmail !== process.env.CORRECT_EMAIL) {
+        !== process.env.PASSWORD_2 && verify_email !== process.env.CORRECT_EMAIL) {
       throw new Unauthorized('Credenciais inválidas');
     }
 
     const superAdmin = await Employee.findOne({
       where: {
-        email: verifyEmail,
+        email: verify_email,
         is_active: 1,
       },
     });
@@ -31,14 +32,21 @@ export default async (req, res, next) => {
     // eslint-disable-next-line default-case
     switch (true) {
       case passwordVerify !== true:
-        throw new Unauthorized('Senha incorreta');
+        throw new Unauthorized('Credenciais inválidas');
 
       case adminPasswordVerify !== true:
-        throw new Unauthorized('Senha de administrador inválida');
+        throw new Unauthorized('Credenciais inválidas');
+
+      case superAdmin.dataValues.permission !== permission:
+        throw new Unauthorized('Credenciais inválidas');
+
+      case process.env.SUPER_ADMIN_PERMISSION !== permission:
+        throw new Unauthorized('Credenciais inválidas');
     }
 
     return next();
   } catch (e) {
+    console.log(e);
     next(e);
   }
 };

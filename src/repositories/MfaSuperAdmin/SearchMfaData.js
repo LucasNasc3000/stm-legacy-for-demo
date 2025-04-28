@@ -1,4 +1,4 @@
-import MfaSuperAdmin from '../../models/MfaSuperAdmin';
+import MfaSuperAdmin from '../../models/MfaPhrase';
 
 class SearchMfaData {
   async SearchByEmail(email) {
@@ -11,14 +11,20 @@ class SearchMfaData {
     return findByEmail;
   }
 
+  // eslint-disable-next-line consistent-return
   async SearchByPhrase(phrase) {
-    const findByPhrase = await MfaSuperAdmin.findOne({
-      where: {
-        phrase,
-      },
-    });
+    try {
+      const findByPhrase = await MfaSuperAdmin.findOne({
+        where: {
+          phrase,
+        },
+      });
+      console.log(findByPhrase);
 
-    return findByPhrase;
+      return findByPhrase;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 

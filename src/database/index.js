@@ -5,7 +5,7 @@ import Advice from '../models/Advice';
 import Employee from '../models/Employee';
 import Input from '../models/Input';
 import Log from '../models/Log';
-import MfaSuperAdmin from '../models/MfaSuperAdmin';
+import MfaSuperAdmin from '../models/MfaPhrase';
 import Output from '../models/Output';
 import Sale from '../models/Sale';
 

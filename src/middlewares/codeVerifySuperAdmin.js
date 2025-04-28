@@ -10,7 +10,7 @@ export default async (req, res, next) => {
   try {
     const { verifyEmail, code } = req.headers;
 
-    if (!verifyEmail || !code) throw new Unauthorized('Login é necessário para esta operação');
+    if (!verifyEmail || !code) throw new Unauthorized('Credenciais inválidas');
 
     const searchByEmailMfa = await SearchByEmail.Search(verifyEmail);
 
@@ -24,8 +24,6 @@ export default async (req, res, next) => {
     if (hashCompare !== true) throw new Unauthorized('Código inválido');
 
     const deleteMfaData = await MfaSuperAdmin.Delete(searchByEmailMfa.dataValues.id);
-
-    // Colocar o addressesAllowed e testar
 
     if (deleteMfaData === 'Algo deu errado') throw new InternalServerError('Erro desconhecido ao tentar logar com mfa');
 
