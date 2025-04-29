@@ -8,15 +8,14 @@ import SearchByEmail from '../repositories/MfaSuperAdmin/SearchMfaData';
 // eslint-disable-next-line consistent-return
 export default async (req, res, next) => {
   try {
-    const { verifyEmail, code } = req.headers;
+    const { verifyemail, code } = req.headers;
 
-    if (!verifyEmail || !code) throw new Unauthorized('Credenciais inválidas');
+    if (!verifyemail || !code) throw new Unauthorized('Credenciais inválidas');
 
-    const searchByEmailMfa = await SearchByEmail.Search(verifyEmail);
+    const searchByEmailMfa = await SearchByEmail.SearchByEmail(verifyemail);
 
     if (!searchByEmailMfa) throw new Unauthorized('Código expirado ou credenciais inválidas');
 
-    // verificar se a frase já foi usada mas não aqui, onde o hash é gerado
     const { sequence_hash } = searchByEmailMfa.dataValues;
 
     const hashCompare = await Hashing.Compare(code, sequence_hash);
@@ -25,7 +24,7 @@ export default async (req, res, next) => {
 
     const deleteMfaData = await MfaSuperAdmin.Delete(searchByEmailMfa.dataValues.id);
 
-    if (deleteMfaData === 'Algo deu errado') throw new InternalServerError('Erro desconhecido ao tentar logar com mfa');
+    if (deleteMfaData === 'Algo deu errado') throw new InternalServerError('Erro desconhecido ao tentar logar');
 
     next();
   } catch (e) {

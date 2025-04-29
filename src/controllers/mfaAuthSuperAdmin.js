@@ -18,7 +18,6 @@ class MfaSuperAdminController {
 
       while (controlVar < phrases.length) {
         getPhrase = PhraseVerify();
-        console.log(getPhrase);
 
         // eslint-disable-next-line no-await-in-loop
         const searchPhrase = await SearchMfaData.SearchByPhrase(getPhrase);

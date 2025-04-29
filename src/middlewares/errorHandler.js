@@ -53,7 +53,9 @@ const errorHandler = (err, req, res, next) => {
       });
 
     default:
-      next(err);
+      next(res.status(500).json({
+        error: 'Erro desconhecido. Tente novamente ou contate o suporte',
+      }));
   }
 };
 
