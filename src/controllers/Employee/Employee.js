@@ -2,6 +2,7 @@
 import { BadRequest } from '../../errors/clientErrors';
 import { Conflict } from '../../errors/conflict';
 import { Forbidden } from '../../errors/forbidden';
+import { NotFound } from '../../errors/notFound';
 import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
 import Employees from '../../repositories/Employee/Employee';
@@ -56,7 +57,7 @@ class EmployeeController {
 
       if (req.body.email) {
         const emailExists = await EmployeeSearch.SearchByEmail(req.body.email);
-        if (emailExists) throw new BadRequest('E-mail em uso');
+        if (emailExists) throw new Conflict('E-mail em uso');
       }
 
       // Funciona sem await mas não retorna os dados na requisição caso ela seja feita com um app de
@@ -77,7 +78,7 @@ class EmployeeController {
 
         const employeeSelfUpdate = await Employees.Update(headerid, req.body);
 
-        if (employeeSelfUpdate === 'funcionário não encontrado') throw new BadRequest('Funcionário não registrado');
+        if (employeeSelfUpdate === 'funcionário não encontrado') throw new NotFound('Funcionário não registrado');
         if (!employeeSelfUpdate) throw new InternalServerError('Erro interno');
 
         const empSearch = await EmployeeSearch.SearchById(id);
@@ -87,7 +88,7 @@ class EmployeeController {
 
       const employeeUpdate = await Employees.Update(id, req.body);
 
-      if (employeeUpdate === 'funcionário não encontrado') throw new BadRequest('Funcionário não registrado');
+      if (employeeUpdate === 'funcionário não encontrado') throw new NotFound('Funcionário não registrado');
       if (!employeeUpdate) throw new InternalServerError('Erro interno');
 
       const empSearch = await EmployeeSearch.SearchById(id);

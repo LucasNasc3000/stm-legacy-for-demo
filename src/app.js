@@ -46,6 +46,13 @@ import employeeSearchByName from './routes/employee/employeeSearchByName';
 import employeeSearchOneByName from './routes/employee/employeeSearchOneByName';
 import exEmployeeSearch from './routes/employee/exEmployeeSearch';
 
+// employee admin routes
+import employeAdminRoutes from './routes/employee/employeeAdmin/employeeAdmin';
+import employeeAdminSearchByActives from './routes/employee/employeeAdmin/employeeSearchByActives';
+import employeeAdminSearchByEmail from './routes/employee/employeeAdmin/employeeSearchByEmail';
+import employeeAdminSearchByID from './routes/employee/employeeAdmin/employeeSearchById';
+import employeeAdminSearchByName from './routes/employee/employeeAdmin/employeeSearchByName';
+
 // sales routes
 import salesRoutes from './routes/sales/sale';
 import saleSearchAddress from './routes/sales/saleSearchAddress';
@@ -118,6 +125,14 @@ class App {
     this.app.use('/employees/search/email', employeeSearchByEmail);
     this.app.use('/employees/search/boss', employeeSearchByBoss);
     this.app.use('/exemployees/', exEmployeeSearch);
+
+    // employee admin routes
+    // employee admin routes
+    this.app.use('/employees/admin/', employeAdminRoutes);
+    this.app.use('/employees/admin/search/email/', employeeAdminSearchByEmail);
+    this.app.use('/employees/admin/search/id/', employeeAdminSearchByID);
+    this.app.use('/employees/admin/search/name', employeeAdminSearchByName);
+    this.app.use('/employees/admin/search/actives/', employeeAdminSearchByActives);
 
     // sales routes
     this.app.use('/sales/', salesRoutes);

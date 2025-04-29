@@ -59,6 +59,17 @@ class EmployeesSearchCredentials {
 
     return employeeFinderByAddressAllowed;
   }
+
+  async SearchByForActives() {
+    const employeeFinderActives = await Employee.findAll({
+      where: {
+        is_active: 1,
+      },
+      attributes: employeeAttributes,
+    });
+
+    return employeeFinderActives;
+  }
 }
 
 export default new EmployeesSearchCredentials();

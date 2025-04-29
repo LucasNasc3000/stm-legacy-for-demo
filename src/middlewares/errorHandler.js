@@ -44,12 +44,12 @@ const errorHandler = (err, req, res, next) => {
 
     case (err instanceof EmailErrors):
       return res.status(500).json({
-        error: [err.name],
+        error: ['Erro ao tentar enviar e-mail', err.name],
       });
 
     case (err instanceof LogError):
       return res.status(500).json({
-        error: [err.name],
+        error: ['Erro ao tentar registrar log', err.name],
       });
 
     default:
