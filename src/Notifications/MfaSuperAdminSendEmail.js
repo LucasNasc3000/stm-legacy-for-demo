@@ -1,5 +1,6 @@
 /* eslint-disable no-plusplus */
 import { EmailErrors } from '../errors/emailsErrors';
+import { Forbidden } from '../errors/forbidden';
 import EmployeeSearchCredentials from '../repositories/Employee/EmployeeSearchCredentials';
 
 const sgMail = require('@sendgrid/mail');
@@ -17,6 +18,7 @@ class MfaSuperAdminSendEmail {
           || employeeSearch[i].dataValues.permission === process.env.SO_PERMISSION
           || employeeSearch[i].dataValues.permission === process.env.SOI_PERMISSION
           || employeeSearch[i].dataValues.permission === process.env.ADMIN_PERMISSION
+          || employeeSearch[i].dataValues.permission === process.env.SUPER_ADMIN_PERMISSION
       ) {
         addressesAllowed.push(employeeSearch[i].dataValues.email);
         correctPermission = true;
@@ -33,7 +35,7 @@ class MfaSuperAdminSendEmail {
   async SendEmail(AccessCode) {
     const destinataryVerify = await this.AddressesAllowed();
 
-    if (destinataryVerify === null) return null;
+    if (destinataryVerify === null) throw new Forbidden('Não há funcionários com permissão para receber e-mails');
 
     const msg = {
       to: destinataryVerify[0],

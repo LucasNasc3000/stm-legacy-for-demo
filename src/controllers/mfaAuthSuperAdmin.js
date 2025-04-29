@@ -1,7 +1,11 @@
 /* eslint-disable camelcase */
-/* eslint-disable no-plusplus */
 /* eslint-disable consistent-return */
+import { InternalServerError } from '../errors/serverErrors';
+import Hashing from '../hashing/hash';
+import { phrases } from '../hashing/phrases';
 import { PhraseVerify } from '../hashing/phraseVerify';
+import MfaSuperAdminSendEmail from '../Notifications/MfaSuperAdminSendEmail';
+import MfaList from '../repositories/MfaSuperAdmin/MfaSuperAdmin';
 import SearchMfaData from '../repositories/MfaSuperAdmin/SearchMfaData';
 
 class MfaSuperAdminController {
@@ -9,28 +13,42 @@ class MfaSuperAdminController {
   async GenerateCode(req, res, next) {
     try {
       const { verify_email } = req.headers;
+      let controlVar = 0;
+      let getPhrase = '';
 
-      const getPhrase = PhraseVerify();
+      while (controlVar < phrases.length) {
+        getPhrase = PhraseVerify();
+        console.log(getPhrase);
 
-      const searchPhrase = await SearchMfaData.SearchByPhrase(getPhrase);
+        // eslint-disable-next-line no-await-in-loop
+        const searchPhrase = await SearchMfaData.SearchByPhrase(getPhrase);
 
-      while (getPhrase !== searchPhrase.dataValues.phrase) {
+        if (searchPhrase === null) break;
 
+        controlVar += 1;
       }
+      console.log(controlVar);
 
-      console.log(searchPhrase);
+      if (controlVar === phrases.length) throw new InternalServerError('Códigos esgotados');
 
-      // const generateHash = Hashing.Generate(getPhrase);
+      const generateHash = await Hashing.Generate(getPhrase);
 
-      // const dataForStore = {
-      //   phrase: getPhrase,
-      //   email: verify_email,
-      //   sequence_hash: generateHash,
-      // };
+      const dataForStore = {
+        phrase: getPhrase,
+        sequence_hash: generateHash,
+        email: verify_email,
+      };
 
-      // const saveHash = await MfaList.Store(dataForStore);
+      const saveHash = await MfaList.Store(dataForStore);
 
-      // await MfaSuperAdminSendEmail.SendEmail(saveHash.dataValues.phrase);
+      const { id } = saveHash.dataValues;
+
+      setTimeout(async () => {
+        const mfaDataDelete = await MfaList.Delete(id);
+        if (mfaDataDelete === 'Algo deu errado') throw new InternalServerError('Erro interno. Contate o suporte');
+      }, 600000);
+
+      await MfaSuperAdminSendEmail.SendEmail(saveHash.dataValues.phrase);
 
       return res.status(200).send('Código enviado');
     } catch (err) {

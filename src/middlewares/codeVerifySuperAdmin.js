@@ -14,7 +14,7 @@ export default async (req, res, next) => {
 
     const searchByEmailMfa = await SearchByEmail.Search(verifyEmail);
 
-    if (!searchByEmailMfa) throw new Unauthorized('Credenciais inválidas');
+    if (!searchByEmailMfa) throw new Unauthorized('Código expirado ou credenciais inválidas');
 
     // verificar se a frase já foi usada mas não aqui, onde o hash é gerado
     const { sequence_hash } = searchByEmailMfa.dataValues;

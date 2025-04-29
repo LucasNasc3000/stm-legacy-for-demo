@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-plusplus */
 import { EmailErrors } from '../errors/emailsErrors';
+import { Forbidden } from '../errors/forbidden';
 import EmployeeSearchCredentials from '../repositories/Employee/EmployeeSearchCredentials';
 
 const sgMail = require('@sendgrid/mail');
@@ -34,7 +35,7 @@ class BirthdaysNotifications {
   async SendEmail(emailSubject, emailBody) {
     const destinataryVerify = await this.AddressesAllowed();
 
-    if (destinataryVerify === null) return null;
+    if (destinataryVerify === null) throw new Forbidden('Não há funcionários com permissão para receber e-mails');
 
     if (destinataryVerify.length === 1) {
       const msg = {
