@@ -24,7 +24,7 @@ export default async (req, res, next) => {
     if (!superAdmin) throw new BadRequest('Super admin não encontrado ou inativo');
 
     const adminPassValidator = await superAdmin.AdminPasswordValidator(adminpassword);
-    const passValidator = await superAdmin.PasswordValidator(adminpassword);
+    const passValidator = await superAdmin.PasswordValidator(password);
 
     switch (true) {
       case (superAdmin.permission !== permission):

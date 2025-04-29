@@ -43,7 +43,12 @@ class MfaSuperAdminController {
       const { id } = saveHash.dataValues;
 
       setTimeout(async () => {
+        const findMfaData = await SearchMfaData.SearchById(id);
+
+        if (!findMfaData) return;
+
         const mfaDataDelete = await MfaList.Delete(id);
+
         if (mfaDataDelete === 'Algo deu errado') throw new InternalServerError('Erro interno. Contate o suporte');
       }, 600000);
 
