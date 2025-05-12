@@ -1,5 +1,9 @@
 FROM node:alpine3.20
 
+RUN useradd -m myuser
+
+USER myuser
+
 COPY package*.json ./
 
 COPY . .
