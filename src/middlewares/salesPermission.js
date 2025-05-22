@@ -1,10 +1,15 @@
 import { Unauthorized } from '../errors/authErrors';
 import { BadRequest } from '../errors/clientErrors';
 import Employee from '../models/Employee';
+import SecretsHandler from '../secretsHandler';
 
 // eslint-disable-next-line consistent-return
 export default async (req, res, next) => {
   try {
+    const getAdminPermission = SecretsHandler('admin');
+    const getSalesPermission = SecretsHandler('salesAccess');
+    const getSalesOutputsPermission = SecretsHandler('salesOuputsAccess');
+    const getSalesOutputsInputsPermission = SecretsHandler('salesOuputsInputsAccess');
     const { permission, email, adminpassword } = req.headers;
     let adminPassValidator = '';
 
@@ -28,20 +33,20 @@ export default async (req, res, next) => {
     }
 
     switch (true) {
-      case (employee.permission === process.env.ADMIN_PERMISSION
+      case (employee.permission === getAdminPermission
           && adminPassValidator === true
           && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.SALES_PERMISSION
+      case (employee.permission === getSalesPermission
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.SO_PERMISSION
+      case (employee.permission === getSalesOutputsPermission
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.SOI_PERMISSION
+      case (employee.permission === getSalesOutputsInputsPermission
         && employee.permission === permission):
         return next();
 

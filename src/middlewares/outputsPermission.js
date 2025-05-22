@@ -2,9 +2,15 @@
 import { Unauthorized } from '../errors/authErrors';
 import { BadRequest } from '../errors/clientErrors';
 import Employee from '../models/Employee';
+import SecretsHandler from '../secretsHandler';
 
 export default async (req, res, next) => {
   try {
+    const getAdminPermission = SecretsHandler('admin');
+    const getOutputsPermission = SecretsHandler('outputsAccess');
+    const getSalesOutputsPermission = SecretsHandler('salesOutputsAccess');
+    const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
+    const getsalesOutputsInputsPermission = SecretsHandler('salesInputsOutputsAccess');
     const { permission, email, adminpassword } = req.headers;
     let adminPassValidator = '';
 
@@ -31,24 +37,24 @@ export default async (req, res, next) => {
       case (employee.permission !== permission):
         throw new Unauthorized('Acesso negado, permissao para saidas necessaria');
 
-      case (employee.permission === process.env.ADMIN_PERMISSION
+      case (employee.permission === getAdminPermission
         && adminPassValidator === true
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.OUTPUTS_PERMISSION
+      case (employee.permission === getOutputsPermission
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.INPUTS_OUTPUTS_PERMISSION
+      case (employee.permission === getInputsOutputsPermission
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.SO_PERMISSION
+      case (employee.permission === getSalesOutputsPermission
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.SOI_PERMISSION
+      case (employee.permission === getsalesOutputsInputsPermission
         && employee.permission === permission):
         return next();
 

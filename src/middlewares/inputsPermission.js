@@ -2,9 +2,14 @@
 import { Unauthorized } from '../errors/authErrors';
 import { BadRequest } from '../errors/clientErrors';
 import Employee from '../models/Employee';
+import SecretsHandler from '../secretsHandler';
 
 export default async (req, res, next) => {
   try {
+    const getAdminPermission = SecretsHandler('admin');
+    const getInputsPermission = SecretsHandler('inputsAccess');
+    const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
+    const getSalesOutputsInputsPermission = SecretsHandler('salesOutputsInputsAccess');
     const { permission, email, adminpassword } = req.headers;
     let adminPassValidator = false;
 
@@ -28,20 +33,20 @@ export default async (req, res, next) => {
     }
 
     switch (true) {
-      case (employee.permission === process.env.ADMIN_PERMISSION
+      case (employee.permission === getAdminPermission
         && adminPassValidator === true
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.INPUTS_PERMISSION
+      case (employee.permission === getInputsPermission
           && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.INPUTS_OUTPUTS_PERMISSION
+      case (employee.permission === getInputsOutputsPermission
           && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.SOI_PERMISSION
+      case (employee.permission === getSalesOutputsInputsPermission
           && employee.permission === permission):
         return next();
 

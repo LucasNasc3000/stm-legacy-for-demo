@@ -5,10 +5,13 @@ import Log from '../Logs/LogRegister';
 import { Unauthorized } from '../errors/authErrors';
 import { BadRequest } from '../errors/clientErrors';
 import Employee from '../models/Employee';
+import SecretsHandler from '../secretsHandler';
 
 class TokenController {
   async Store(req, res, next) {
     try {
+      const jwtSecret = SecretsHandler('jwtSecret');
+      const jwtExpiration = SecretsHandler('jwtExpiration');
       const {
         email = '', password = '', adminpassword = '', permission = '',
       } = req.body;
@@ -34,8 +37,8 @@ class TokenController {
 
       const { id } = employee;
 
-      const token = jwt.sign({ id, email }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRATION,
+      const token = jwt.sign({ id, email }, jwtSecret, {
+        expiresIn: jwtExpiration,
       });
 
       await Log.createLog(id, email);

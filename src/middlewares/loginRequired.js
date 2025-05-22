@@ -1,8 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import jwt from 'jsonwebtoken';
 import Employee from '../models/Employee';
+import SecretsHandler from '../secretsHandler';
 
 export default async (req, res, next) => {
+  const jwtSecret = SecretsHandler('jwtSecret');
   // Das linhas 8 a 16 ocorre uma verificação da existência ou não do campo authorization no
   // cabeçalho da requisição
   const { authorization } = req.headers;
@@ -16,7 +18,7 @@ export default async (req, res, next) => {
   const [, token] = authorization.split(' ');
 
   try {
-    const dados = jwt.verify(token, process.env.JWT_SECRET);
+    const dados = jwt.verify(token, jwtSecret);
     const { email, id } = dados;
 
     // Checa se o id e o email são os mesmos que foram usados para gerar o token

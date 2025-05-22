@@ -3,21 +3,27 @@
 import { EmailErrors } from '../errors/emailsErrors';
 import { Forbidden } from '../errors/forbidden';
 import EmployeeSearchCredentials from '../repositories/Employee/EmployeeSearchCredentials';
+import SecretsHandler from '../secretsHandler';
 
 const sgMail = require('@sendgrid/mail');
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const getSgApiKey = SecretsHandler('sgApiKey');
+
+sgMail.setApiKey(getSgApiKey);
 
 class RegistersNotifications {
   async AddressesAllowed() {
+    const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
+    const getSOIPermission = SecretsHandler('salesOutputsInputsAccess');
+    const getAdminPermission = SecretsHandler('admin');
     const employeeSearch = await EmployeeSearchCredentials.SearchByAddressAllowed();
     const addressesAllowed = [];
     let correctPermission = false;
 
     for (let i = 0; i < employeeSearch.length; i++) {
-      if (employeeSearch[i].dataValues.permission === process.env.INPUTS_OUTPUTS_PERMISSION
-          || employeeSearch[i].dataValues.permission === process.env.SOI_PERMISSION
-          || employeeSearch[i].dataValues.permission === process.env.ADMIN_PERMISSION
+      if (employeeSearch[i].dataValues.permission === getInputsOutputsPermission
+          || employeeSearch[i].dataValues.permission === getSOIPermission
+          || employeeSearch[i].dataValues.permission === getAdminPermission
       ) {
         addressesAllowed.push(employeeSearch[i].dataValues.email);
         correctPermission = true;
@@ -59,6 +65,7 @@ class RegistersNotifications {
   }
 
   async SendEmail(emailSubject, emailBody, destinatary) {
+    const fromEmail1 = SecretsHandler('fromEmail1');
     const destinataryVerify = await this.AddressesAllowed();
 
     if (destinataryVerify === null) throw new Forbidden('Não há funcionários com permissão para receber e-mails');
@@ -66,7 +73,7 @@ class RegistersNotifications {
     if (destinatary.length === 1) {
       const msg = {
         to: destinatary[0],
-        from: process.env.FROM_EMAIL,
+        from: fromEmail1,
         subject: emailSubject,
         text: emailBody,
       // html: '<strong>and easy to do anywhere, even with Node.js</strong>',
@@ -88,7 +95,7 @@ class RegistersNotifications {
       for (let i = 0; i < destinatary.length; i++) {
         const msg = {
           to: destinatary[i],
-          from: process.env.FROM_EMAIL,
+          from: fromEmail1,
           subject: emailSubject,
           text: emailBody,
         // html: '<strong>and easy to do anywhere, even with Node.js</strong>',

@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
 import Employee from '../../models/Employee';
+import SecretsHandler from '../../secretsHandler';
 import employeeAttributes from './Attributes';
 
 class EmployeesSearchCredentials {
@@ -49,9 +50,10 @@ class EmployeesSearchCredentials {
   }
 
   async SearchByAddressAllowed() {
+    const addressAllowed = SecretsHandler('addressAllowed');
     const employeeFinderByAddressAllowed = await Employee.findAll({
       where: {
-        address_allowed: process.env.ADDRESS_ALLOWED,
+        address_allowed: addressAllowed,
         is_active: 1,
       },
       attributes: employeeAttributes,

@@ -1,3 +1,5 @@
+import SecretsHandler from '../../secretsHandler';
+
 /* eslint-disable default-case */
 class UserValidations {
   CheckEmail(EmailFieldData, isLog, isUpdate) {
@@ -66,6 +68,14 @@ class UserValidations {
   }
 
   CheckPermission(PermissionFieldData, isUpdate) {
+    const getAdminPermission = SecretsHandler('admin');
+    const getInputsPermission = SecretsHandler('inputsAccess');
+    const getOutputsPermission = SecretsHandler('outputsAccess');
+    const getSalesPermission = SecretsHandler('salesAccess');
+    const getSalesOutputsPermission = SecretsHandler('salesOutputsAccess');
+    const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
+    const getSalesOutputsInputsPermission = SecretsHandler('salesOutputsInputsAccess');
+
     switch (true) {
       case isUpdate === true && !PermissionFieldData.permission:
         return null;
@@ -74,13 +84,13 @@ class UserValidations {
         return 'Permission must be a string';
     }
 
-    if (PermissionFieldData.permission !== process.env.INPUTS_PERMISSION
-        && PermissionFieldData.permission !== process.env.OUTPUTS_PERMISSION
-        && PermissionFieldData.permission !== process.env.ADMIN_PERMISSION
-        && PermissionFieldData.permission !== process.env.INPUTS_OUTPUTS_PERMISSION
-        && PermissionFieldData.permission !== process.env.SALES_PERMISSION
-        && PermissionFieldData.permission !== process.env.SO_PERMISSION
-        && PermissionFieldData.permission !== process.env.SOI_PERMISSION
+    if (PermissionFieldData.permission !== getInputsPermission
+        && PermissionFieldData.permission !== getOutputsPermission
+        && PermissionFieldData.permission !== getAdminPermission
+        && PermissionFieldData.permission !== getInputsOutputsPermission
+        && PermissionFieldData.permission !== getSalesPermission
+        && PermissionFieldData.permission !== getSalesOutputsPermission
+        && PermissionFieldData.permission !== getSalesOutputsInputsPermission
     ) {
       return 'Invalid permission';
     }

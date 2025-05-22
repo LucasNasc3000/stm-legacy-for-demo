@@ -3,9 +3,11 @@
 import { Unauthorized } from '../errors/authErrors';
 import { BadRequest } from '../errors/clientErrors';
 import Employee from '../models/Employee';
+import SecretsHandler from '../secretsHandler';
 
 export default async (req, res, next) => {
   try {
+    const getAdminPermission = SecretsHandler('admin');
     const {
       permission, email, adminpassword, headerid,
     } = req.headers;
@@ -42,10 +44,10 @@ export default async (req, res, next) => {
       case (employee.permission !== permission):
         throw new Unauthorized('Acesso negado, permissao incorreta');
 
-      case (headerid && employee.permission !== process.env.ADMIN_PERMISSION):
+      case (headerid && employee.permission !== getAdminPermission):
         return next();
 
-      case (employee.permission !== process.env.ADMIN_PERMISSION && !headerid):
+      case (employee.permission !== getAdminPermission && !headerid):
         throw new Unauthorized('Acesso negado, permissao para administrador necessaria');
 
       case (!adminPassValidator):
