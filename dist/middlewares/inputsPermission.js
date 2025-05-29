@@ -2,9 +2,14 @@
 var _authErrors = require('../errors/authErrors');
 var _clientErrors = require('../errors/clientErrors');
 var _Employee = require('../models/Employee'); var _Employee2 = _interopRequireDefault(_Employee);
+var _secretsHandler = require('../secretsHandler'); var _secretsHandler2 = _interopRequireDefault(_secretsHandler);
 
 exports. default = async (req, res, next) => {
   try {
+    const getAdminPermission = _secretsHandler2.default.call(void 0, 'admin');
+    const getInputsPermission = _secretsHandler2.default.call(void 0, 'inputsAccess');
+    const getInputsOutputsPermission = _secretsHandler2.default.call(void 0, 'inputsOutputsAccess');
+    const getSalesOutputsInputsPermission = _secretsHandler2.default.call(void 0, 'salesOutputsInputsAccess');
     const { permission, email, adminpassword } = req.headers;
     let adminPassValidator = false;
 
@@ -28,20 +33,20 @@ exports. default = async (req, res, next) => {
     }
 
     switch (true) {
-      case (employee.permission === process.env.ADMIN_PERMISSION
+      case (employee.permission === getAdminPermission
         && adminPassValidator === true
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.INPUTS_PERMISSION
+      case (employee.permission === getInputsPermission
           && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.INPUTS_OUTPUTS_PERMISSION
+      case (employee.permission === getInputsOutputsPermission
           && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.SOI_PERMISSION
+      case (employee.permission === getSalesOutputsInputsPermission
           && employee.permission === permission):
         return next();
 

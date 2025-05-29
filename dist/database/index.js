@@ -2,14 +2,14 @@
 var _sequelize = require('sequelize'); var _sequelize2 = _interopRequireDefault(_sequelize);
 var _database = require('../config/database'); var _database2 = _interopRequireDefault(_database);
 var _Advice = require('../models/Advice'); var _Advice2 = _interopRequireDefault(_Advice);
-var _AuthTempData = require('../models/AuthTempData'); var _AuthTempData2 = _interopRequireDefault(_AuthTempData);
 var _Employee = require('../models/Employee'); var _Employee2 = _interopRequireDefault(_Employee);
 var _Input = require('../models/Input'); var _Input2 = _interopRequireDefault(_Input);
 var _Log = require('../models/Log'); var _Log2 = _interopRequireDefault(_Log);
+var _MfaPhrase = require('../models/MfaPhrase'); var _MfaPhrase2 = _interopRequireDefault(_MfaPhrase);
 var _Output = require('../models/Output'); var _Output2 = _interopRequireDefault(_Output);
 var _Sale = require('../models/Sale'); var _Sale2 = _interopRequireDefault(_Sale);
 
-const models = [_Input2.default, _Output2.default, _Employee2.default, _Log2.default, _Sale2.default, _Advice2.default, _AuthTempData2.default];
+const models = [_Input2.default, _Output2.default, _Employee2.default, _Log2.default, _Sale2.default, _Advice2.default, _MfaPhrase2.default];
 
 const connection = new (0, _sequelize2.default)(_database2.default);
 

@@ -109,7 +109,6 @@ class AdviceController {
       await _TimerDefinitions2.default.Recovery(advicesDbCheck);
 
       if (_timersStore.Timers.length < 1) throw new (0, _serverErrors.InternalServerError)('Erro ao recuperar timers');
-      console.log(_timersStore.Timers);
 
       return res.status(200).send('Timers recuperados');
     } catch (err) {

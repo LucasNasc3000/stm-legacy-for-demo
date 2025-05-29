@@ -22,6 +22,9 @@ var _inputSearchBySupplier = require('./routes/input/inputSearchBySupplier'); va
 var _inputSearchByTotalWeight = require('./routes/input/inputSearchByTotalWeight'); var _inputSearchByTotalWeight2 = _interopRequireDefault(_inputSearchByTotalWeight);
 var _inputSearchByType = require('./routes/input/inputSearchByType'); var _inputSearchByType2 = _interopRequireDefault(_inputSearchByType);
 var _inputSearchByWeightPerUnit = require('./routes/input/inputSearchByWeightPerUnit'); var _inputSearchByWeightPerUnit2 = _interopRequireDefault(_inputSearchByWeightPerUnit);
+
+// auth routes
+var _preMfaSuperAdmin = require('./routes/mfa/preMfaSuperAdmin'); var _preMfaSuperAdmin2 = _interopRequireDefault(_preMfaSuperAdmin);
 var _token = require('./routes/token'); var _token2 = _interopRequireDefault(_token);
 
 // output routes
@@ -42,6 +45,13 @@ var _employeeSearchById = require('./routes/employee/employeeSearchById'); var _
 var _employeeSearchByName = require('./routes/employee/employeeSearchByName'); var _employeeSearchByName2 = _interopRequireDefault(_employeeSearchByName);
 var _employeeSearchOneByName = require('./routes/employee/employeeSearchOneByName'); var _employeeSearchOneByName2 = _interopRequireDefault(_employeeSearchOneByName);
 var _exEmployeeSearch = require('./routes/employee/exEmployeeSearch'); var _exEmployeeSearch2 = _interopRequireDefault(_exEmployeeSearch);
+
+// employee admin routes
+var _employeeAdmin = require('./routes/employee/employeeAdmin/employeeAdmin'); var _employeeAdmin2 = _interopRequireDefault(_employeeAdmin);
+var _employeeSearchByActives = require('./routes/employee/employeeAdmin/employeeSearchByActives'); var _employeeSearchByActives2 = _interopRequireDefault(_employeeSearchByActives);
+var _employeeSearchByEmail3 = require('./routes/employee/employeeAdmin/employeeSearchByEmail'); var _employeeSearchByEmail4 = _interopRequireDefault(_employeeSearchByEmail3);
+var _employeeSearchById3 = require('./routes/employee/employeeAdmin/employeeSearchById'); var _employeeSearchById4 = _interopRequireDefault(_employeeSearchById3);
+var _employeeSearchByName3 = require('./routes/employee/employeeAdmin/employeeSearchByName'); var _employeeSearchByName4 = _interopRequireDefault(_employeeSearchByName3);
 
 // sales routes
 var _sale = require('./routes/sales/sale'); var _sale2 = _interopRequireDefault(_sale);
@@ -116,6 +126,14 @@ class App {
     this.app.use('/employees/search/boss', _employeeSearchByBoss2.default);
     this.app.use('/exemployees/', _exEmployeeSearch2.default);
 
+    // employee admin routes
+    // employee admin routes
+    this.app.use('/employees/admin/', _employeeAdmin2.default);
+    this.app.use('/employees/admin/search/email/', _employeeSearchByEmail4.default);
+    this.app.use('/employees/admin/search/id/', _employeeSearchById4.default);
+    this.app.use('/employees/admin/search/name', _employeeSearchByName4.default);
+    this.app.use('/employees/admin/search/actives/', _employeeSearchByActives2.default);
+
     // sales routes
     this.app.use('/sales/', _sale2.default);
     this.app.use('/sales/search/address/', _saleSearchAddress2.default);
@@ -130,6 +148,9 @@ class App {
     // advice routes
     this.app.use('/advices/', _advice2.default);
     this.app.use('/advices/search/employeeid', _adviceSearchByEmployeeId2.default);
+
+    // auth routes
+    this.app.use('/spadmin/', _preMfaSuperAdmin2.default);
 
     this.app.use(_errorHandler2.default);
   }

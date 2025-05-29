@@ -3,9 +3,11 @@
 var _authErrors = require('../errors/authErrors');
 var _clientErrors = require('../errors/clientErrors');
 var _Employee = require('../models/Employee'); var _Employee2 = _interopRequireDefault(_Employee);
+var _secretsHandler = require('../secretsHandler'); var _secretsHandler2 = _interopRequireDefault(_secretsHandler);
 
 exports. default = async (req, res, next) => {
   try {
+    const getAdminPermission = _secretsHandler2.default.call(void 0, 'admin');
     const {
       permission, email, adminpassword, headerid,
     } = req.headers;
@@ -42,10 +44,10 @@ exports. default = async (req, res, next) => {
       case (employee.permission !== permission):
         throw new (0, _authErrors.Unauthorized)('Acesso negado, permissao incorreta');
 
-      case (headerid && employee.permission !== process.env.ADMIN_PERMISSION):
+      case (headerid && employee.permission !== getAdminPermission):
         return next();
 
-      case (employee.permission !== process.env.ADMIN_PERMISSION && !headerid):
+      case (employee.permission !== getAdminPermission && !headerid):
         throw new (0, _authErrors.Unauthorized)('Acesso negado, permissao para administrador necessaria');
 
       case (!adminPassValidator):

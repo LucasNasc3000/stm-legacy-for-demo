@@ -1,4 +1,6 @@
-"use strict";Object.defineProperty(exports, "__esModule", {value: true});/* eslint-disable default-case */
+"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }var _secretsHandler = require('../../secretsHandler'); var _secretsHandler2 = _interopRequireDefault(_secretsHandler);
+
+/* eslint-disable default-case */
 class UserValidations {
   CheckEmail(EmailFieldData, isLog, isUpdate) {
     const { email } = EmailFieldData;
@@ -66,6 +68,14 @@ class UserValidations {
   }
 
   CheckPermission(PermissionFieldData, isUpdate) {
+    const getAdminPermission = _secretsHandler2.default.call(void 0, 'admin');
+    const getInputsPermission = _secretsHandler2.default.call(void 0, 'inputsAccess');
+    const getOutputsPermission = _secretsHandler2.default.call(void 0, 'outputsAccess');
+    const getSalesPermission = _secretsHandler2.default.call(void 0, 'salesAccess');
+    const getSalesOutputsPermission = _secretsHandler2.default.call(void 0, 'salesOutputsAccess');
+    const getInputsOutputsPermission = _secretsHandler2.default.call(void 0, 'inputsOutputsAccess');
+    const getSalesOutputsInputsPermission = _secretsHandler2.default.call(void 0, 'salesOutputsInputsAccess');
+
     switch (true) {
       case isUpdate === true && !PermissionFieldData.permission:
         return null;
@@ -74,13 +84,13 @@ class UserValidations {
         return 'Permission must be a string';
     }
 
-    if (PermissionFieldData.permission !== process.env.INPUTS_PERMISSION
-        && PermissionFieldData.permission !== process.env.OUTPUTS_PERMISSION
-        && PermissionFieldData.permission !== process.env.ADMIN_PERMISSION
-        && PermissionFieldData.permission !== process.env.INPUTS_OUTPUTS_PERMISSION
-        && PermissionFieldData.permission !== process.env.SALES_PERMISSION
-        && PermissionFieldData.permission !== process.env.SO_PERMISSION
-        && PermissionFieldData.permission !== process.env.SOI_PERMISSION
+    if (PermissionFieldData.permission !== getInputsPermission
+        && PermissionFieldData.permission !== getOutputsPermission
+        && PermissionFieldData.permission !== getAdminPermission
+        && PermissionFieldData.permission !== getInputsOutputsPermission
+        && PermissionFieldData.permission !== getSalesPermission
+        && PermissionFieldData.permission !== getSalesOutputsPermission
+        && PermissionFieldData.permission !== getSalesOutputsInputsPermission
     ) {
       return 'Invalid permission';
     }

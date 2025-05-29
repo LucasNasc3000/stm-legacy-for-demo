@@ -30,7 +30,7 @@ var _bcryptjs = require('bcryptjs'); var _bcryptjs2 = _interopRequireDefault(_bc
         },
         validate: {
           isEmail: {
-            args: [3, 255],
+            args: [13, 255],
             msg: 'Email inválido',
           },
         },

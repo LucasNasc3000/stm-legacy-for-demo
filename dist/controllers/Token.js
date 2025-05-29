@@ -5,10 +5,13 @@ var _LogRegister = require('../Logs/LogRegister'); var _LogRegister2 = _interopR
 var _authErrors = require('../errors/authErrors');
 var _clientErrors = require('../errors/clientErrors');
 var _Employee = require('../models/Employee'); var _Employee2 = _interopRequireDefault(_Employee);
+var _secretsHandler = require('../secretsHandler'); var _secretsHandler2 = _interopRequireDefault(_secretsHandler);
 
 class TokenController {
   async Store(req, res, next) {
     try {
+      const jwtSecret = _secretsHandler2.default.call(void 0, 'jwtSecret');
+      const jwtExpiration = _secretsHandler2.default.call(void 0, 'jwtExpiration');
       const {
         email = '', password = '', adminpassword = '', permission = '',
       } = req.body;
@@ -34,8 +37,8 @@ class TokenController {
 
       const { id } = employee;
 
-      const token = _jsonwebtoken2.default.sign({ id, email }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRATION,
+      const token = _jsonwebtoken2.default.sign({ id, email }, jwtSecret, {
+        expiresIn: jwtExpiration,
       });
 
       await _LogRegister2.default.createLog(id, email);

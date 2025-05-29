@@ -1,5 +1,6 @@
 "use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }var _sequelize = require('sequelize');
 var _Employee = require('../../models/Employee'); var _Employee2 = _interopRequireDefault(_Employee);
+var _secretsHandler = require('../../secretsHandler'); var _secretsHandler2 = _interopRequireDefault(_secretsHandler);
 var _Attributes = require('./Attributes'); var _Attributes2 = _interopRequireDefault(_Attributes);
 
 class EmployeesSearchCredentials {
@@ -49,15 +50,27 @@ class EmployeesSearchCredentials {
   }
 
   async SearchByAddressAllowed() {
+    const addressAllowed = _secretsHandler2.default.call(void 0, 'addressAllowed');
     const employeeFinderByAddressAllowed = await _Employee2.default.findAll({
       where: {
-        address_allowed: process.env.ADDRESS_ALLOWED,
+        address_allowed: addressAllowed,
         is_active: 1,
       },
       attributes: _Attributes2.default,
     });
 
     return employeeFinderByAddressAllowed;
+  }
+
+  async SearchByForActives() {
+    const employeeFinderActives = await _Employee2.default.findAll({
+      where: {
+        is_active: 1,
+      },
+      attributes: _Attributes2.default,
+    });
+
+    return employeeFinderActives;
   }
 }
 

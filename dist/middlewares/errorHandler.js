@@ -1,5 +1,6 @@
 "use strict";Object.defineProperty(exports, "__esModule", {value: true});var _authErrors = require('../errors/authErrors');
 var _clientErrors = require('../errors/clientErrors');
+var _conflict = require('../errors/conflict');
 var _emailsErrors = require('../errors/emailsErrors');
 var _forbidden = require('../errors/forbidden');
 var _logErrors = require('../errors/logErrors');
@@ -36,18 +37,25 @@ const errorHandler = (err, req, res, next) => {
         error: [err.message],
       });
 
+    case (err instanceof _conflict.Conflict):
+      return res.status(409).json({
+        error: [err.message],
+      });
+
     case (err instanceof _emailsErrors.EmailErrors):
       return res.status(500).json({
-        error: [err.name],
+        error: ['Erro ao tentar enviar e-mail', err.name],
       });
 
     case (err instanceof _logErrors.LogError):
       return res.status(500).json({
-        error: [err.name],
+        error: ['Erro ao tentar registrar log', err.name],
       });
 
     default:
-      next(err.message);
+      next(res.status(500).json({
+        error: 'Erro desconhecido. Tente novamente ou contate o suporte',
+      }));
   }
 };
 

@@ -1,6 +1,8 @@
 "use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }/* eslint-disable consistent-return */
 var _clientErrors = require('../../errors/clientErrors');
+var _conflict = require('../../errors/conflict');
 var _forbidden = require('../../errors/forbidden');
+var _notFound = require('../../errors/notFound');
 var _serverErrors = require('../../errors/serverErrors');
 var _Validation = require('../../middlewares/fieldValidations/Validation'); var _Validation2 = _interopRequireDefault(_Validation);
 var _Employee = require('../../repositories/Employee/Employee'); var _Employee2 = _interopRequireDefault(_Employee);
@@ -28,7 +30,7 @@ class EmployeeController {
 
       const emailExists = await _EmployeeSearchCredentials2.default.SearchByEmail(req.body.email);
 
-      if (emailExists) throw new (0, _clientErrors.BadRequest)('E-mail em uso, tente cadastrar outro');
+      if (emailExists) throw new (0, _conflict.Conflict)('E-mail em uso, cadastre outro');
 
       const employeeStore = await _Employee2.default.Store(req.body);
 
@@ -55,7 +57,7 @@ class EmployeeController {
 
       if (req.body.email) {
         const emailExists = await _EmployeeSearchCredentials2.default.SearchByEmail(req.body.email);
-        if (emailExists) throw new (0, _clientErrors.BadRequest)('E-mail em uso');
+        if (emailExists) throw new (0, _conflict.Conflict)('E-mail em uso');
       }
 
       // Funciona sem await mas não retorna os dados na requisição caso ela seja feita com um app de
@@ -76,7 +78,7 @@ class EmployeeController {
 
         const employeeSelfUpdate = await _Employee2.default.Update(headerid, req.body);
 
-        if (employeeSelfUpdate === 'funcionário não encontrado') throw new (0, _clientErrors.BadRequest)('Funcionário não registrado');
+        if (employeeSelfUpdate === 'funcionário não encontrado') throw new (0, _notFound.NotFound)('Funcionário não registrado');
         if (!employeeSelfUpdate) throw new (0, _serverErrors.InternalServerError)('Erro interno');
 
         const empSearch = await _EmployeeSearchCredentials2.default.SearchById(id);
@@ -86,7 +88,7 @@ class EmployeeController {
 
       const employeeUpdate = await _Employee2.default.Update(id, req.body);
 
-      if (employeeUpdate === 'funcionário não encontrado') throw new (0, _clientErrors.BadRequest)('Funcionário não registrado');
+      if (employeeUpdate === 'funcionário não encontrado') throw new (0, _notFound.NotFound)('Funcionário não registrado');
       if (!employeeUpdate) throw new (0, _serverErrors.InternalServerError)('Erro interno');
 
       const empSearch = await _EmployeeSearchCredentials2.default.SearchById(id);

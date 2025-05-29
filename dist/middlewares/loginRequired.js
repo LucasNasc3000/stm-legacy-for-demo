@@ -1,8 +1,10 @@
 "use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }// eslint-disable-next-line import/no-extraneous-dependencies
 var _jsonwebtoken = require('jsonwebtoken'); var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 var _Employee = require('../models/Employee'); var _Employee2 = _interopRequireDefault(_Employee);
+var _secretsHandler = require('../secretsHandler'); var _secretsHandler2 = _interopRequireDefault(_secretsHandler);
 
 exports. default = async (req, res, next) => {
+  const jwtSecret = _secretsHandler2.default.call(void 0, 'jwtSecret');
   // Das linhas 8 a 16 ocorre uma verificação da existência ou não do campo authorization no
   // cabeçalho da requisição
   const { authorization } = req.headers;
@@ -16,7 +18,7 @@ exports. default = async (req, res, next) => {
   const [, token] = authorization.split(' ');
 
   try {
-    const dados = _jsonwebtoken2.default.verify(token, process.env.JWT_SECRET);
+    const dados = _jsonwebtoken2.default.verify(token, jwtSecret);
     const { email, id } = dados;
 
     // Checa se o id e o email são os mesmos que foram usados para gerar o token
@@ -30,7 +32,7 @@ exports. default = async (req, res, next) => {
 
     if (!employee) {
       return res.status(401).json({
-        errors: ['Funcionário inválido ou inativo'], // Este erro quer dizer que o usuário que mudou seu próprio email precisa logar denovo porque o email não vai bater com o token
+        errors: ['Funcionário inválido'], // Este erro quer dizer que o usuário que mudou seu próprio email precisa logar denovo porque o email não vai bater com o token
       });
     }
 

@@ -2,9 +2,15 @@
 var _authErrors = require('../errors/authErrors');
 var _clientErrors = require('../errors/clientErrors');
 var _Employee = require('../models/Employee'); var _Employee2 = _interopRequireDefault(_Employee);
+var _secretsHandler = require('../secretsHandler'); var _secretsHandler2 = _interopRequireDefault(_secretsHandler);
 
 exports. default = async (req, res, next) => {
   try {
+    const getAdminPermission = _secretsHandler2.default.call(void 0, 'admin');
+    const getOutputsPermission = _secretsHandler2.default.call(void 0, 'outputsAccess');
+    const getSalesOutputsPermission = _secretsHandler2.default.call(void 0, 'salesOutputsAccess');
+    const getInputsOutputsPermission = _secretsHandler2.default.call(void 0, 'inputsOutputsAccess');
+    const getsalesOutputsInputsPermission = _secretsHandler2.default.call(void 0, 'salesInputsOutputsAccess');
     const { permission, email, adminpassword } = req.headers;
     let adminPassValidator = '';
 
@@ -31,24 +37,24 @@ exports. default = async (req, res, next) => {
       case (employee.permission !== permission):
         throw new (0, _authErrors.Unauthorized)('Acesso negado, permissao para saidas necessaria');
 
-      case (employee.permission === process.env.ADMIN_PERMISSION
+      case (employee.permission === getAdminPermission
         && adminPassValidator === true
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.OUTPUTS_PERMISSION
+      case (employee.permission === getOutputsPermission
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.INPUTS_OUTPUTS_PERMISSION
+      case (employee.permission === getInputsOutputsPermission
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.SO_PERMISSION
+      case (employee.permission === getSalesOutputsPermission
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === process.env.SOI_PERMISSION
+      case (employee.permission === getsalesOutputsInputsPermission
         && employee.permission === permission):
         return next();
 
