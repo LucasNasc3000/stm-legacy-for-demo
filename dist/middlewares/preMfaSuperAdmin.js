@@ -7,8 +7,8 @@ var _secretsHandler = require('../secretsHandler'); var _secretsHandler2 = _inte
 exports. default = async (req, res, next) => {
   try {
     const getSuperAdminPermission = _secretsHandler2.default.call(void 0, 'superAdmin');
-    const getPass1 = _secretsHandler2.default.call(void 0, 'pass1');
-    const getPass2 = _secretsHandler2.default.call(void 0, 'pass2');
+    const getPass1 = _secretsHandler2.default.call(void 0, 'Pass1');
+    const getPass2 = _secretsHandler2.default.call(void 0, 'Pass2');
     const correctEmail = _secretsHandler2.default.call(void 0, 'correctEmail');
     const {
       permission, verify_email, adminpassword, password1, password2, password3,
