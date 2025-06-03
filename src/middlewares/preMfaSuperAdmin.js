@@ -7,8 +7,8 @@ import SecretsHandler from '../secretsHandler';
 export default async (req, res, next) => {
   try {
     const getSuperAdminPermission = SecretsHandler('superAdmin');
-    const getPass1 = SecretsHandler('pass1');
-    const getPass2 = SecretsHandler('pass2');
+    const getPass1 = SecretsHandler('Pass1');
+    const getPass2 = SecretsHandler('Pass2');
     const correctEmail = SecretsHandler('correctEmail');
     const {
       permission, verify_email, adminpassword, password1, password2, password3,
