@@ -5,7 +5,7 @@ import superAdminPermissionMw from '../../../middlewares/superAdminPermissionMw'
 
 const router = new Router();
 
-router.post('/', loginRequired, superAdminPermissionMw, EmployeeAdmin.Store);
+router.post('/', EmployeeAdmin.Store);
 router.put('/:id', loginRequired, superAdminPermissionMw, EmployeeAdmin.Update);
 
 export default router;
