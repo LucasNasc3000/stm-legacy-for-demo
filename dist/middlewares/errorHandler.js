@@ -54,8 +54,14 @@ const errorHandler = (err, req, res, next) => {
 
     default:
       next(res.status(500).json({
-        error: 'Erro desconhecido. Tente novamente ou contate o suporte',
+        error: [
+          err.name,
+          err.message,
+          err.stack,
+          err,
+        ],
       }));
+      console.log(err);
   }
 };
 
