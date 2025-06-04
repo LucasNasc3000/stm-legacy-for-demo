@@ -66,12 +66,7 @@ var _bcryptjs = require('bcryptjs'); var _bcryptjs2 = _interopRequireDefault(_bc
       permission: {
         type: _sequelize2.default.STRING,
         defaultValue: '',
-        validate: {
-          len: {
-            args: [8, 20],
-            msg: 'A permissao deve ter entre 8 e 20 caracteres',
-          },
-        },
+        allowNull: false,
       },
       address_allowed: {
         type: _sequelize2.default.CHAR,

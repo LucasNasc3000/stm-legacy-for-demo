@@ -66,12 +66,7 @@ export default class Employee extends Model {
       permission: {
         type: Sequelize.STRING,
         defaultValue: '',
-        validate: {
-          len: {
-            args: [8, 20],
-            msg: 'A permissao deve ter entre 8 e 20 caracteres',
-          },
-        },
+        allowNull: false,
       },
       address_allowed: {
         type: Sequelize.CHAR,
