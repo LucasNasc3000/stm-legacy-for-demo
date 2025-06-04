@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import { Unauthorized } from '../errors/authErrors';
 import Employee from '../models/Employee';
+import MfaSuperAdmin from '../repositories/MfaSuperAdmin/MfaSuperAdmin';
+import SearchByEmail from '../repositories/MfaSuperAdmin/SearchMfaData';
 import SecretsHandler from '../secretsHandler';
 
 // eslint-disable-next-line consistent-return
@@ -31,11 +33,16 @@ export default async (req, res, next) => {
       },
     });
 
+    const searchCodeRegister = await SearchByEmail.SearchByEmail(verify_email);
+
     const passwordVerify = await superAdmin.PasswordValidator(password3);
     const adminPasswordVerify = await superAdmin.AdminPasswordValidator(adminpassword);
 
     // eslint-disable-next-line default-case
     switch (true) {
+      case superAdmin.dataValues.email !== verify_email:
+        throw new Unauthorized('Credenciais inválidas');
+
       case passwordVerify !== true:
         throw new Unauthorized('Credenciais inválidas');
 
@@ -47,6 +54,11 @@ export default async (req, res, next) => {
 
       case getSuperAdminPermission !== permission:
         throw new Unauthorized('Credenciais inválidas');
+
+      case searchCodeRegister.dataValues.email === verify_email:
+        // Para invalidar códigos anteriores
+        // eslint-disable-next-line no-case-declarations
+        await MfaSuperAdmin.Delete(searchCodeRegister.dataValues.id);
     }
 
     return next();

@@ -33,9 +33,6 @@ var _sequelize = require('sequelize'); var _sequelize2 = _interopRequireDefault(
       email: {
         type: _sequelize2.default.STRING,
         defaultValue: '',
-        unique: {
-          msg: 'Email já existente',
-        },
         validate: {
           isEmail: {
             args: [13, 255],

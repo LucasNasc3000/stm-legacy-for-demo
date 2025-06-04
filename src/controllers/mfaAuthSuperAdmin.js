@@ -26,7 +26,6 @@ class MfaSuperAdminController {
 
         controlVar += 1;
       }
-      console.log(controlVar);
 
       if (controlVar === phrases.length) throw new InternalServerError('Códigos esgotados');
 
@@ -50,7 +49,7 @@ class MfaSuperAdminController {
         const mfaDataDelete = await MfaList.Delete(id);
 
         if (mfaDataDelete === 'Algo deu errado') throw new InternalServerError('Erro interno. Contate o suporte');
-      }, 600000);
+      }, 300000);
 
       await MfaSuperAdminSendEmail.SendEmail(saveHash.dataValues.phrase);
 

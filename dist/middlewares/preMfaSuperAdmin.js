@@ -1,6 +1,8 @@
 "use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }/* eslint-disable camelcase */
 var _authErrors = require('../errors/authErrors');
 var _Employee = require('../models/Employee'); var _Employee2 = _interopRequireDefault(_Employee);
+var _MfaSuperAdmin = require('../repositories/MfaSuperAdmin/MfaSuperAdmin'); var _MfaSuperAdmin2 = _interopRequireDefault(_MfaSuperAdmin);
+var _SearchMfaData = require('../repositories/MfaSuperAdmin/SearchMfaData'); var _SearchMfaData2 = _interopRequireDefault(_SearchMfaData);
 var _secretsHandler = require('../secretsHandler'); var _secretsHandler2 = _interopRequireDefault(_secretsHandler);
 
 // eslint-disable-next-line consistent-return
@@ -31,11 +33,16 @@ exports. default = async (req, res, next) => {
       },
     });
 
+    const searchCodeRegister = await _SearchMfaData2.default.SearchByEmail(verify_email);
+
     const passwordVerify = await superAdmin.PasswordValidator(password3);
     const adminPasswordVerify = await superAdmin.AdminPasswordValidator(adminpassword);
 
     // eslint-disable-next-line default-case
     switch (true) {
+      case superAdmin.dataValues.email !== verify_email:
+        throw new (0, _authErrors.Unauthorized)('Credenciais inválidas');
+
       case passwordVerify !== true:
         throw new (0, _authErrors.Unauthorized)('Credenciais inválidas');
 
@@ -47,6 +54,11 @@ exports. default = async (req, res, next) => {
 
       case getSuperAdminPermission !== permission:
         throw new (0, _authErrors.Unauthorized)('Credenciais inválidas');
+
+      case searchCodeRegister.dataValues.email === verify_email:
+        // Para invalidar códigos anteriores
+        // eslint-disable-next-line no-case-declarations
+        await _MfaSuperAdmin2.default.Delete(searchCodeRegister.dataValues.id);
     }
 
     return next();
