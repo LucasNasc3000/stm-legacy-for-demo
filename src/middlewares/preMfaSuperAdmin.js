@@ -55,10 +55,11 @@ export default async (req, res, next) => {
       case getSuperAdminPermission !== permission:
         throw new Unauthorized('Credenciais inválidas');
 
-      case searchCodeRegister.dataValues.email === verify_email:
         // Para invalidar códigos anteriores
-        // eslint-disable-next-line no-case-declarations
-        await MfaSuperAdmin.Delete(searchCodeRegister.dataValues.id);
+      case searchCodeRegister.dataValues.email !== null:
+        if (searchCodeRegister.dataValues.email === verify_email) {
+          await MfaSuperAdmin.Delete(searchCodeRegister.dataValues.id);
+        }
     }
 
     return next();
