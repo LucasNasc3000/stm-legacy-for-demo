@@ -16,6 +16,22 @@ export default async (req, res, next) => {
 
     if (!searchByEmailMfa) throw new Unauthorized('Código expirado ou credenciais inválidas');
 
+    const { is_valid } = searchByEmailMfa.dataValues;
+
+    // eslint-disable-next-line default-case
+    switch (true) {
+      case !is_valid:
+        throw new Unauthorized('Código expirado ou credenciais inválidas');
+
+      case typeof is_valid === 'boolean':
+        if (is_valid !== true) throw new Unauthorized('Código expirado ou credenciais inválidas');
+        break;
+
+      case typeof is_valid === 'number':
+        if (is_valid !== 1) throw new Unauthorized('Código expirado ou credenciais inválidas');
+        break;
+    }
+
     const { sequence_hash } = searchByEmailMfa.dataValues;
 
     const hashCompare = await Hashing.Compare(code, sequence_hash);
