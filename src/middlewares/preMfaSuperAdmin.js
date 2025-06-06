@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { Unauthorized } from '../errors/authErrors';
+import { NotFound } from '../errors/notFound';
 import Employee from '../models/Employee';
 import MfaSuperAdmin from '../repositories/MfaSuperAdmin/MfaSuperAdmin';
 import SearchByEmail from '../repositories/MfaSuperAdmin/SearchMfaData';
@@ -40,6 +41,9 @@ export default async (req, res, next) => {
 
     // eslint-disable-next-line default-case
     switch (true) {
+      case superAdmin === null:
+        throw new NotFound('Super admin não encontrado');
+
       case superAdmin.dataValues.email !== verify_email:
         throw new Unauthorized('Credenciais inválidas');
 
@@ -56,7 +60,7 @@ export default async (req, res, next) => {
         throw new Unauthorized('Credenciais inválidas');
 
         // Para invalidar códigos anteriores
-      case searchCodeRegister.dataValues.email !== null:
+      case searchCodeRegister !== null:
         if (searchCodeRegister.dataValues.email === verify_email) {
           await MfaSuperAdmin.Delete(searchCodeRegister.dataValues.id);
         }
