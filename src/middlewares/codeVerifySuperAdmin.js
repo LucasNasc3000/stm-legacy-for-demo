@@ -22,9 +22,11 @@ export default async (req, res, next) => {
 
     if (hashCompare !== true) throw new Unauthorized('Código inválido');
 
-    const deleteMfaData = await MfaSuperAdmin.Delete(searchByEmailMfa.dataValues.id);
+    const invalidateMfaData = await MfaSuperAdmin.Update(searchByEmailMfa.dataValues.id, {
+      is_valid: false,
+    });
 
-    if (deleteMfaData === 'Algo deu errado') throw new InternalServerError('Erro desconhecido ao tentar logar');
+    if (invalidateMfaData === 'código não encontrado') throw new InternalServerError('Erro desconhecido ao tentar logar');
 
     next();
   } catch (e) {

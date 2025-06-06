@@ -40,6 +40,11 @@ var _sequelize = require('sequelize'); var _sequelize2 = _interopRequireDefault(
           },
         },
       },
+      is_valid: {
+        type: _sequelize2.default.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     }, {
       sequelize,
     });

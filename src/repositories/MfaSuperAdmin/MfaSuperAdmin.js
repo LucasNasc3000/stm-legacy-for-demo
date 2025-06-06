@@ -6,16 +6,14 @@ class MfaList {
     return mfaDataRegister;
   }
 
-  async Delete(id) {
-    const mfaDataDelete = await MfaSuperAdmin.destroy({
-      where: {
-        id,
-      },
-    });
+  async Update(id, data) {
+    const mfaDataUpdate = await MfaSuperAdmin.findByPk(id);
 
-    if (!mfaDataDelete) return 'Algo deu errado';
+    if (!mfaDataUpdate) return 'código não encontrado';
 
-    return mfaDataDelete;
+    const newMfaData = await mfaDataUpdate.update(data);
+
+    return newMfaData;
   }
 }
 

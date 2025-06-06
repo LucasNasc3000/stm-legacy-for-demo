@@ -35,6 +35,7 @@ class MfaSuperAdminController {
         phrase: getPhrase,
         sequence_hash: generateHash,
         email: verify_email,
+        is_valid: true,
       };
 
       const saveHash = await _MfaSuperAdmin2.default.Store(dataForStore);
@@ -46,9 +47,11 @@ class MfaSuperAdminController {
 
         if (!findMfaData) return;
 
-        const mfaDataDelete = await _MfaSuperAdmin2.default.Delete(id);
+        const mfaCodeInvalidate = await _MfaSuperAdmin2.default.Update(id, {
+          is_valid: false,
+        });
 
-        if (mfaDataDelete === 'Algo deu errado') throw new (0, _serverErrors.InternalServerError)('Erro interno. Contate o suporte');
+        if (mfaCodeInvalidate === 'código não encontrado') throw new (0, _serverErrors.InternalServerError)('Erro interno. Contate o suporte');
       }, 300000);
 
       await _MfaSuperAdminSendEmail2.default.SendEmail(saveHash.dataValues.phrase);

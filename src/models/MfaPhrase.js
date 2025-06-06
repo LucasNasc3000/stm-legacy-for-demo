@@ -40,6 +40,11 @@ export default class Mfaphrase extends Model {
           },
         },
       },
+      is_valid: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     }, {
       sequelize,
     });
