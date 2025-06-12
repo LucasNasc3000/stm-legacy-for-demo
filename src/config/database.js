@@ -2,8 +2,8 @@ const { default: SecretsHandler } = require('../secretsHandler');
 
 require('dotenv').config();
 
-const getDbName = SecretsHandler('dbHost');
-const getDbHostIp = SecretsHandler('dbHostIp');
+const getDbName = SecretsHandler('dbName');
+const getDbHostIp = SecretsHandler('dbHost');
 const getDbPort = SecretsHandler('dbPort');
 const getdbUser = SecretsHandler('dbUser');
 const getDbPass = SecretsHandler('dbPass');
