@@ -17,9 +17,6 @@ export default async (req, res, next) => {
       permission, verifyemail, adminpassword, password1, password2, password3,
     } = req.headers;
 
-    console.log(!permission || !verifyemail || !adminpassword || !password1 || !password2 || !password3);
-    console.log(req.headers);
-
     if (!permission || !verifyemail || !adminpassword || !password1 || !password2 || !password3) {
       // mudar esta mensagem?
       throw new Unauthorized('Dados de autenticação não enviados');
