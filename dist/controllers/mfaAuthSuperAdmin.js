@@ -4,7 +4,6 @@ var _serverErrors = require('../errors/serverErrors');
 var _hash = require('../hashing/hash'); var _hash2 = _interopRequireDefault(_hash);
 var _phrases = require('../hashing/phrases');
 var _phraseVerify = require('../hashing/phraseVerify');
-var _MfaSuperAdminSendEmail = require('../Notifications/MfaSuperAdminSendEmail'); var _MfaSuperAdminSendEmail2 = _interopRequireDefault(_MfaSuperAdminSendEmail);
 var _MfaSuperAdmin = require('../repositories/MfaSuperAdmin/MfaSuperAdmin'); var _MfaSuperAdmin2 = _interopRequireDefault(_MfaSuperAdmin);
 var _SearchMfaData = require('../repositories/MfaSuperAdmin/SearchMfaData'); var _SearchMfaData2 = _interopRequireDefault(_SearchMfaData);
 
@@ -39,6 +38,15 @@ class MfaSuperAdminController {
         is_valid: true,
       };
 
+      console.log('CONTROL VAR:');
+      console.log(controlVar);
+      console.log('GENERATE HASH:');
+      console.log(generateHash);
+      console.log('GETPHRASE:');
+      console.log(getPhrase);
+      console.log('DATA FOR STORE:');
+      console.log(dataForStore);
+
       const saveHash = await _MfaSuperAdmin2.default.Store(dataForStore);
 
       const { id } = saveHash.dataValues;
@@ -55,7 +63,7 @@ class MfaSuperAdminController {
         if (mfaCodeInvalidate === 'código não encontrado') throw new (0, _serverErrors.InternalServerError)('Erro interno. Contate o suporte');
       }, 300000);
 
-      await _MfaSuperAdminSendEmail2.default.SendEmail(saveHash.dataValues.phrase);
+      // await MfaSuperAdminSendEmail.SendEmail(saveHash.dataValues.phrase);
 
       return res.status(200).send('Código enviado');
     } catch (err) {

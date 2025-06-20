@@ -4,7 +4,6 @@ import { InternalServerError } from '../errors/serverErrors';
 import Hashing from '../hashing/hash';
 import { phrases } from '../hashing/phrases';
 import { PhraseVerify } from '../hashing/phraseVerify';
-import MfaSuperAdminSendEmail from '../Notifications/MfaSuperAdminSendEmail';
 import MfaList from '../repositories/MfaSuperAdmin/MfaSuperAdmin';
 import SearchMfaData from '../repositories/MfaSuperAdmin/SearchMfaData';
 
@@ -39,6 +38,15 @@ class MfaSuperAdminController {
         is_valid: true,
       };
 
+      console.log('CONTROL VAR:');
+      console.log(controlVar);
+      console.log('GENERATE HASH:');
+      console.log(generateHash);
+      console.log('GETPHRASE:');
+      console.log(getPhrase);
+      console.log('DATA FOR STORE:');
+      console.log(dataForStore);
+
       const saveHash = await MfaList.Store(dataForStore);
 
       const { id } = saveHash.dataValues;
@@ -55,7 +63,7 @@ class MfaSuperAdminController {
         if (mfaCodeInvalidate === 'código não encontrado') throw new InternalServerError('Erro interno. Contate o suporte');
       }, 300000);
 
-      await MfaSuperAdminSendEmail.SendEmail(saveHash.dataValues.phrase);
+      // await MfaSuperAdminSendEmail.SendEmail(saveHash.dataValues.phrase);
 
       return res.status(200).send('Código enviado');
     } catch (err) {
