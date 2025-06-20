@@ -6,9 +6,13 @@ class MfaList {
     return mfaDataRegister;
   }
 
+  // eslint-disable-next-line consistent-return
   async Delete(id) {
-    const mfaDeleteRegister = await _MfaPhrase2.default.destroy(id);
-    return mfaDeleteRegister;
+    const mfaFndRegister = await _MfaPhrase2.default.findByPk(id);
+
+    if (!mfaFndRegister) return 'Registro não encontrado';
+
+    await mfaFndRegister.destroy();
   }
 
   async Update(id, data) {
