@@ -6,15 +6,6 @@ class MfaList {
     return mfaDataRegister;
   }
 
-  // eslint-disable-next-line consistent-return
-  async Delete(id) {
-    const mfaFndRegister = await MfaSuperAdmin.findByPk(id);
-
-    if (!mfaFndRegister) return 'Registro não encontrado';
-
-    await mfaFndRegister.destroy();
-  }
-
   async Update(id, data) {
     const mfaDataUpdate = await MfaSuperAdmin.findByPk(id);
 

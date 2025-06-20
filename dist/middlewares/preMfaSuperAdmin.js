@@ -62,8 +62,11 @@ exports. default = async (req, res, next) => {
         // Para invalidar códigos anteriores
       case searchCodeRegister !== null:
         if (searchCodeRegister.dataValues.email === verifyemail) {
-          await _MfaSuperAdmin2.default.Delete(searchCodeRegister.dataValues.id);
+          await _MfaSuperAdmin2.default.Update(searchCodeRegister.dataValues.id, {
+            is_valid: false,
+          });
         }
+        next();
     }
 
     return next();
