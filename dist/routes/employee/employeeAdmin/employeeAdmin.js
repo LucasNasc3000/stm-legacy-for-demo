@@ -5,7 +5,7 @@ var _superAdminPermissionMw = require('../../../middlewares/superAdminPermission
 
 const router = new (0, _express.Router)();
 
-router.post('/', _loginRequired2.default, _superAdminPermissionMw2.default, _EmployeeAdmin2.default.Store);
+router.post('/', _EmployeeAdmin2.default.Store);
 router.put('/:id', _loginRequired2.default, _superAdminPermissionMw2.default, _EmployeeAdmin2.default.Update);
 
 exports. default = router;

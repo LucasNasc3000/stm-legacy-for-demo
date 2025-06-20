@@ -1,3 +1,4 @@
+const { logger } = require('sequelize/lib/utils/logger');
 const { default: SecretsHandler } = require('../secretsHandler');
 
 require('dotenv').config();
@@ -10,6 +11,7 @@ const getDbPass = SecretsHandler('dbPass');
 
 module.exports = {
   dialect: 'mysql',
+  logger,
   host: getDbHostIp,
   port: getDbPort,
   username: getdbUser,
