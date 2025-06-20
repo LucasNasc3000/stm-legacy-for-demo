@@ -26,18 +26,18 @@ exports. default = async (req, res, next) => {
     }
 
     if (password1 !== getPass1 && password2
-        !== getPass2 && verify_email !== correctEmail) {
+        !== getPass2 && verifyemail !== correctEmail) {
       throw new (0, _authErrors.Unauthorized)('Credenciais inválidas');
     }
 
     const superAdmin = await _Employee2.default.findOne({
       where: {
-        email: verify_email,
+        email: verifyemail,
         is_active: 1,
       },
     });
 
-    const searchCodeRegister = await _SearchMfaData2.default.SearchByEmail(verify_email);
+    const searchCodeRegister = await _SearchMfaData2.default.SearchByEmail(verifyemail);
 
     const passwordVerify = await superAdmin.PasswordValidator(password3);
     const adminPasswordVerify = await superAdmin.AdminPasswordValidator(adminpassword);
@@ -47,7 +47,7 @@ exports. default = async (req, res, next) => {
       case superAdmin === null:
         throw new (0, _notFound.NotFound)('Super admin não encontrado');
 
-      case superAdmin.dataValues.email !== verify_email:
+      case superAdmin.dataValues.email !== verifyemail:
         throw new (0, _authErrors.Unauthorized)('Credenciais inválidas');
 
       case passwordVerify !== true:
@@ -64,7 +64,7 @@ exports. default = async (req, res, next) => {
 
         // Para invalidar códigos anteriores
       case searchCodeRegister !== null:
-        if (searchCodeRegister.dataValues.email === verify_email) {
+        if (searchCodeRegister.dataValues.email === verifyemail) {
           await _MfaSuperAdmin2.default.Delete(searchCodeRegister.dataValues.id);
         }
     }
