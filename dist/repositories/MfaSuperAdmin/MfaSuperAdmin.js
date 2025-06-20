@@ -6,6 +6,11 @@ class MfaList {
     return mfaDataRegister;
   }
 
+  async Delete(id) {
+    const mfaDeleteRegister = await _MfaPhrase2.default.destroy(id);
+    return mfaDeleteRegister;
+  }
+
   async Update(id, data) {
     const mfaDataUpdate = await _MfaPhrase2.default.findByPk(id);
 
