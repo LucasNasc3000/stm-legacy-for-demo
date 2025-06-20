@@ -9,7 +9,6 @@ var _path = require('path'); var path = _interopRequireWildcard(_path);
 
     return fs.readFileSync(secretsPath, 'utf-8').trim();
   } catch (err) {
-    // MUDAR ANTES DE IR PARA PROD
-    console.log(err);
+    console.log('Erro de variável(s) de ambiente');
   }
 } exports.default = SecretsHandler;

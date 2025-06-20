@@ -14,10 +14,13 @@ export default async (req, res, next) => {
     const getPass2 = SecretsHandler('Pass2');
     const correctEmail = SecretsHandler('correctEmail');
     const {
-      permission, verify_email, adminpassword, password1, password2, password3,
+      permission, verifyemail, adminpassword, password1, password2, password3,
     } = req.headers;
 
-    if (!permission || !verify_email || !adminpassword || !password1 || !password2 || !password3) {
+    console.log(!permission || !verifyemail || !adminpassword || !password1 || !password2 || !password3);
+    console.log(req.headers);
+
+    if (!permission || !verifyemail || !adminpassword || !password1 || !password2 || !password3) {
       // mudar esta mensagem?
       throw new Unauthorized('Dados de autenticação não enviados');
     }
