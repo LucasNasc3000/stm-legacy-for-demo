@@ -32,6 +32,7 @@ exports. default = async (req, res, next) => {
       adminPassValidator = await employee.AdminPasswordValidator(adminpassword);
     }
 
+    // eslint-disable-next-line default-case
     switch (true) {
       case (employee.permission === getAdminPermission
           && adminPassValidator === true
@@ -49,9 +50,6 @@ exports. default = async (req, res, next) => {
       case (employee.permission === getSalesOutputsInputsPermission
         && employee.permission === permission):
         return next();
-
-      default:
-        throw new (0, _authErrors.Unauthorized)('Acesso negado, permissao para vendas ou de administrador necessaria');
     }
   } catch (err) {
     next(err);
