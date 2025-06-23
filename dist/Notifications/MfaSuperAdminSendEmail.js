@@ -10,9 +10,15 @@ const getSgApiKey = _secretsHandler2.default.call(void 0, 'sgApiKey');
 
 sgMail.setApiKey(getSgApiKey);
 
-class MfaSuperAdminSendEmail {
+class MfaSendEmail {
   async AddressesAllowed() {
     const getAdminPermission = _secretsHandler2.default.call(void 0, 'admin');
+    const getInputsPermission = _secretsHandler2.default.call(void 0, 'inputsAccess');
+    const getOutputsPermission = _secretsHandler2.default.call(void 0, 'outputsAccess');
+    const getSalesPermission = _secretsHandler2.default.call(void 0, 'salesAccess');
+    const getSalesOutputsPermission = _secretsHandler2.default.call(void 0, 'salesOutputsAccess');
+    const getInputsOutputsPermission = _secretsHandler2.default.call(void 0, 'inputsOutputsAccess');
+    const getSalesOutputsInputsPermission = _secretsHandler2.default.call(void 0, 'salesOutputsInputsAccess');
     const getSuperAdminPermission = _secretsHandler2.default.call(void 0, 'superAdmin');
     const employeeSearch = await _EmployeeSearchCredentials2.default.SearchByAddressAllowed();
     const addressesAllowed = [];
@@ -21,6 +27,12 @@ class MfaSuperAdminSendEmail {
     for (let i = 0; i < employeeSearch.length; i++) {
       if (employeeSearch[i].dataValues.permission === getAdminPermission
           || employeeSearch[i].dataValues.permission === getSuperAdminPermission
+          || employeeSearch[i].dataValues.permission === getInputsPermission
+          || employeeSearch[i].dataValues.permission === getOutputsPermission
+          || employeeSearch[i].dataValues.permission === getSalesPermission
+          || employeeSearch[i].dataValues.permission === getInputsOutputsPermission
+          || employeeSearch[i].dataValues.permission === getSalesOutputsPermission
+          || employeeSearch[i].dataValues.permission === getSalesOutputsInputsPermission
       ) {
         addressesAllowed.push(employeeSearch[i].dataValues.email);
         correctPermission = true;
@@ -61,4 +73,4 @@ class MfaSuperAdminSendEmail {
   }
 }
 
-exports. default = new MfaSuperAdminSendEmail();
+exports. default = new MfaSendEmail();

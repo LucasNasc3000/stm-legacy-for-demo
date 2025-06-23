@@ -2,7 +2,7 @@
 import { Unauthorized } from '../errors/authErrors';
 import { InternalServerError } from '../errors/serverErrors';
 import Hashing from '../hashing/hash';
-import Mfa from '../repositories/Mfa/Mfa';
+import MfaList from '../repositories/Mfa/Mfa';
 import SearchByEmail from '../repositories/Mfa/SearchMfaData';
 
 // eslint-disable-next-line consistent-return
@@ -21,14 +21,14 @@ export default async (req, res, next) => {
     // eslint-disable-next-line default-case
     switch (true) {
       case !is_valid:
-        throw new Unauthorized('Código expirado ou credenciais inválidas');
+        throw new Unauthorized('Código expirado');
 
       case typeof is_valid === 'boolean':
-        if (is_valid !== true) throw new Unauthorized('Código expirado ou credenciais inválidas');
+        if (is_valid !== true) throw new Unauthorized('Código expirado');
         break;
 
       case typeof is_valid === 'number':
-        if (is_valid !== 1) throw new Unauthorized('Código expirado ou credenciais inválidas');
+        if (is_valid !== 1) throw new Unauthorized('Código expirado');
         break;
     }
 
@@ -38,7 +38,7 @@ export default async (req, res, next) => {
 
     if (hashCompare !== true) throw new Unauthorized('Código inválido');
 
-    const invalidateMfaData = await Mfa.Update(searchByEmailMfa.dataValues.id, {
+    const invalidateMfaData = await MfaList.Update(searchByEmailMfa.dataValues.id, {
       is_valid: false,
     });
 

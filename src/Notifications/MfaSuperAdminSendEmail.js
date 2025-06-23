@@ -10,9 +10,15 @@ const getSgApiKey = SecretsHandler('sgApiKey');
 
 sgMail.setApiKey(getSgApiKey);
 
-class MfaSuperAdminSendEmail {
+class MfaSendEmail {
   async AddressesAllowed() {
     const getAdminPermission = SecretsHandler('admin');
+    const getInputsPermission = SecretsHandler('inputsAccess');
+    const getOutputsPermission = SecretsHandler('outputsAccess');
+    const getSalesPermission = SecretsHandler('salesAccess');
+    const getSalesOutputsPermission = SecretsHandler('salesOutputsAccess');
+    const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
+    const getSalesOutputsInputsPermission = SecretsHandler('salesOutputsInputsAccess');
     const getSuperAdminPermission = SecretsHandler('superAdmin');
     const employeeSearch = await EmployeeSearchCredentials.SearchByAddressAllowed();
     const addressesAllowed = [];
@@ -21,6 +27,12 @@ class MfaSuperAdminSendEmail {
     for (let i = 0; i < employeeSearch.length; i++) {
       if (employeeSearch[i].dataValues.permission === getAdminPermission
           || employeeSearch[i].dataValues.permission === getSuperAdminPermission
+          || employeeSearch[i].dataValues.permission === getInputsPermission
+          || employeeSearch[i].dataValues.permission === getOutputsPermission
+          || employeeSearch[i].dataValues.permission === getSalesPermission
+          || employeeSearch[i].dataValues.permission === getInputsOutputsPermission
+          || employeeSearch[i].dataValues.permission === getSalesOutputsPermission
+          || employeeSearch[i].dataValues.permission === getSalesOutputsInputsPermission
       ) {
         addressesAllowed.push(employeeSearch[i].dataValues.email);
         correctPermission = true;
@@ -61,4 +73,4 @@ class MfaSuperAdminSendEmail {
   }
 }
 
-export default new MfaSuperAdminSendEmail();
+export default new MfaSendEmail();

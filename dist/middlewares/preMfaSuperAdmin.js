@@ -2,8 +2,8 @@
 var _authErrors = require('../errors/authErrors');
 var _notFound = require('../errors/notFound');
 var _Employee = require('../models/Employee'); var _Employee2 = _interopRequireDefault(_Employee);
-var _MfaSuperAdmin = require('../repositories/MfaSuperAdmin/MfaSuperAdmin'); var _MfaSuperAdmin2 = _interopRequireDefault(_MfaSuperAdmin);
-var _SearchMfaData = require('../repositories/MfaSuperAdmin/SearchMfaData'); var _SearchMfaData2 = _interopRequireDefault(_SearchMfaData);
+var _Mfa = require('../repositories/Mfa/Mfa'); var _Mfa2 = _interopRequireDefault(_Mfa);
+var _SearchMfaData = require('../repositories/Mfa/SearchMfaData'); var _SearchMfaData2 = _interopRequireDefault(_SearchMfaData);
 var _secretsHandler = require('../secretsHandler'); var _secretsHandler2 = _interopRequireDefault(_secretsHandler);
 
 // eslint-disable-next-line consistent-return
@@ -62,7 +62,7 @@ exports. default = async (req, res, next) => {
         // Para invalidar códigos anteriores
       case searchCodeRegister !== null:
         if (searchCodeRegister.dataValues.email === verifyemail) {
-          await _MfaSuperAdmin2.default.Update(searchCodeRegister.dataValues.id, {
+          await _Mfa2.default.Update(searchCodeRegister.dataValues.id, {
             is_valid: false,
           });
         }

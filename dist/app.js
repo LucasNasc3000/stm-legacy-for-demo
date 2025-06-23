@@ -25,7 +25,9 @@ var _inputSearchByWeightPerUnit = require('./routes/input/inputSearchByWeightPer
 
 // auth routes
 var _preMfaSuperAdmin = require('./routes/mfa/preMfaSuperAdmin'); var _preMfaSuperAdmin2 = _interopRequireDefault(_preMfaSuperAdmin);
+var _preMfaUser = require('./routes/mfa/preMfaUser'); var _preMfaUser2 = _interopRequireDefault(_preMfaUser);
 var _token = require('./routes/token'); var _token2 = _interopRequireDefault(_token);
+var _tokenUser = require('./routes/tokenUser'); var _tokenUser2 = _interopRequireDefault(_tokenUser);
 
 // output routes
 var _output = require('./routes/output/output'); var _output2 = _interopRequireDefault(_output);
@@ -95,6 +97,7 @@ class App {
     this.app.use('/doc', _swaggeruiexpress2.default.serve, _swaggeruiexpress2.default.setup(_swagger_outputjson2.default));
 
     this.app.use('/tokens/', _token2.default);
+    this.app.use('/usertokens/', _tokenUser2.default);
     this.app.use('/inputs/', _input2.default);
     this.app.use('/inputs/search/id/', _inputSearchById2.default);
     this.app.use('/inputs/search/type/', _inputSearchByType2.default);
@@ -151,6 +154,7 @@ class App {
 
     // auth routes
     this.app.use('/spadmin/', _preMfaSuperAdmin2.default);
+    this.app.use('/spuser/', _preMfaUser2.default);
 
     this.app.use(_errorHandler2.default);
   }

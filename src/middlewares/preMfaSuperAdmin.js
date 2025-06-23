@@ -2,8 +2,8 @@
 import { Unauthorized } from '../errors/authErrors';
 import { NotFound } from '../errors/notFound';
 import Employee from '../models/Employee';
-import MfaSuperAdmin from '../repositories/MfaSuperAdmin/MfaSuperAdmin';
-import SearchByEmail from '../repositories/MfaSuperAdmin/SearchMfaData';
+import Mfa from '../repositories/Mfa/Mfa';
+import SearchByEmail from '../repositories/Mfa/SearchMfaData';
 import SecretsHandler from '../secretsHandler';
 
 // eslint-disable-next-line consistent-return
@@ -62,7 +62,7 @@ export default async (req, res, next) => {
         // Para invalidar códigos anteriores
       case searchCodeRegister !== null:
         if (searchCodeRegister.dataValues.email === verifyemail) {
-          await MfaSuperAdmin.Update(searchCodeRegister.dataValues.id, {
+          await Mfa.Update(searchCodeRegister.dataValues.id, {
             is_valid: false,
           });
         }

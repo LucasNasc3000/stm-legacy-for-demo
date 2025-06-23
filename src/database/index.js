@@ -5,11 +5,11 @@ import Advice from '../models/Advice';
 import Employee from '../models/Employee';
 import Input from '../models/Input';
 import Log from '../models/Log';
-import MfaSuperAdmin from '../models/MfaPhrase';
+import Mfa from '../models/MfaPhrase';
 import Output from '../models/Output';
 import Sale from '../models/Sale';
 
-const models = [Input, Output, Employee, Log, Sale, Advice, MfaSuperAdmin];
+const models = [Input, Output, Employee, Log, Sale, Advice, Mfa];
 
 const connection = new Sequelize(databaseConfig);
 

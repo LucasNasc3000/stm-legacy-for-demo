@@ -21,14 +21,14 @@ exports. default = async (req, res, next) => {
     // eslint-disable-next-line default-case
     switch (true) {
       case !is_valid:
-        throw new (0, _authErrors.Unauthorized)('Código expirado ou credenciais inválidas');
+        throw new (0, _authErrors.Unauthorized)('Código expirado');
 
       case typeof is_valid === 'boolean':
-        if (is_valid !== true) throw new (0, _authErrors.Unauthorized)('Código expirado ou credenciais inválidas');
+        if (is_valid !== true) throw new (0, _authErrors.Unauthorized)('Código expirado');
         break;
 
       case typeof is_valid === 'number':
-        if (is_valid !== 1) throw new (0, _authErrors.Unauthorized)('Código expirado ou credenciais inválidas');
+        if (is_valid !== 1) throw new (0, _authErrors.Unauthorized)('Código expirado');
         break;
     }
 

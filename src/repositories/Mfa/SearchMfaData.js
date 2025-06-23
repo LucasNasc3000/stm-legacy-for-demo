@@ -1,8 +1,8 @@
-import MfaSuperAdmin from '../../models/MfaPhrase';
+import Mfa from '../../models/MfaPhrase';
 
 class SearchMfaData {
   async SearchById(id) {
-    const findById = await MfaSuperAdmin.findOne({
+    const findById = await Mfa.findOne({
       where: {
         id,
       },
@@ -12,7 +12,7 @@ class SearchMfaData {
   }
 
   async SearchByEmail(email) {
-    const findByEmail = await MfaSuperAdmin.findOne({
+    const findByEmail = await Mfa.findOne({
       where: {
         email,
       },
@@ -24,7 +24,7 @@ class SearchMfaData {
   // eslint-disable-next-line consistent-return
   async SearchByPhrase(phrase) {
     try {
-      const findByPhrase = await MfaSuperAdmin.findOne({
+      const findByPhrase = await Mfa.findOne({
         where: {
           phrase,
         },

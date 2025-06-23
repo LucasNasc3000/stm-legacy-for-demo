@@ -1,13 +1,13 @@
-import MfaSuperAdmin from '../../models/MfaPhrase';
+import Mfa from '../../models/MfaPhrase';
 
 class MfaList {
   async Store(data) {
-    const mfaDataRegister = await MfaSuperAdmin.create(data);
+    const mfaDataRegister = await Mfa.create(data);
     return mfaDataRegister;
   }
 
   async Update(id, data) {
-    const mfaDataUpdate = await MfaSuperAdmin.findByPk(id);
+    const mfaDataUpdate = await Mfa.findByPk(id);
 
     if (!mfaDataUpdate) return 'código não encontrado';
 

@@ -5,10 +5,10 @@ import Hashing from '../hashing/hash';
 import { phrases } from '../hashing/phrases';
 import { PhraseVerify } from '../hashing/phraseVerify';
 import MfaSuperAdminSendEmail from '../Notifications/MfaSuperAdminSendEmail';
-import MfaList from '../repositories/MfaSuperAdmin/MfaSuperAdmin';
-import SearchMfaData from '../repositories/MfaSuperAdmin/SearchMfaData';
+import MfaList from '../repositories/Mfa/Mfa';
+import SearchMfaData from '../repositories/Mfa/SearchMfaData';
 
-class MfaSuperAdminController {
+class MfaController {
   // associar um email às linhas do mfasuperadmin no BD pra usar em outras partes do código
   async GenerateCode(req, res, next) {
     try {
@@ -64,4 +64,4 @@ class MfaSuperAdminController {
   }
 }
 
-export default new MfaSuperAdminController();
+export default new MfaController();
