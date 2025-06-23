@@ -9,6 +9,6 @@ export default function SecretsHandler(secretName) {
 
     return fs.readFileSync(secretsPath, 'utf-8').trim();
   } catch (err) {
-    console.log('Erro de variável(s) de ambiente');
+    console.log(err);
   }
 }
