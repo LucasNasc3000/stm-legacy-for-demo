@@ -54,14 +54,8 @@ const errorHandler = (err, req, res, next) => {
 
     default:
       next(res.status(500).json({
-        error: [
-          err.name,
-          err.message,
-          err.stack,
-          err,
-        ],
+        error: ['Erro interno desconhecido. Contate o suporte'],
       }));
-      console.log(err);
   }
 };
 

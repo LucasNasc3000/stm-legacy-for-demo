@@ -10,7 +10,7 @@ export default async (req, res, next) => {
     const getOutputsPermission = SecretsHandler('outputsAccess');
     const getSalesOutputsPermission = SecretsHandler('salesOutputsAccess');
     const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
-    const getsalesOutputsInputsPermission = SecretsHandler('salesInputsOutputsAccess');
+    const getsalesOutputsInputsPermission = SecretsHandler('salesOutputsInputsAccess');
     const { permission, email, adminpassword } = req.headers;
     let adminPassValidator = '';
 
