@@ -59,6 +59,7 @@ class MfaSendEmail {
       text: AccessCode,
       // html: '<strong>and easy to do anywhere, even with Node.js</strong>',
     };
+    console.log(sgMail);
 
     return sgMail
       .send(msg)

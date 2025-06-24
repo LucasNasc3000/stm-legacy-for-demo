@@ -56,8 +56,8 @@ class MfaController {
       }, 300000);
 
       await MfaSuperAdminSendEmail.SendEmail(saveHash.dataValues.phrase);
-
-      return res.status(200).send('Código enviado');
+      // eslint-disable-next-line no-useless-return
+      return;
     } catch (err) {
       next(err);
     }
