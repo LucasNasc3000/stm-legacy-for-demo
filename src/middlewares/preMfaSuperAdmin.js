@@ -71,7 +71,6 @@ export default async (req, res, next) => {
 
     return next();
   } catch (e) {
-    console.log(e);
     next(e);
   }
 };

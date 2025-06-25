@@ -23,18 +23,13 @@ class SearchMfaData {
 
   // eslint-disable-next-line consistent-return
   async SearchByPhrase(phrase) {
-    try {
-      const findByPhrase = await Mfa.findOne({
-        where: {
-          phrase,
-        },
-      });
-      console.log(findByPhrase);
+    const findByPhrase = await Mfa.findOne({
+      where: {
+        phrase,
+      },
+    });
 
-      return findByPhrase;
-    } catch (e) {
-      console.log(e);
-    }
+    return findByPhrase;
   }
 }
 
