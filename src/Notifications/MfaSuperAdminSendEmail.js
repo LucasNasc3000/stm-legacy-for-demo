@@ -1,5 +1,4 @@
 /* eslint-disable no-plusplus */
-import { EmailErrors } from '../errors/emailsErrors';
 import { Forbidden } from '../errors/forbidden';
 import EmployeeSearchCredentials from '../repositories/Employee/EmployeeSearchCredentials';
 import SecretsHandler from '../secretsHandler';
@@ -12,28 +11,13 @@ sgMail.setApiKey(getSgApiKey);
 
 class MfaSendEmail {
   async AddressesAllowed() {
-    const getAdminPermission = SecretsHandler('admin');
-    const getInputsPermission = SecretsHandler('inputsAccess');
-    const getOutputsPermission = SecretsHandler('outputsAccess');
-    const getSalesPermission = SecretsHandler('salesAccess');
-    const getSalesOutputsPermission = SecretsHandler('salesOutputsAccess');
-    const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
-    const getSalesOutputsInputsPermission = SecretsHandler('salesOutputsInputsAccess');
     const getSuperAdminPermission = SecretsHandler('superAdmin');
     const employeeSearch = await EmployeeSearchCredentials.SearchByAddressAllowed();
     const addressesAllowed = [];
     let correctPermission = false;
 
     for (let i = 0; i < employeeSearch.length; i++) {
-      if (employeeSearch[i].dataValues.permission === getAdminPermission
-          || employeeSearch[i].dataValues.permission === getSuperAdminPermission
-          || employeeSearch[i].dataValues.permission === getInputsPermission
-          || employeeSearch[i].dataValues.permission === getOutputsPermission
-          || employeeSearch[i].dataValues.permission === getSalesPermission
-          || employeeSearch[i].dataValues.permission === getInputsOutputsPermission
-          || employeeSearch[i].dataValues.permission === getSalesOutputsPermission
-          || employeeSearch[i].dataValues.permission === getSalesOutputsInputsPermission
-      ) {
+      if (employeeSearch[i].dataValues.permission === getSuperAdminPermission) {
         addressesAllowed.push(employeeSearch[i].dataValues.email);
         correctPermission = true;
       }
@@ -59,18 +43,19 @@ class MfaSendEmail {
       text: AccessCode,
       // html: '<strong>and easy to do anywhere, even with Node.js</strong>',
     };
-    console.log(sgMail);
 
-    return sgMail
-      .send(msg)
-      .then((response) => {
-        console.log(response[0].statusCode);
-        console.log(response[0].headers);
-        return 'Notificacao enviada';
-      })
-      .catch((error) => {
-        throw new EmailErrors(error);
-      });
+    sgMail
+      .send(msg);
+    // .then((response) => {
+    //   console.log(response[0].statusCode);
+    //   console.log(response[0].headers);
+    //   return 'Notificacao enviada';
+    // })
+    // .catch((error) => {
+    //   throw new EmailErrors(error);
+    // });
+
+    return 'Codigo enviado';
   }
 }
 

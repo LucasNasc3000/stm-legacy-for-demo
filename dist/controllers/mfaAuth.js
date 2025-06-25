@@ -55,9 +55,11 @@ class MfaController {
         if (mfaCodeInvalidate === 'código não encontrado') throw new (0, _serverErrors.InternalServerError)('Erro interno. Contate o suporte');
       }, 300000);
 
-      await _MfaSuperAdminSendEmail2.default.SendEmail(saveHash.dataValues.phrase);
-      // eslint-disable-next-line no-useless-return
-      return;
+      const send = await _MfaSuperAdminSendEmail2.default.SendEmail(saveHash.dataValues.phrase);
+
+      if (!send) throw new (0, _serverErrors.InternalServerError)('Erro ao enviar código de acesso');
+
+      return res.status(200).send('Código de acesso enviado');
     } catch (err) {
       next(err);
     }
