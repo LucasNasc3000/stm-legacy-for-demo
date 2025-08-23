@@ -1,6 +1,5 @@
 import { Op } from 'sequelize';
 import Employee from '../../models/Employee';
-import SecretsHandler from '../../secretsHandler';
 import employeeAttributes from './Attributes';
 
 class EmployeesSearchCredentials {
@@ -10,6 +9,7 @@ class EmployeesSearchCredentials {
         id,
       },
       attributes: employeeAttributes,
+      order: [['id', 'DESC']],
     });
 
     return employeeFinder;
@@ -33,6 +33,7 @@ class EmployeesSearchCredentials {
         name,
       },
       attributes: employeeAttributes,
+      order: [['id', 'DESC']],
     });
 
     return employeeFinderByName;
@@ -44,19 +45,21 @@ class EmployeesSearchCredentials {
         email,
       },
       attributes: employeeAttributes,
+      order: [['id', 'DESC']],
     });
 
     return employeeFinderByEmail;
   }
 
   async SearchByAddressAllowed() {
-    const addressAllowed = SecretsHandler('addressAllowed');
+    // const addressAllowed = SecretsHandler('addressAllowed');
     const employeeFinderByAddressAllowed = await Employee.findAll({
       where: {
-        address_allowed: addressAllowed,
+        address_allowed: process.env.ADDRESS_ALLOWED,
         is_active: 1,
       },
       attributes: employeeAttributes,
+      order: [['id', 'DESC']],
     });
 
     return employeeFinderByAddressAllowed;
@@ -68,6 +71,7 @@ class EmployeesSearchCredentials {
         is_active: 1,
       },
       attributes: employeeAttributes,
+      order: [['id', 'DESC']],
     });
 
     return employeeFinderActives;

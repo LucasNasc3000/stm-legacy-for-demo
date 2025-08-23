@@ -25,9 +25,9 @@ import inputSearchByWeightPerUnit from './routes/input/inputSearchByWeightPerUni
 
 // auth routes
 import mfaSuperAdmin from './routes/mfa/preMfaSuperAdmin';
-import mfaUser from './routes/mfa/preMfaUser';
+// import mfaUser from './routes/mfa/preMfaUser';
 import tokenSuperAdmin from './routes/token';
-import tokenUser from './routes/tokenUser';
+// import tokenUser from './routes/tokenUser';
 
 // output routes
 import outputRoutes from './routes/output/output';
@@ -97,7 +97,7 @@ class App {
     this.app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
     this.app.use('/tokens/', tokenSuperAdmin);
-    this.app.use('/usertokens/', tokenUser);
+    // this.app.use('/usertokens/', tokenUser);
     this.app.use('/inputs/', inputRoutes);
     this.app.use('/inputs/search/id/', inputSearchByID);
     this.app.use('/inputs/search/type/', inputSearchByType);
@@ -154,7 +154,7 @@ class App {
 
     // auth routes
     this.app.use('/spadmin/', mfaSuperAdmin);
-    this.app.use('/spuser/', mfaUser);
+    // this.app.use('/spuser/', mfaUser);
 
     this.app.use(errorHandler);
   }

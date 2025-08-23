@@ -1,22 +1,21 @@
-const { logger } = require('sequelize/lib/utils/logger');
-const { default: SecretsHandler } = require('../secretsHandler');
+// const { logger } = require('sequelize/lib/utils/logger');
+// const { default: SecretsHandler } = require('../secretsHandler');
 
 require('dotenv').config();
 
-const getDbName = SecretsHandler('dbName');
-const getDbHostIp = SecretsHandler('dbHost');
-const getDbPort = SecretsHandler('dbPort');
-const getdbUser = SecretsHandler('dbUser');
-const getDbPass = SecretsHandler('dbPass');
+// const getDbName = SecretsHandler('dbName');
+// const getDbHostIp = SecretsHandler('dbHost');
+// const getDbPort = SecretsHandler('dbPort');
+// const getdbUser = SecretsHandler('dbUser');
+// const getDbPass = SecretsHandler('dbPass');
 
 module.exports = {
   dialect: 'mysql',
-  logger,
-  host: getDbHostIp,
-  port: getDbPort,
-  username: getdbUser,
-  password: getDbPass,
-  database: getDbName,
+  host: process.env.DATABASE_HOST,
+  port: process.env.DATABASE_PORT,
+  username: process.env.DATABASE_USERNAME,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE,
   define: {
     timestamps: true,
     underscored: true,

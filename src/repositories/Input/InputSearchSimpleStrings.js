@@ -9,6 +9,7 @@ class InputSimpleStringSearch {
         type: { [Op.startsWith]: type },
       },
       attributes: inputAttributes,
+      order: [['id', 'DESC']],
     });
 
     return inputFinder;
@@ -20,6 +21,7 @@ class InputSimpleStringSearch {
         name: { [Op.startsWith]: name },
       },
       attributes: inputAttributes,
+      order: [['id', 'DESC']],
     });
 
     return inputFinder;
@@ -31,6 +33,7 @@ class InputSimpleStringSearch {
         name,
       },
       attributes: inputAttributes,
+      order: [['id', 'DESC']],
     });
 
     return inputFinder;
@@ -42,6 +45,7 @@ class InputSimpleStringSearch {
         supplier: { [Op.startsWith]: supplier },
       },
       attributes: inputAttributes,
+      order: [['id', 'DESC']],
     });
 
     return inputFinder;
@@ -53,6 +57,7 @@ class InputSimpleStringSearch {
         employee_id: employeeId,
       },
       attributes: inputAttributes,
+      order: [['id', 'DESC']],
     });
 
     return inputFinderByEmployeeId;

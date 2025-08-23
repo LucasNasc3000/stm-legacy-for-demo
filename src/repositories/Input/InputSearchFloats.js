@@ -8,6 +8,7 @@ class InputFloatsSearch {
         totalweight,
       },
       attributes: inputAttributes,
+      order: [['id', 'DESC']],
     });
 
     return inputFinder;
@@ -19,6 +20,7 @@ class InputFloatsSearch {
         weightperunit,
       },
       attributes: inputAttributes,
+      order: [['id', 'DESC']],
     });
 
     return inputFinder;

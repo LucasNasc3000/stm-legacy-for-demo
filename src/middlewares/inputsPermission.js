@@ -2,14 +2,14 @@
 import { Unauthorized } from '../errors/authErrors';
 import { BadRequest } from '../errors/clientErrors';
 import Employee from '../models/Employee';
-import SecretsHandler from '../secretsHandler';
+// import SecretsHandler from '../secretsHandler';
 
 export default async (req, res, next) => {
   try {
-    const getAdminPermission = SecretsHandler('admin');
-    const getInputsPermission = SecretsHandler('inputsAccess');
-    const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
-    const getSalesOutputsInputsPermission = SecretsHandler('salesOutputsInputsAccess');
+    // const getAdminPermission = SecretsHandler('admin');
+    // const getInputsPermission = SecretsHandler('inputsAccess');
+    // const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
+    // const getSalesOutputsInputsPermission = SecretsHandler('salesOutputsInputsAccess');
     const { permission, email, adminpassword } = req.headers;
     let adminPassValidator = false;
 
@@ -34,20 +34,20 @@ export default async (req, res, next) => {
 
     // eslint-disable-next-line default-case
     switch (true) {
-      case (employee.permission === getAdminPermission
+      case (employee.permission === process.env.ADMIN_PERMISSION
         && adminPassValidator === true
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === getInputsPermission
+      case (employee.permission === process.env.INPUTS_PERMISSION
           && employee.permission === permission):
         return next();
 
-      case (employee.permission === getInputsOutputsPermission
+      case (employee.permission === process.env.INPUTS_OUTPUTS_PERMISSION
           && employee.permission === permission):
         return next();
 
-      case (employee.permission === getSalesOutputsInputsPermission
+      case (employee.permission === process.env.SOI_PERMISSION
           && employee.permission === permission):
         return next();
     }

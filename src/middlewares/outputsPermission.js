@@ -2,15 +2,15 @@
 import { Unauthorized } from '../errors/authErrors';
 import { BadRequest } from '../errors/clientErrors';
 import Employee from '../models/Employee';
-import SecretsHandler from '../secretsHandler';
+// import SecretsHandler from '../secretsHandler';
 
 export default async (req, res, next) => {
   try {
-    const getAdminPermission = SecretsHandler('admin');
-    const getOutputsPermission = SecretsHandler('outputsAccess');
-    const getSalesOutputsPermission = SecretsHandler('salesOutputsAccess');
-    const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
-    const getsalesOutputsInputsPermission = SecretsHandler('salesOutputsInputsAccess');
+    // const getAdminPermission = SecretsHandler('admin');
+    // const getOutputsPermission = SecretsHandler('outputsAccess');
+    // const getSalesOutputsPermission = SecretsHandler('salesOutputsAccess');
+    // const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
+    // const getsalesOutputsInputsPermission = SecretsHandler('salesOutputsInputsAccess');
     const { permission, email, adminpassword } = req.headers;
     let adminPassValidator = '';
 
@@ -38,24 +38,24 @@ export default async (req, res, next) => {
       case (employee.permission !== permission):
         throw new Unauthorized('Acesso negado, permissao para saidas necessaria');
 
-      case (employee.permission === getAdminPermission
+      case (employee.permission === process.env.ADMIN_PERMISSION
         && adminPassValidator === true
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === getOutputsPermission
+      case (employee.permission === process.env.OUTPUTS_PERMISSION
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === getInputsOutputsPermission
+      case (employee.permission === process.env.INPUTS_OUTPUTS_PERMISSION
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === getSalesOutputsPermission
+      case (employee.permission === process.env.SO_PERMISSION
         && employee.permission === permission):
         return next();
 
-      case (employee.permission === getsalesOutputsInputsPermission
+      case (employee.permission === process.env.SOI_PERMISSION
         && employee.permission === permission):
         return next();
     }

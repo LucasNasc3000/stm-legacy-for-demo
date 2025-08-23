@@ -8,6 +8,7 @@ class AdviceSearch {
         id,
       },
       attributes: adviceAttributes,
+      order: [['id', 'DESC']],
     });
 
     return timerIdSearch;
@@ -19,6 +20,7 @@ class AdviceSearch {
         employee_id: employeeId,
       },
       attributes: adviceAttributes,
+      order: [['id', 'DESC']],
     });
 
     return employeeIdSearch;

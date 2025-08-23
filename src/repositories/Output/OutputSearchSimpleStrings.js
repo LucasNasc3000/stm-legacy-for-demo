@@ -9,6 +9,7 @@ class OutputSimpleStringSearch {
         type: { [Op.startsWith]: type },
       },
       attributes: outputAttributes,
+      order: [['id', 'DESC']],
     });
 
     return outputFinder;
@@ -20,6 +21,7 @@ class OutputSimpleStringSearch {
         name: { [Op.startsWith]: name },
       },
       attributes: outputAttributes,
+      order: [['id', 'DESC']],
     });
 
     return outputFinder;

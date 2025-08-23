@@ -9,6 +9,7 @@ class SalesSearchSalesData {
         id,
       },
       attributes: salesAttributes,
+      order: [['id', 'DESC']],
     });
 
     return SaleFinder;
@@ -20,6 +21,7 @@ class SalesSearchSalesData {
         employee_id: employeeId,
       },
       attributes: salesAttributes,
+      order: [['id', 'DESC']],
     });
 
     return saleFinderByEmployeeId;
