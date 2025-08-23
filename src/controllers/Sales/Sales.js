@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
+import Decimal from 'decimal.js';
 import { BadRequest } from '../../errors/clientErrors';
 import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
@@ -13,6 +14,10 @@ class SalesController {
 
       if (validations !== null) throw new BadRequest(validations);
       if (salesValidations !== null) throw new BadRequest(salesValidations);
+
+      const newPrice = new Decimal(req.body.price);
+
+      req.body.price = newPrice;
 
       const salesStore = await Sales.Store(req.body);
 
