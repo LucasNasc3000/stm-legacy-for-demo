@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
+import Decimal from 'decimal.js';
 import { BadRequest } from '../../errors/clientErrors';
 import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
@@ -14,11 +15,15 @@ class InputController {
       if (validations !== null) throw new BadRequest(validations);
       if (inputValidations !== null) throw new BadRequest(inputValidations);
 
+      const newPrice = new Decimal(req.body.price);
+
+      req.body.price = newPrice;
+
       const store = await InputMethods.Store(req.body);
 
       if (!store) throw new InternalServerError('Erro interno');
 
-      return res.status(201).json(store);
+      return res.status(200).json(store);
     } catch (err) {
       next(err);
     }
