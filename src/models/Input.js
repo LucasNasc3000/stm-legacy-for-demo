@@ -94,7 +94,7 @@ export default class Input extends Model {
         },
       },
       price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(10, 2),
         defaultValue: '',
       },
     }, {

@@ -10,6 +10,7 @@ const inputAttributes = [
   'employee_id',
   'minimun_quantity',
   'rateisnear',
+  'price',
   'created_at',
   'updated_at',
 ];
