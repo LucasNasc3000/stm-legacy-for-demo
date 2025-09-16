@@ -34,20 +34,20 @@ export default class Input extends Model {
         },
       },
       totalweight: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.DECIMAL(10, 2),
         defaultValue: '',
         validate: {
-          isFloat: {
-            msg: 'peso total precisa ser um número',
+          isDecimal: {
+            msg: 'peso total precisa ser do tipo decimal',
           },
         },
       },
       weightperunit: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.DECIMAL(10, 2),
         defaultValue: '',
         validate: {
-          isFloat: {
-            msg: 'peso por unidade precisa ser um número',
+          isDecimal: {
+            msg: 'peso total precisa ser do tipo decimal',
           },
         },
       },

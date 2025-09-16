@@ -3,6 +3,7 @@
 import { NotFound } from '../../errors/notFound';
 import { InternalServerError } from '../../errors/serverErrors';
 import InputSearchSimpleStrings from '../../repositories/Input/InputSearchSimpleStrings';
+import { ReplaceDot } from './ReplaceDot';
 
 class InputSearchSimpleStringsController {
   async SearchByType(req, res, next) {
@@ -77,7 +78,9 @@ class InputSearchSimpleStringsController {
         return res.status(204).send('Não há insumos cadastrados pelo funcionário');
       }
 
-      return res.status(200).json(inputEmployeeIdSearch);
+      const replacedDotPriceObj = ReplaceDot(inputEmployeeIdSearch);
+
+      return res.status(200).json(replacedDotPriceObj);
     } catch (err) {
       next(err);
     }

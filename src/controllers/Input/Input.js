@@ -5,6 +5,7 @@ import { BadRequest } from '../../errors/clientErrors';
 import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
 import InputMethods from '../../repositories/Input/Input';
+import { InsertDot } from './ReplaceDot';
 
 class InputController {
   async Store(req, res, next) {
@@ -15,11 +16,13 @@ class InputController {
       if (validations !== null) throw new BadRequest(validations);
       if (inputValidations !== null) throw new BadRequest(inputValidations);
 
-      const newPrice = new Decimal(req.body.price);
+      const withDots = InsertDot(req.body);
 
-      req.body.price = newPrice;
+      const newPrice = new Decimal(withDots.price);
 
-      const store = await InputMethods.Store(req.body);
+      withDots.price = newPrice;
+
+      const store = await InputMethods.Store(withDots);
 
       if (!store) throw new InternalServerError('Erro interno');
 
@@ -41,9 +44,11 @@ class InputController {
 
       const { employee_id, ...allowedData } = req.body;
 
+      const withDots = InsertDot(allowedData);
+
       // Funciona sem await mas não retorna os dados na requisição caso ela seja feita com um app de
       // requisições como insomnia.
-      const inputUpdate = await InputMethods.Update(id, allowedData);
+      const inputUpdate = await InputMethods.Update(id, withDots);
 
       if (inputUpdate === 'insumo não encontrado') throw new BadRequest('Insumo não encontrado');
 

@@ -8,6 +8,7 @@ import { InternalServerError } from '../../errors/serverErrors';
 import EmployeeSearchBoss from '../../repositories/Employee/EmployeeSearchBoss';
 import EmployeeSearchCredentials from '../../repositories/Employee/EmployeeSearchCredentials';
 import SalesSearchSalesData from '../../repositories/Sales/SalesSearchSalesData';
+import { ReplaceDot } from './ReplaceDot';
 
 class SalesSearchSalesDataController {
   async SearchById(req, res, next) {
@@ -52,7 +53,9 @@ class SalesSearchSalesDataController {
         return res.status(204).send('Não há vendas cadastradas pelo funcionário');
       }
 
-      return res.status(200).json(saleEmployeeIdSearch);
+      const replacedDotPriceObj = ReplaceDot(saleEmployeeIdSearch);
+
+      return res.status(200).json(replacedDotPriceObj);
     } catch (err) {
       next(err);
     }

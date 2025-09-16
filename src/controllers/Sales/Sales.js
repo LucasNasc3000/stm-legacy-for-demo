@@ -5,6 +5,7 @@ import { BadRequest } from '../../errors/clientErrors';
 import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
 import Sales from '../../repositories/Sales/Sales';
+import { InsertDot } from './ReplaceDot';
 
 class SalesController {
   async Store(req, res, next) {
@@ -15,11 +16,13 @@ class SalesController {
       if (validations !== null) throw new BadRequest(validations);
       if (salesValidations !== null) throw new BadRequest(salesValidations);
 
-      const newPrice = new Decimal(req.body.price);
+      const withDots = InsertDot(req.body);
 
-      req.body.price = newPrice;
+      const newPrice = new Decimal(withDots.price);
 
-      const salesStore = await Sales.Store(req.body);
+      withDots.price = newPrice;
+
+      const salesStore = await Sales.Store(withDots);
 
       if (!salesStore) throw new InternalServerError('Erro desconhecido');
 
@@ -41,7 +44,9 @@ class SalesController {
 
       const { employee_id, ...allowedData } = req.body;
 
-      const salesUpdate = await Sales.Update(id, allowedData);
+      const withDots = InsertDot(allowedData);
+
+      const salesUpdate = await Sales.Update(id, withDots);
 
       if (salesUpdate === 'venda não encontrada') throw new BadRequest('Venda não registrada');
       if (!salesUpdate) throw new InternalServerError('Erro desconhecido');
