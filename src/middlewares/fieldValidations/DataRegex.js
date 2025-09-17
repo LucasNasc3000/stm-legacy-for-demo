@@ -5,3 +5,4 @@ export const dateAndHourErrorMsg = 'Field(s) must be a date or hour string';
 export const uuidCheck = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 export const alphabetRegex = /^[a-zA-Z]+$/;
 export const numberRegex = /^[0-9]+$/;
+export const decimalRegex = /^\d+(?:[.,]\d+)$/;

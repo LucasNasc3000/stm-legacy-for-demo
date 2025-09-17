@@ -46,6 +46,17 @@ class SalesController {
 
       const withDots = InsertDot(allowedData);
 
+      const commaFields = [
+        'price',
+      ];
+
+      commaFields.forEach((element) => {
+        if (withDots[element]) {
+          const toDecimal = new Decimal(withDots[element]);
+          withDots[element] = toDecimal;
+        }
+      });
+
       const salesUpdate = await Sales.Update(id, withDots);
 
       if (salesUpdate === 'venda não encontrada') throw new BadRequest('Venda não registrada');

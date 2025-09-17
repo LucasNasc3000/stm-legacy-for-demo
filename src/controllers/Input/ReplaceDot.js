@@ -20,11 +20,8 @@ export const InsertDot = (data) => {
   ];
 
   commaFields.forEach((element) => {
-    console.log(data[element]);
-    data[element] = data[element].replace(',', '.');
+    if (data[element]) data[element] = data[element].replace(',', '.');
   });
-
-  console.log(data);
 
   return data;
 };

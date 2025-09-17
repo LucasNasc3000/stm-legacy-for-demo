@@ -1,6 +1,8 @@
 import {
   dateAndHourErrorMsg,
-  dateRegex, hourRegex,
+  dateRegex,
+  decimalRegex,
+  hourRegex,
 } from './DataRegex';
 
 class SalesValidations {
@@ -44,6 +46,15 @@ class SalesValidations {
     if (DatesFieldsData.hour) {
       if (!hourRegex.test(DatesFieldsData.hour)) {
         return dateAndHourErrorMsg;
+      }
+    }
+    return this.CheckDecimals(DatesFieldsData);
+  }
+
+  CheckDecimals(DecimalsFieldsData) {
+    if (DecimalsFieldsData.price) {
+      if (!decimalRegex.test(DecimalsFieldsData.price)) {
+        return 'Price must be a decimal positive type';
       }
     }
     return null;

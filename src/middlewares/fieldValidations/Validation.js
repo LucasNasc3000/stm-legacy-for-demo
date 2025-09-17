@@ -17,19 +17,19 @@ class Validation {
     );
 
     switch (validations) {
-      case ('Empty field(s)'):
+      case 'Empty field(s)':
         return 'Um ou mais campos não foi preenchido';
 
-      case ('Null field(s)'):
+      case 'Null field(s)':
         return 'Um ou mais campos é null';
 
-      case ('Undefined field(s)'):
+      case 'Undefined fields':
         return 'Um ou mais campos é undefined';
 
-      case ('Type must be a number'):
+      case 'Type must be a number':
         return 'O tipo deve ser numérico';
 
-      case ('Type must be a string'):
+      case 'Type must be a string':
         return 'O tipo precisa estar em formato de texto';
 
       case 'employee_id must be a uuid':
@@ -44,17 +44,29 @@ class Validation {
     const inputValidations = Inputs.CheckIntegers(data);
 
     switch (inputValidations) {
-      case ('Quantity must be a integer'):
+      case 'Quantity must be a integer':
         return 'O campo "quantidade" deve ser um número inteiro';
 
-      case ('minimun_quantity must be a integer'):
+      case 'Minimun_quantity must be a integer':
         return 'O campo "minimun_quantity" deve ser um número inteiro';
 
-      case ('Supplier must be a string'):
+      case 'Supplier must be a string':
         return 'O campo "fornecedor" precisa estar em formato de texto';
 
-      case ('Field(s) must be a date or hour string'):
+      case 'Fields must be a date or hour string':
         return 'Um ou mais campos precisam ser uma data ou hora em formato de texto --> hh:mm:ss dd-mm-yyyy';
+
+      case 'Price must be a decimal positive type':
+        return 'O campo "preço" precisa ser do tipo decimal';
+
+      case 'Field(s) must be a date or hour string':
+        return 'Um ou mais campos precisam ser uma data ou hora em formato de texto --> hh:mm:ss dd-mm-yyyy';
+
+      case 'Totalweight must be a decimal positive type':
+        return 'O campo "peso total" precisa ser do tipo decimal e positivo';
+
+      case 'Weightperunit must be a decimal positive type':
+        return 'O campo "peso unitário" precisa ser do tipo decimal e positivo';
 
       default:
         return null;
@@ -65,13 +77,13 @@ class Validation {
     const outputsValidations = Outputs.CheckIntegers(data);
 
     switch (outputsValidations) {
-      case ('Unities must be a integer'):
+      case 'Unities must be a integer':
         return 'O campo "unidades" deve ser um número inteiro';
 
-      case ('Weight must be a number'):
+      case 'Weight must be a number':
         return 'O campo "peso" precisa estar em formato de texto';
 
-      case ('Field(s) must be a date or hour string'):
+      case 'Field(s) must be a date or hour string':
         return 'Um ou mais campos precisam ser uma data ou hora em formato de texto --> hh:mm:ss dd-mm-yyyy';
 
       default:
@@ -120,9 +132,7 @@ class Validation {
         return 'Um ou mais campos precisam ser uma data ou hora em formato de texto --> hh:mm:ss dd-mm-yyyy';
     }
 
-    if (emailValidation === 'Must be a valid email') {
-      return 'Email inválido';
-    }
+    if (emailValidation === 'Must be a valid email') return 'Email inválido';
   }
 
   SalesValidation(data) {
@@ -152,6 +162,9 @@ class Validation {
 
       case 'client btd must be a short date string':
         return 'O anv. do cliente precisa ser uma data no formato dd-mm';
+
+      case 'Price must be a decimal type':
+        return 'O campo "preço" precisa ser do tipo decimal e positivo';
 
       default:
         return null;

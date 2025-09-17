@@ -1,22 +1,43 @@
 import {
   dateAndHourErrorMsg,
-  dateRegex, hourRegex,
+  dateRegex, decimalRegex, hourRegex,
 } from './DataRegex';
 
 class InputsValidations {
-  CheckIntegers(integersFieldData) {
-    if (integersFieldData.quantity) {
-      if (!Number.isInteger(integersFieldData.quantity)) {
+  CheckIntegers(IntegersFieldsData) {
+    if (IntegersFieldsData.quantity) {
+      if (!Number.isInteger(IntegersFieldsData.quantity)) {
         return 'Quantity must be a integer';
       }
     }
 
-    if (integersFieldData.minimun_quantity) {
-      if (!Number.isInteger(integersFieldData.minimun_quantity)) {
-        return 'minimun_quantity must be a integer';
+    if (IntegersFieldsData.minimun_quantity) {
+      if (!Number.isInteger(IntegersFieldsData.minimun_quantity)) {
+        return 'Minimun_quantity must be a integer';
       }
     }
-    return this.CheckStrings(integersFieldData);
+    return this.CheckDecimals(IntegersFieldsData);
+  }
+
+  CheckDecimals(DecimalsFieldsData) {
+    if (DecimalsFieldsData.price) {
+      if (!decimalRegex.test(DecimalsFieldsData.price)) {
+        return 'Price must be a decimal positive type';
+      }
+    }
+
+    if (DecimalsFieldsData.totalweight) {
+      if (!decimalRegex.test(DecimalsFieldsData.totalweight)) {
+        return 'Totalweight must be a decimal positive type';
+      }
+    }
+
+    if (DecimalsFieldsData.weightperunit) {
+      if (!decimalRegex.test(DecimalsFieldsData.weightperunit)) {
+        return 'Weightperunit must be a decimal positive type';
+      }
+    }
+    return this.CheckStrings(DecimalsFieldsData);
   }
 
   CheckStrings(StringsFieldsData) {

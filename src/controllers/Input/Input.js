@@ -46,6 +46,19 @@ class InputController {
 
       const withDots = InsertDot(allowedData);
 
+      const commaFields = [
+        'totalweight',
+        'weightperunit',
+        'price',
+      ];
+
+      commaFields.forEach((element) => {
+        if (withDots[element]) {
+          const toDecimal = new Decimal(withDots[element]);
+          withDots[element] = toDecimal;
+        }
+      });
+
       // Funciona sem await mas não retorna os dados na requisição caso ela seja feita com um app de
       // requisições como insomnia.
       const inputUpdate = await InputMethods.Update(id, withDots);
