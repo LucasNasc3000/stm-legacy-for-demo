@@ -5,7 +5,7 @@ import { BadRequest } from '../../errors/clientErrors';
 import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
 import Sales from '../../repositories/Sales/Sales';
-import { InsertDot } from './ReplaceDot';
+import { InsertDot, ReplaceDot } from './ReplaceDot';
 
 class SalesController {
   async Store(req, res, next) {
@@ -25,6 +25,8 @@ class SalesController {
       const salesStore = await Sales.Store(withDots);
 
       if (!salesStore) throw new InternalServerError('Erro desconhecido');
+
+      ReplaceDot(salesStore);
 
       return res.status(201).json(salesStore);
     } catch (err) {
@@ -61,6 +63,8 @@ class SalesController {
 
       if (salesUpdate === 'Venda não encontrada') throw new BadRequest('Venda não registrada');
       if (!salesUpdate) throw new InternalServerError('Erro desconhecido');
+
+      ReplaceDot(salesUpdate);
 
       return res.status(200).json(salesUpdate);
     } catch (err) {

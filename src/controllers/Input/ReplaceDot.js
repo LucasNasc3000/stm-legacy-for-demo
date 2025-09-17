@@ -1,15 +1,32 @@
 // eslint-disable-next-line import/prefer-default-export
 export const ReplaceDot = (data) => {
-  const toFindDotFields = data.map((element) => element.dataValues);
+  const commaFields = [
+    'totalweight',
+    'weightperunit',
+    'price',
+  ];
 
-  // eslint-disable-next-line array-callback-return
-  toFindDotFields.map((element) => {
-    if (element !== 'created_at' && element !== 'updated_at') {
-      element.price = element.price.replace('.', ',');
+  if (Array.isArray(data)) {
+    const toFindDotFields = data.map((element) => element.dataValues);
+
+    // eslint-disable-next-line array-callback-return
+    toFindDotFields.map((element) => {
+      commaFields.forEach((subElement) => {
+        if (element[subElement]) element[subElement] = element[subElement].replace('.', ',');
+      });
+    });
+
+    return toFindDotFields;
+  }
+
+  commaFields.forEach((element) => {
+    if (data.dataValues[element]) {
+      const toStringField = String(data.dataValues[element]);
+      data.dataValues[element] = toStringField.replace('.', ',');
     }
   });
 
-  return toFindDotFields;
+  return data;
 };
 
 export const InsertDot = (data) => {

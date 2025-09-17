@@ -5,7 +5,7 @@ import { BadRequest } from '../../errors/clientErrors';
 import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
 import InputMethods from '../../repositories/Input/Input';
-import { InsertDot } from './ReplaceDot';
+import { InsertDot, ReplaceDot } from './ReplaceDot';
 
 class InputController {
   async Store(req, res, next) {
@@ -25,6 +25,8 @@ class InputController {
       const store = await InputMethods.Store(withDots);
 
       if (!store) throw new InternalServerError('Erro interno');
+
+      ReplaceDot(store);
 
       return res.status(200).json(store);
     } catch (err) {
@@ -66,6 +68,8 @@ class InputController {
       if (inputUpdate === 'insumo não encontrado') throw new BadRequest('Insumo não encontrado');
 
       if (!inputUpdate) throw new InternalServerError('Erro interno');
+
+      ReplaceDot(inputUpdate);
 
       return res.status(200).send(inputUpdate);
     } catch (err) {
