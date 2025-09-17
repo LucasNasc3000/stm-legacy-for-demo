@@ -25,3 +25,11 @@ export const InsertDot = (data) => {
 
   return data;
 };
+
+export const InsertDotForSearch = (data) => {
+  const replaceComma = data.replace(',', '.');
+
+  data = replaceComma;
+
+  return data;
+};

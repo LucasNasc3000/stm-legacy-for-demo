@@ -2,20 +2,36 @@
 export const ReplaceDot = (data) => {
   const toFindDotFields = data.map((element) => element.dataValues);
 
+  const commaFields = [
+    'price',
+  ];
+
   // eslint-disable-next-line array-callback-return
   toFindDotFields.map((element) => {
-    if (element !== 'created_at' && element !== 'updated_at') {
-      element.price = element.price.replace('.', ',');
-    }
+    commaFields.forEach((subElement) => {
+      if (element[subElement]) element[subElement] = element[subElement].replace('.', ',');
+    });
   });
 
   return toFindDotFields;
 };
 
 export const InsertDot = (data) => {
-  const commaReplaced = data.price.replace(',', '.');
+  const commaFields = [
+    'price',
+  ];
 
-  data.price = commaReplaced;
+  commaFields.forEach((element) => {
+    if (data[element]) data[element] = data[element].replace(',', '.');
+  });
+
+  return data;
+};
+
+export const InsertDotForSearch = (data) => {
+  const replaceComma = data.replace(',', '.');
+
+  data = replaceComma;
 
   return data;
 };

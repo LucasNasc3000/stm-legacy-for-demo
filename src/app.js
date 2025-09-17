@@ -17,6 +17,7 @@ import inputSearchByExpirationDate from './routes/input/inputSearchByExpirationD
 import inputSearchByID from './routes/input/inputSearchById';
 import inputSearchByMinimunQuantity from './routes/input/inputSearchByMinimunQuantity';
 import inputSearchByName from './routes/input/inputSearchByName';
+import inputSearchByPrice from './routes/input/inputSearchByPrice';
 import inputSearchByQuantity from './routes/input/inputSearchByQuantity';
 import inputSearchBySupplier from './routes/input/inputSearchBySupplier';
 import inputSearchByTotalWeight from './routes/input/inputSearchByTotalWeight';
@@ -64,6 +65,7 @@ import saleSearchEmployeeId from './routes/sales/saleSearchEmployeeId';
 import saleSearchHour from './routes/sales/saleSearchHour';
 import saleSearchId from './routes/sales/saleSearchId';
 import saleSearchPhoneNumber from './routes/sales/saleSearchPhoneNumber';
+import saleSearchPrice from './routes/sales/saleSearchPrice';
 import saleSearchProducts from './routes/sales/saleSearchProducts';
 
 // notices routes
@@ -109,6 +111,7 @@ class App {
     this.app.use('/inputs/search/supplier/', inputSearchBySupplier);
     this.app.use('/inputs/search/expirationdate/', inputSearchByExpirationDate);
     this.app.use('/inputs/search/employeeid/', inputSearchByEmployeeId);
+    this.app.use('/inputs/search/price/', inputSearchByPrice);
 
     // output routes
     this.app.use('/outputs/', outputRoutes);
@@ -147,6 +150,7 @@ class App {
     this.app.use('/sales/search/id/', saleSearchId);
     this.app.use('/sales/search/phonenumber/', saleSearchPhoneNumber);
     this.app.use('/sales/search/products/', saleSearchProducts);
+    this.app.use('/sales/search/price', saleSearchPrice);
 
     // advice routes
     this.app.use('/advices/', adviceRoutes);

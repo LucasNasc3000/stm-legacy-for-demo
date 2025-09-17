@@ -137,6 +137,7 @@ class Validation {
 
   SalesValidation(data) {
     const salesValidation = Sales.CheckPersonalAndSalesData(data);
+    console.log(salesValidation);
 
     switch (salesValidation) {
       case 'Type must be a string':
@@ -151,7 +152,7 @@ class Validation {
       case 'address must be a string':
         return 'O endereço precisa estar em formato de texto';
 
-      case 'client_name must be a letters string':
+      case 'client_name must be a alphabet string':
         return 'O nome do cliente deve conter somente letras do alfabeto';
 
       case 'phone_number must be a phone number string':
@@ -163,7 +164,7 @@ class Validation {
       case 'client btd must be a short date string':
         return 'O anv. do cliente precisa ser uma data no formato dd-mm';
 
-      case 'Price must be a decimal type':
+      case 'Price must be a decimal positive type':
         return 'O campo "preço" precisa ser do tipo decimal e positivo';
 
       default:

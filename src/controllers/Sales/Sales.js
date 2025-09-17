@@ -59,7 +59,7 @@ class SalesController {
 
       const salesUpdate = await Sales.Update(id, withDots);
 
-      if (salesUpdate === 'venda não encontrada') throw new BadRequest('Venda não registrada');
+      if (salesUpdate === 'Venda não encontrada') throw new BadRequest('Venda não registrada');
       if (!salesUpdate) throw new InternalServerError('Erro desconhecido');
 
       return res.status(200).json(salesUpdate);

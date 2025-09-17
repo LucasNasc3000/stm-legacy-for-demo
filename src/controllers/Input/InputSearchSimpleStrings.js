@@ -3,7 +3,7 @@
 import { NotFound } from '../../errors/notFound';
 import { InternalServerError } from '../../errors/serverErrors';
 import InputSearchSimpleStrings from '../../repositories/Input/InputSearchSimpleStrings';
-import { ReplaceDot } from './ReplaceDot';
+import { InsertDotForSearch, ReplaceDot } from './ReplaceDot';
 
 class InputSearchSimpleStringsController {
   async SearchByType(req, res, next) {
@@ -81,6 +81,26 @@ class InputSearchSimpleStringsController {
       const replacedDotPriceObj = ReplaceDot(inputEmployeeIdSearch);
 
       return res.status(200).json(replacedDotPriceObj);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async SearchByPrice(req, res, next) {
+    try {
+      const { price } = req.params;
+
+      const withDots = InsertDotForSearch(price);
+
+      const salePriceFinder = await InputSearchSimpleStrings.SearchByPrice(withDots);
+
+      if (!salePriceFinder) throw new InternalServerError('Erro interno');
+
+      if (salePriceFinder.length < 1) throw new NotFound('Venda não encontrada');
+
+      ReplaceDot(salePriceFinder);
+
+      return res.status(200).json(salePriceFinder);
     } catch (err) {
       next(err);
     }

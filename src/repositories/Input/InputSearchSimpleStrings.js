@@ -62,6 +62,18 @@ class InputSimpleStringSearch {
 
     return inputFinderByEmployeeId;
   }
+
+  async SearchByPrice(price) {
+    const inputsFinderByPrice = await Input.findAll({
+      where: {
+        price: { [Op.startsWith]: price },
+      },
+      attributes: inputAttributes,
+      order: [['id', 'DESC']],
+    });
+
+    return inputsFinderByPrice;
+  }
 }
 
 export default new InputSimpleStringSearch();

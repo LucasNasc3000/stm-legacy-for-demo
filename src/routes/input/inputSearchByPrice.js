@@ -5,6 +5,6 @@ import loginRequired from '../../middlewares/loginRequired';
 
 const router = new Router();
 
-router.get('/:type', loginRequired, inputsPermission, inputSearchSimpleStrings.SearchByType);
+router.get('/:price', loginRequired, inputsPermission, inputSearchSimpleStrings.SearchByPrice);
 
 export default router;
