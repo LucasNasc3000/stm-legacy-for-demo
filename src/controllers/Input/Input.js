@@ -5,6 +5,7 @@ import { BadRequest } from '../../errors/clientErrors';
 import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
 import InputMethods from '../../repositories/Input/Input';
+import InputSearchIntegers from '../../repositories/Input/InputSearchIntegers';
 import { InsertDot, ReplaceDot } from './ReplaceDot';
 
 class InputController {
@@ -60,6 +61,21 @@ class InputController {
           withDots[element] = toDecimal;
         }
       });
+
+      if (withDots.quantity) {
+        const findInput = await InputSearchIntegers.SearchByID(id);
+
+        const differenceBetween = withDots.quantity - findInput.dataValues.quantity;
+
+        if (differenceBetween > 0) {
+          const decimalFindInputWeightPerUnit = new Decimal(findInput.dataValues.weightperunit);
+
+          const weightperunitMultiplied = decimalFindInputWeightPerUnit.mul(differenceBetween);
+          const finalTotalWeight = withDots.totalweight.plus(weightperunitMultiplied);
+
+          withDots.totalweight = finalTotalWeight;
+        }
+      }
 
       // Funciona sem await mas não retorna os dados na requisição caso ela seja feita com um app de
       // requisições como insomnia.

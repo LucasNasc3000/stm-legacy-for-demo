@@ -1,4 +1,5 @@
 /* eslint-disable consistent-return */
+import Decimal from 'decimal.js';
 import Input from '../../repositories/Input/Input';
 import QuantityCheck from '../Input/QuantityCheck';
 
@@ -35,6 +36,27 @@ class InputConnectionController {
     }
 
     await Input.Update(inputSearchData.dataValues.id, updatedData);
+  }
+
+  async InputUpdateTotalWeight(inputSearchData, unities) {
+    const {
+      totalweight, quantity, weightperunit, id,
+    } = inputSearchData.dataValues;
+
+    const differenceBetween = quantity - unities;
+
+    const decimalTotalWeight = new Decimal(totalweight);
+    const decimalWeightperunit = new Decimal(weightperunit);
+
+    const multipliedWeightperunit = decimalWeightperunit.mul(differenceBetween);
+
+    decimalTotalWeight.sub(multipliedWeightperunit);
+
+    const updatedData = {
+      totalweight: decimalTotalWeight,
+    };
+
+    await Input.Update(id, updatedData);
   }
 }
 
