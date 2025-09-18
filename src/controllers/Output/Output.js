@@ -51,9 +51,9 @@ class OutputController {
             ],
           });
         }
-
-        await InputConnection.InputUpdateTotalWeight(inputExists, unities);
       }
+
+      await InputConnection.InputUpdateTotalWeight(inputExists, unities);
 
       const store2 = await OutputMethods.Store(req.body);
 

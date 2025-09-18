@@ -13,17 +13,17 @@ sgMail.setApiKey(getSgApiKey);
 
 class RegistersNotifications {
   async AddressesAllowed() {
-    const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
-    const getSOIPermission = SecretsHandler('salesOutputsInputsAccess');
-    const getAdminPermission = SecretsHandler('admin');
+    // const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
+    // const getSOIPermission = SecretsHandler('salesOutputsInputsAccess');
+    // const getAdminPermission = SecretsHandler('admin');
     const employeeSearch = await EmployeeSearchCredentials.SearchByAddressAllowed();
     const addressesAllowed = [];
     let correctPermission = false;
 
     for (let i = 0; i < employeeSearch.length; i++) {
-      if (employeeSearch[i].dataValues.permission === getInputsOutputsPermission
-          || employeeSearch[i].dataValues.permission === getSOIPermission
-          || employeeSearch[i].dataValues.permission === getAdminPermission
+      if (employeeSearch[i].dataValues.permission === process.env.INPUTS_OUTPUTS_PERMISSION
+          || employeeSearch[i].dataValues.permission === process.env.SOI_PERMISSION
+          || employeeSearch[i].dataValues.permission === process.env.ADMIN_PERMISSION
       ) {
         addressesAllowed.push(employeeSearch[i].dataValues.email);
         correctPermission = true;

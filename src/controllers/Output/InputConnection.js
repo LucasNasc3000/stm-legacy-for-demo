@@ -40,20 +40,18 @@ class InputConnectionController {
 
   async InputUpdateTotalWeight(inputSearchData, unities) {
     const {
-      totalweight, quantity, weightperunit, id,
+      totalweight, weightperunit, id,
     } = inputSearchData.dataValues;
-
-    const differenceBetween = quantity - unities;
 
     const decimalTotalWeight = new Decimal(totalweight);
     const decimalWeightperunit = new Decimal(weightperunit);
 
-    const multipliedWeightperunit = decimalWeightperunit.mul(differenceBetween);
+    const multipliedWeightperunit = decimalWeightperunit.mul(unities);
 
-    decimalTotalWeight.sub(multipliedWeightperunit);
+    const totalweightSub = decimalTotalWeight.sub(multipliedWeightperunit);
 
     const updatedData = {
-      totalweight: decimalTotalWeight,
+      totalweight: totalweightSub,
     };
 
     await Input.Update(id, updatedData);

@@ -69,9 +69,10 @@ class InputController {
 
         if (differenceBetween > 0) {
           const decimalFindInputWeightPerUnit = new Decimal(findInput.dataValues.weightperunit);
+          const decimalFindInputTotalWeight = new Decimal(findInput.dataValues.totalweight);
 
           const weightperunitMultiplied = decimalFindInputWeightPerUnit.mul(differenceBetween);
-          const finalTotalWeight = withDots.totalweight.plus(weightperunitMultiplied);
+          const finalTotalWeight = decimalFindInputTotalWeight.plus(weightperunitMultiplied);
 
           withDots.totalweight = finalTotalWeight;
         }
