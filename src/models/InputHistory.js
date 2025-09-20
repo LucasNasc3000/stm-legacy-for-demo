@@ -33,12 +33,12 @@ export default class Input extends Model {
           },
         },
       },
-      totalweight: {
+      totalweight_per_register: {
         type: Sequelize.DECIMAL(10, 2),
         defaultValue: '',
         validate: {
           isDecimal: {
-            msg: 'peso total precisa ser do tipo decimal',
+            msg: 'peso total por registro precisa ser do tipo decimal',
           },
         },
       },
@@ -50,6 +50,14 @@ export default class Input extends Model {
             msg: 'peso total precisa ser do tipo decimal',
           },
         },
+      },
+      price: {
+        type: Sequelize.DECIMAL(10, 2),
+        defaultValue: '',
+      },
+      totalprice: {
+        type: Sequelize.DECIMAL(10, 2),
+        defaultValue: '',
       },
       supplier: {
         type: Sequelize.STRING,
@@ -92,10 +100,6 @@ export default class Input extends Model {
             msg: 'a quantidade próxima ao limite precisa ser um número inteiro',
           },
         },
-      },
-      price: {
-        type: Sequelize.DECIMAL(10, 2),
-        defaultValue: '',
       },
     }, {
       sequelize,
