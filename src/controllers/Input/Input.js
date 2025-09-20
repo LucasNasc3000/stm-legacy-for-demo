@@ -5,7 +5,6 @@ import { BadRequest } from '../../errors/clientErrors';
 import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
 import InputMethods from '../../repositories/Input/Input';
-import InputSearchIntegers from '../../repositories/Input/InputSearchIntegers';
 import { InsertDot, ReplaceDot } from './ReplaceDot';
 
 class InputController {
@@ -30,65 +29,6 @@ class InputController {
       ReplaceDot(store);
 
       return res.status(200).json(store);
-    } catch (err) {
-      next(err);
-    }
-  }
-
-  async Update(req, res, next) {
-    try {
-      const { id } = req.params;
-
-      const validations = Validation.MainValidations(req.body, false, false, false, true);
-      const inputValidations = Validation.InputsValidation(req.body);
-
-      if (validations !== null) throw new BadRequest(validations);
-      if (inputValidations !== null) throw new BadRequest(inputValidations);
-
-      const { employee_id, ...allowedData } = req.body;
-
-      const withDots = InsertDot(allowedData);
-
-      const commaFields = [
-        'totalweight',
-        'weightperunit',
-        'price',
-      ];
-
-      commaFields.forEach((element) => {
-        if (withDots[element]) {
-          const toDecimal = new Decimal(withDots[element]);
-          withDots[element] = toDecimal;
-        }
-      });
-
-      if (withDots.quantity) {
-        const findInput = await InputSearchIntegers.SearchByID(id);
-
-        const differenceBetween = withDots.quantity - findInput.dataValues.quantity;
-
-        if (differenceBetween > 0) {
-          const decimalFindInputWeightPerUnit = new Decimal(findInput.dataValues.weightperunit);
-          const decimalFindInputTotalWeight = new Decimal(findInput.dataValues.totalweight);
-
-          const weightperunitMultiplied = decimalFindInputWeightPerUnit.mul(differenceBetween);
-          const finalTotalWeight = decimalFindInputTotalWeight.plus(weightperunitMultiplied);
-
-          withDots.totalweight = finalTotalWeight;
-        }
-      }
-
-      // Funciona sem await mas não retorna os dados na requisição caso ela seja feita com um app de
-      // requisições como insomnia.
-      const inputUpdate = await InputMethods.Update(id, withDots);
-
-      if (inputUpdate === 'insumo não encontrado') throw new BadRequest('Insumo não encontrado');
-
-      if (!inputUpdate) throw new InternalServerError('Erro interno');
-
-      ReplaceDot(inputUpdate);
-
-      return res.status(200).send(inputUpdate);
     } catch (err) {
       next(err);
     }
