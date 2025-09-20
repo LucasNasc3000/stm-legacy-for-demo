@@ -18,9 +18,28 @@ class InputController {
 
       const withDots = InsertDot(req.body);
 
-      const newPrice = new Decimal(withDots.price);
+      const toAddWithDots = [
+        'totalweight_per_register',
+        'totalprice',
+      ];
 
-      withDots.price = newPrice;
+      const commaFields = [
+        'weightperunit',
+        'price',
+      ];
+
+      commaFields.forEach((element) => {
+        if (withDots[element]) {
+          const toDecimal = new Decimal(withDots[element]);
+          withDots[element] = toDecimal;
+        }
+      });
+
+      toAddWithDots.forEach((element) => {
+        withDots[element] = 0;
+        const toDecimal = new Decimal(withDots[element]);
+        withDots[element] = toDecimal;
+      });
 
       const store = await InputMethods.Store(withDots);
 
