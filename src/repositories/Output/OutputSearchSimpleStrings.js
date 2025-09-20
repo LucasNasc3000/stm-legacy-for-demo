@@ -37,6 +37,18 @@ class OutputSimpleStringSearch {
 
     return outputFinderByEmployeeId;
   }
+
+  async SearchByReason(reason) {
+    const inputFinder = await Output.findAll({
+      where: {
+        reason: { [Op.startsWith]: reason },
+      },
+      attributes: outputAttributes,
+      order: [['id', 'DESC']],
+    });
+
+    return inputFinder;
+  }
 }
 
 export default new OutputSimpleStringSearch();

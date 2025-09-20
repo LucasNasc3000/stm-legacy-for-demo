@@ -4,12 +4,13 @@ import databaseConfig from '../config/database';
 import Advice from '../models/Advice';
 import Employee from '../models/Employee';
 import Input from '../models/Input';
+import InputHistory from '../models/InputHistory';
 import Log from '../models/Log';
 import Mfa from '../models/MfaPhrase';
 import Output from '../models/Output';
 import Sale from '../models/Sale';
 
-const models = [Input, Output, Employee, Log, Sale, Advice, Mfa];
+const models = [Input, Output, Employee, Log, Sale, Advice, Mfa, InputHistory];
 
 const connection = new Sequelize(databaseConfig);
 

@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import Input from '../../models/Input';
+import Input from '../../../models/InputHistory';
 import inputAttributes from './Attributes';
 
 class InputSimpleStringSearch {
@@ -61,6 +61,18 @@ class InputSimpleStringSearch {
     });
 
     return inputFinderByEmployeeId;
+  }
+
+  async SearchByReason(reason) {
+    const inputFinder = await Input.findAll({
+      where: {
+        reason: { [Op.startsWith]: reason },
+      },
+      attributes: inputAttributes,
+      order: [['id', 'DESC']],
+    });
+
+    return inputFinder;
   }
 }
 
