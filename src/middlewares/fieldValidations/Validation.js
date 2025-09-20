@@ -68,6 +68,15 @@ class Validation {
       case 'Weightperunit must be a decimal positive type':
         return 'O campo "peso unitário" precisa ser do tipo decimal e positivo';
 
+      case 'Totalweight per register must be a decimal positive type':
+        return 'O campo "peso total do registro" precisa ser do tipo decimal positivo';
+
+      case 'Total price must be a decimal positive type':
+        return 'O campo "preço total" precisa ser do tipo decimal positivo';
+
+      case 'Reason must be an alphabet string':
+        return 'O campo "motivo" precisa estar no formato de texto';
+
       default:
         return null;
     }
@@ -85,6 +94,9 @@ class Validation {
 
       case 'Field(s) must be a date or hour string':
         return 'Um ou mais campos precisam ser uma data ou hora em formato de texto --> hh:mm:ss dd-mm-yyyy';
+
+      case 'Reason must be an alphabet string':
+        return 'O campo "motivo" precisa estar no formato de texto';
 
       default:
         return null;

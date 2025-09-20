@@ -97,6 +97,16 @@ export default class Input extends Model {
         type: Sequelize.DECIMAL(10, 2),
         defaultValue: '',
       },
+      reason: {
+        type: Sequelize.STRING,
+        defaultValue: '',
+        validate: {
+          len: {
+            args: [9, 50],
+            msg: 'O motivo não deve ultrapassar os 50 caracteres',
+          },
+        },
+      },
     }, {
       sequelize,
     });

@@ -24,6 +24,16 @@ export default class InputHistory extends Model {
           },
         },
       },
+      reason: {
+        type: Sequelize.STRING,
+        defaultValue: '',
+        validate: {
+          len: {
+            args: [9, 50],
+            msg: 'O motivo não deve ultrapassar os 50 caracteres',
+          },
+        },
+      },
       quantity: {
         type: Sequelize.INTEGER,
         defaultValue: '',

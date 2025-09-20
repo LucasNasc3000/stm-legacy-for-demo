@@ -1,4 +1,5 @@
 import {
+  alphabetRegex,
   dateAndHourErrorMsg,
   dateRegex, decimalRegex, hourRegex,
 } from './DataRegex';
@@ -26,9 +27,21 @@ class InputsValidations {
       }
     }
 
+    if (DecimalsFieldsData.totalprice) {
+      if (!decimalRegex.test(DecimalsFieldsData.totalprice)) {
+        return 'Total price must be a decimal positive type';
+      }
+    }
+
     if (DecimalsFieldsData.totalweight) {
       if (!decimalRegex.test(DecimalsFieldsData.totalweight)) {
         return 'Totalweight must be a decimal positive type';
+      }
+    }
+
+    if (DecimalsFieldsData.totalweight_per_register) {
+      if (!decimalRegex.test(DecimalsFieldsData.totalweight_per_register)) {
+        return 'Totalweight per register must be a decimal positive type';
       }
     }
 
@@ -44,6 +57,12 @@ class InputsValidations {
     if (StringsFieldsData.supplier) {
       if (typeof StringsFieldsData.supplier !== 'string') {
         return 'Supplier must be a string';
+      }
+    }
+
+    if (StringsFieldsData.reason) {
+      if (!alphabetRegex.test(StringsFieldsData.reason)) {
+        return 'Reason must be an alphabet string';
       }
     }
     return this.CheckDatesAndHour(StringsFieldsData);
