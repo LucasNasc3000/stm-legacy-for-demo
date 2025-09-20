@@ -77,6 +77,12 @@ class Validation {
       case 'Reason must be an alphabet string':
         return 'O campo "motivo" precisa estar no formato de texto';
 
+      case 'Category must be an alphabet string':
+        return 'O campo "categoria" precisa estar no formato de texto';
+
+      case 'Name must be an alphabet string':
+        return 'O campo "nome" precisa estar no formato de texto';
+
       default:
         return null;
     }
@@ -97,6 +103,12 @@ class Validation {
 
       case 'Reason must be an alphabet string':
         return 'O campo "motivo" precisa estar no formato de texto';
+
+      case 'Name must be an alphabet string':
+        return 'O campo "nome" precisa estar no formato de texto';
+
+      case 'Category must be an alphabet string':
+        return 'O campo "categoria" precisa estar no formato de texto';
 
       default:
         return null;

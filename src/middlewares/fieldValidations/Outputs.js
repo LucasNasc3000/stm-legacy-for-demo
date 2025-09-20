@@ -18,6 +18,18 @@ class OutputsValidations {
         return 'Reason must be an alphabet string';
       }
     }
+
+    if (StringsFieldsData.category) {
+      if (!alphabetRegex.test(StringsFieldsData.category)) {
+        return 'Category must be an alphabet string';
+      }
+    }
+
+    if (StringsFieldsData.name) {
+      if (typeof StringsFieldsData.name !== 'string') {
+        return 'Name must be an alphabet string';
+      }
+    }
     return this.CheckDatesAndHour(StringsFieldsData);
   }
 
