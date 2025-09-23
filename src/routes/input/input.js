@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import Input from '../../controllers/Input/Input';
+import Input from '../../controllers/InputHistory/Input';
 import inputsPermission from '../../middlewares/inputsPermission';
 import loginRequired from '../../middlewares/loginRequired';
 
