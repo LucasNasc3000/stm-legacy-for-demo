@@ -6,8 +6,8 @@ import { NotFound } from '../../errors/notFound';
 import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
 import InputCurrentMethods from '../../repositories/Input/Input';
-import InputMethods from '../../repositories/Input/InputHistory/Input';
 import InputCurrentSearchSimpleStrings from '../../repositories/Input/InputSearchSimpleStrings';
+import InputMethods from '../../repositories/InputHistory/Input';
 import { InsertDot, ReplaceDot } from './ReplaceDot';
 
 class InputHistoryController {

@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import Input from '../../../models/InputHistory';
+import Input from '../../models/InputHistory';
 import inputAttributes from './Attributes';
 
 class InputSimpleStringSearch {
