@@ -50,7 +50,7 @@ export default class Input extends Model {
         defaultValue: '',
         validate: {
           isDecimal: {
-            msg: 'peso total precisa ser do tipo decimal',
+            msg: 'peso unitário precisa ser do tipo decimal',
           },
         },
       },

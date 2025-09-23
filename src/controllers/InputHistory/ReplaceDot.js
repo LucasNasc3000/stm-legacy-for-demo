@@ -4,6 +4,8 @@ export const ReplaceDot = (data) => {
     'totalweight',
     'weightperunit',
     'price',
+    'totalweight_per_register',
+    'totalprice',
   ];
 
   if (Array.isArray(data)) {

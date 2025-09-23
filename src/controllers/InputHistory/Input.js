@@ -7,7 +7,7 @@ import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
 import InputCurrentMethods from '../../repositories/Input/Input';
 import InputMethods from '../../repositories/Input/InputHistory/Input';
-import InputCurrentSearchSimpleStrings from '../../repositories/Input/InputHistory/InputSearchSimpleStrings';
+import InputCurrentSearchSimpleStrings from '../../repositories/Input/InputSearchSimpleStrings';
 import { InsertDot, ReplaceDot } from './ReplaceDot';
 
 class InputHistoryController {
@@ -24,6 +24,7 @@ class InputHistoryController {
       const toAddWithDots = [
         'totalweight_per_register',
         'totalprice',
+        'totalweight',
       ];
 
       const commaFields = [
@@ -31,11 +32,13 @@ class InputHistoryController {
         'price',
       ];
 
+      // Para valores definidos pelo usuário
       commaFields.forEach((element) => {
         const toDecimal = new Decimal(withDots[element]);
         withDots[element] = toDecimal;
       });
 
+      // Para valores adicionados por aqui. Começarão em 0
       toAddWithDots.forEach((element) => {
         withDots[element] = 0;
         const toDecimal = new Decimal(withDots[element]);
@@ -52,16 +55,19 @@ class InputHistoryController {
 
       withDots.totalweight_per_register = totalWeightPerRegister;
 
-      if (inputExists) {
-        const { ...dataValues } = inputExists;
+      withDots.totalweight = totalWeightPerRegister;
 
-        const inputTotalWeight = new Decimal(dataValues.totalweight);
+      if (inputExists) {
+        const inputTotalWeight = new Decimal(inputExists.dataValues.totalweight);
 
         const totalweightSum = inputTotalWeight.plus(totalWeightPerRegister);
 
-        dataValues.totalweight = totalweightSum;
+        inputExists.dataValues.totalweight = totalweightSum;
 
-        const inputCurrentUpdate = await InputCurrentMethods.Update(dataValues.id, dataValues);
+        inputExists.dataValues.quantity += withDots.quantity;
+
+        const inputCurrentUpdate = await
+        InputCurrentMethods.Update(inputExists.dataValues.id, inputExists.dataValues);
 
         if (inputCurrentUpdate === 'Insumo não encontrado') throw new NotFound('Insumo não encontrado no estoque');
 

@@ -29,8 +29,8 @@ export default class InputHistory extends Model {
         defaultValue: '',
         validate: {
           len: {
-            args: [9, 50],
-            msg: 'O motivo não deve ultrapassar os 50 caracteres',
+            args: [7, 50],
+            msg: 'O motivo não deve ultrapassar os 50 caracteres e deve ter pelo menos 7',
           },
         },
       },
@@ -57,7 +57,7 @@ export default class InputHistory extends Model {
         defaultValue: '',
         validate: {
           isDecimal: {
-            msg: 'peso total precisa ser do tipo decimal',
+            msg: 'peso unitário precisa ser do tipo decimal',
           },
         },
       },
