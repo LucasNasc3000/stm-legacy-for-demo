@@ -5,7 +5,7 @@ import { InternalServerError } from '../../errors/serverErrors';
 import InputSearchSimpleStrings from '../../repositories/Input/InputSearchSimpleStrings';
 import { InsertDotForSearch, ReplaceDot } from './ReplaceDot';
 
-class InputSearchSimpleStringsController {
+class InputHistorySearchSimpleStringsController {
   async SearchByType(req, res, next) {
     try {
       const { type } = req.params;
@@ -107,4 +107,4 @@ class InputSearchSimpleStringsController {
   }
 }
 
-export default new InputSearchSimpleStringsController();
+export default new InputHistorySearchSimpleStringsController();

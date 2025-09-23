@@ -4,7 +4,7 @@ import { InternalServerError } from '../../errors/serverErrors';
 import InputSearchFloats from '../../repositories/Input/InputSearchFloats';
 import { InsertDotForSearch, ReplaceDot } from './ReplaceDot';
 
-class InputSearchFloatsController {
+class InputHistorySearchFloatsController {
   async SearchByWeightPerUnit(req, res, next) {
     try {
       const { weightperunit } = req.params;
@@ -44,4 +44,4 @@ class InputSearchFloatsController {
   }
 }
 
-export default new InputSearchFloatsController();
+export default new InputHistorySearchFloatsController();

@@ -15,18 +15,6 @@ class InputSimpleStringSearch {
     return inputFinder;
   }
 
-  async SearchByNameForUsers(name) {
-    const inputFinder = await Input.findAll({
-      where: {
-        name: { [Op.startsWith]: name },
-      },
-      attributes: inputAttributes,
-      order: [['id', 'DESC']],
-    });
-
-    return inputFinder;
-  }
-
   async SearchByNameInternal(name) {
     const inputFinder = await Input.findOne({
       where: {

@@ -3,7 +3,7 @@ import { NotFound } from '../../errors/notFound';
 import { InternalServerError } from '../../errors/serverErrors';
 import InputSearchIntegers from '../../repositories/Input/InputSearchIntegers';
 
-class InputSearchIntegersController {
+class InputHistorySearchIntegersController {
   async SearchByID(req, res, next) {
     try {
       const { id } = req.params;
@@ -50,4 +50,4 @@ class InputSearchIntegersController {
   }
 }
 
-export default new InputSearchIntegersController();
+export default new InputHistorySearchIntegersController();

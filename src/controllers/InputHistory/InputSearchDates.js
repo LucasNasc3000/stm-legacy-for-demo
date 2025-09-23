@@ -3,7 +3,7 @@ import { NotFound } from '../../errors/notFound';
 import { InternalServerError } from '../../errors/serverErrors';
 import InputSearchDates from '../../repositories/Input/InputSearchDates';
 
-class InputSearchDatesController {
+class InputHistorySearchDatesController {
   async SearchByExpirationDate(req, res, next) {
     try {
       const { expirationdate } = req.params;
@@ -21,4 +21,4 @@ class InputSearchDatesController {
   }
 }
 
-export default new InputSearchDatesController();
+export default new InputHistorySearchDatesController();
