@@ -11,7 +11,7 @@ import swaggerFile from './swagger_output.json';
 
 // input routes
 import homeRoutes from './routes/home';
-import inputRoutes from './routes/input/input';
+import inputSearchByCategory from './routes/input/inputSearchByCategory';
 import inputSearchByEmployeeId from './routes/input/inputSearchByEmployeeId';
 import inputSearchByExpirationDate from './routes/input/inputSearchByExpirationDate';
 import inputSearchByID from './routes/input/inputSearchById';
@@ -21,8 +21,22 @@ import inputSearchByPrice from './routes/input/inputSearchByPrice';
 import inputSearchByQuantity from './routes/input/inputSearchByQuantity';
 import inputSearchBySupplier from './routes/input/inputSearchBySupplier';
 import inputSearchByTotalWeight from './routes/input/inputSearchByTotalWeight';
-import inputSearchByType from './routes/input/inputSearchByType';
 import inputSearchByWeightPerUnit from './routes/input/inputSearchByWeightPerUnit';
+
+// input history routes
+import inputHistorySearchByCategory from './routes/inputHistory/inputSearchByCategory';
+import inputHistorySearchByEmployeeId from './routes/inputHistory/inputSearchByEmployeeId';
+import inputHistorySearchByExpirationDate from './routes/inputHistory/inputSearchByExpirationDate';
+import inputHistorySearchByID from './routes/inputHistory/inputSearchById';
+import inputHistorySearchByMinimunQuantity from './routes/inputHistory/inputSearchByMinimunQuantity';
+import inputHistorySearchByName from './routes/inputHistory/inputSearchByName';
+import inputHistorySearchByPrice from './routes/inputHistory/inputSearchByPrice';
+import inputHistorySearchByQuantity from './routes/inputHistory/inputSearchByQuantity';
+import inputHistorySearchByReason from './routes/inputHistory/inputSearchByReason';
+import inputHistorySearchBySupplier from './routes/inputHistory/inputSearchBySupplier';
+import inputHistorySearchByTotalPrice from './routes/inputHistory/inputSearchByTotalPrice';
+import inputHistorySearchByTotalWeightPerRegister from './routes/inputHistory/inputSearchByTotalWeightPerRegister';
+import inputHistorySearchByWeightPerUnit from './routes/inputHistory/inputSearchByWeightPerUnit';
 
 // auth routes
 import mfaSuperAdmin from './routes/mfa/preMfaSuperAdmin';
@@ -100,9 +114,8 @@ class App {
 
     this.app.use('/tokens/', tokenSuperAdmin);
     // this.app.use('/usertokens/', tokenUser);
-    this.app.use('/inputs/', inputRoutes);
     this.app.use('/inputs/search/id/', inputSearchByID);
-    this.app.use('/inputs/search/type/', inputSearchByType);
+    this.app.use('/inputs/search/category/', inputSearchByCategory);
     this.app.use('/inputs/search/name/', inputSearchByName);
     this.app.use('/inputs/search/quantity/', inputSearchByQuantity);
     this.app.use('/inputs/search/minimunquantity/', inputSearchByMinimunQuantity);
@@ -112,6 +125,21 @@ class App {
     this.app.use('/inputs/search/expirationdate/', inputSearchByExpirationDate);
     this.app.use('/inputs/search/employeeid/', inputSearchByEmployeeId);
     this.app.use('/inputs/search/price/', inputSearchByPrice);
+
+    // input history routes
+    this.app.use('/inputsHistory/search/id/', inputHistorySearchByID);
+    this.app.use('/inputsHistory/search/category/', inputHistorySearchByCategory);
+    this.app.use('/inputsHistory/search/name/', inputHistorySearchByName);
+    this.app.use('/inputsHistory/search/reason/', inputHistorySearchByReason);
+    this.app.use('/inputsHistory/search/quantity/', inputHistorySearchByQuantity);
+    this.app.use('/inputsHistory/search/minimunquantity/', inputHistorySearchByMinimunQuantity);
+    this.app.use('/inputsHistory/search/totalweightPerRegister/', inputHistorySearchByTotalWeightPerRegister);
+    this.app.use('/inputsHistory/search/weightperunit/', inputHistorySearchByWeightPerUnit);
+    this.app.use('/inputsHistory/search/supplier/', inputHistorySearchBySupplier);
+    this.app.use('/inputsHistory/search/expirationdate/', inputHistorySearchByExpirationDate);
+    this.app.use('/inputsHistory/search/employeeid/', inputHistorySearchByEmployeeId);
+    this.app.use('/inputsHistory/search/price/', inputHistorySearchByPrice);
+    this.app.use('/inputsHistory/search/totalprice/', inputHistorySearchByTotalPrice);
 
     // output routes
     this.app.use('/outputs/', outputRoutes);
