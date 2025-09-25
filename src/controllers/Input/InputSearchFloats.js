@@ -42,6 +42,26 @@ class InputSearchFloatsController {
       next(err);
     }
   }
+
+  async SearchByPrice(req, res, next) {
+    try {
+      const { price } = req.params;
+
+      const withDots = InsertDotForSearch(price);
+
+      const salePriceFinder = await InputSearchFloats.SearchByPrice(withDots);
+
+      if (!salePriceFinder) throw new InternalServerError('Erro interno');
+
+      if (salePriceFinder.length < 1) throw new NotFound('Insumo não encontrado');
+
+      ReplaceDot(salePriceFinder);
+
+      return res.status(200).json(salePriceFinder);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default new InputSearchFloatsController();

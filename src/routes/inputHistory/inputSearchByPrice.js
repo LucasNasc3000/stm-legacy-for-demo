@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import inputSearchSimpleStrings from '../../controllers/Input/InputSearchSimpleStrings';
+import inputSearchSimpleStrings from '../../controllers/InputHistory/InputSearchFloats';
 import inputsPermission from '../../middlewares/inputsPermission';
 import loginRequired from '../../middlewares/loginRequired';
 
 const router = new Router();
 
-router.get('/:type', loginRequired, inputsPermission, inputSearchSimpleStrings.SearchByType);
+router.get('/:price', loginRequired, inputsPermission, inputSearchSimpleStrings.SearchByPrice);
 
 export default router;

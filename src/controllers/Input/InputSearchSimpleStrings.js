@@ -3,19 +3,19 @@
 import { NotFound } from '../../errors/notFound';
 import { InternalServerError } from '../../errors/serverErrors';
 import InputSearchSimpleStrings from '../../repositories/Input/InputSearchSimpleStrings';
-import { InsertDotForSearch, ReplaceDot } from './ReplaceDot';
+import { ReplaceDot } from './ReplaceDot';
 
 class InputSearchSimpleStringsController {
-  async SearchByType(req, res, next) {
+  async SearchByCategory(req, res, next) {
     try {
-      const { type } = req.params;
+      const { category } = req.params;
 
-      const inputTypeFinder = await InputSearchSimpleStrings.SearchByType(type);
+      const inputCategoryFinder = await InputSearchSimpleStrings.SearchByCategory(category);
 
-      if (!inputTypeFinder) throw new InternalServerError('Erro interno');
-      if (inputTypeFinder.length < 1) throw new NotFound('Insumo não encontrado');
+      if (!inputCategoryFinder) throw new InternalServerError('Erro interno');
+      if (inputCategoryFinder.length < 1) throw new NotFound('Insumo não encontrado');
 
-      return res.status(200).json(inputTypeFinder);
+      return res.status(200).json(inputCategoryFinder);
     } catch (err) {
       next(err);
     }
@@ -81,26 +81,6 @@ class InputSearchSimpleStringsController {
       const replacedDotPriceObj = ReplaceDot(inputEmployeeIdSearch);
 
       return res.status(200).json(replacedDotPriceObj);
-    } catch (err) {
-      next(err);
-    }
-  }
-
-  async SearchByPrice(req, res, next) {
-    try {
-      const { price } = req.params;
-
-      const withDots = InsertDotForSearch(price);
-
-      const salePriceFinder = await InputSearchSimpleStrings.SearchByPrice(withDots);
-
-      if (!salePriceFinder) throw new InternalServerError('Erro interno');
-
-      if (salePriceFinder.length < 1) throw new NotFound('Insumo não encontrado');
-
-      ReplaceDot(salePriceFinder);
-
-      return res.status(200).json(salePriceFinder);
     } catch (err) {
       next(err);
     }
