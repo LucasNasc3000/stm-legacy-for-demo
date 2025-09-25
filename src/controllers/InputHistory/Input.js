@@ -7,7 +7,7 @@ import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
 import InputCurrentMethods from '../../repositories/Input/Input';
 import InputCurrentSearchSimpleStrings from '../../repositories/Input/InputSearchSimpleStrings';
-import InputMethods from '../../repositories/InputHistory/Input';
+import InputHistory from '../../repositories/InputHistory/Input';
 import { InsertDot, ReplaceDot } from './ReplaceDot';
 
 class InputHistoryController {
@@ -71,7 +71,7 @@ class InputHistoryController {
 
         if (inputCurrentUpdate === 'Insumo não encontrado') throw new NotFound('Insumo não encontrado no estoque');
 
-        const store = await InputMethods.Store(withDots);
+        const store = await InputHistory.Store(withDots);
 
         if (!store) throw new InternalServerError('Erro interno');
 
@@ -86,7 +86,7 @@ class InputHistoryController {
 
       await InputCurrentMethods.Store(rest);
 
-      const store = await InputMethods.Store(withDots);
+      const store = await InputHistory.Store(withDots);
 
       if (!store) throw new InternalServerError('Erro interno');
 

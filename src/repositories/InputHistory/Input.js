@@ -1,8 +1,8 @@
-import Input from '../../../models/InputHistory';
+import InputHistory from '../../models/InputHistory';
 
 class InputsList {
   async Store(data) {
-    const newInput = await Input.create(data);
+    const newInput = await InputHistory.create(data);
     return newInput;
   }
 }

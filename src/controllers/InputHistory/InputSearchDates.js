@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 import { NotFound } from '../../errors/notFound';
 import { InternalServerError } from '../../errors/serverErrors';
-import InputSearchDates from '../../repositories/Input/InputSearchDates';
+import InputHistorySearchDates from '../../repositories/InputHistory/InputSearchDates';
 
 class InputHistorySearchDatesController {
   async SearchByExpirationDate(req, res, next) {
@@ -9,7 +9,7 @@ class InputHistorySearchDatesController {
       const { expirationdate } = req.params;
 
       const inputExpirationDateFinder = await
-      InputSearchDates.SearchByExpirationDate(expirationdate);
+      InputHistorySearchDates.SearchByExpirationDate(expirationdate);
 
       if (!inputExpirationDateFinder) throw new InternalServerError('Erro interno');
       if (inputExpirationDateFinder.length < 1) throw new NotFound('Insumo não encontrado');

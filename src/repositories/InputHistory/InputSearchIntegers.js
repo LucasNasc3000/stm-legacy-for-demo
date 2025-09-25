@@ -1,9 +1,9 @@
-import Input from '../../../models/InputHistory';
+import InputHistory from '../../models/InputHistory';
 import inputAttributes from './Attributes';
 
 class InputIntegerSearch {
   async SearchByID(id) {
-    const inputFinder = await Input.findOne({
+    const inputFinder = await InputHistory.findOne({
       where: {
         id,
       },
@@ -15,7 +15,7 @@ class InputIntegerSearch {
   }
 
   async SearchByQuantity(quantity) {
-    const inputFinder = await Input.findAll({
+    const inputFinder = await InputHistory.findAll({
       where: {
         quantity,
       },
@@ -27,7 +27,7 @@ class InputIntegerSearch {
   }
 
   async SearchByMinimunQuantity(minimunQuantity) {
-    const inputFinder = await Input.findAll({
+    const inputFinder = await InputHistory.findAll({
       where: {
         minimun_quantity: minimunQuantity,
       },

@@ -1,14 +1,14 @@
 /* eslint-disable consistent-return */
 import { NotFound } from '../../errors/notFound';
 import { InternalServerError } from '../../errors/serverErrors';
-import InputSearchIntegers from '../../repositories/Input/InputSearchIntegers';
+import InputHistorySearchIntegers from '../../repositories/InputHistory/InputSearchIntegers';
 
 class InputHistorySearchIntegersController {
   async SearchByID(req, res, next) {
     try {
       const { id } = req.params;
 
-      const inputIDFinder = await InputSearchIntegers.SearchByID(id);
+      const inputIDFinder = await InputHistorySearchIntegers.SearchByID(id);
 
       if (!inputIDFinder) throw new NotFound('Insumo não encontrado');
 
@@ -22,7 +22,7 @@ class InputHistorySearchIntegersController {
     try {
       const { quantity } = req.params;
 
-      const inputQuantityFinder = await InputSearchIntegers.SearchByQuantity(quantity);
+      const inputQuantityFinder = await InputHistorySearchIntegers.SearchByQuantity(quantity);
 
       if (!inputQuantityFinder) throw new InternalServerError('Erro interno');
       if (inputQuantityFinder.length < 1) throw new NotFound('Insumo não encontrado');
@@ -38,7 +38,7 @@ class InputHistorySearchIntegersController {
       const { minimunquantity } = req.params;
 
       const inputQuantityFinder = await
-      InputSearchIntegers.SearchByMinimunQuantity(minimunquantity);
+      InputHistorySearchIntegers.SearchByMinimunQuantity(minimunquantity);
 
       if (!inputQuantityFinder) throw new InternalServerError('Erro interno');
       if (inputQuantityFinder.length < 1) throw new NotFound('Insumo não encontrado');

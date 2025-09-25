@@ -1,10 +1,10 @@
 import { Op } from 'sequelize';
-import Input from '../../models/InputHistory';
+import InputHistory from '../../models/InputHistory';
 import inputAttributes from './Attributes';
 
 class InputSimpleStringSearch {
   async SearchByCategory(category) {
-    const inputFinder = await Input.findAll({
+    const inputFinder = await InputHistory.findAll({
       where: {
         category: { [Op.startsWith]: category },
       },
@@ -16,7 +16,19 @@ class InputSimpleStringSearch {
   }
 
   async SearchByNameInternal(name) {
-    const inputFinder = await Input.findOne({
+    const inputFinder = await InputHistory.findOne({
+      where: {
+        name,
+      },
+      attributes: inputAttributes,
+      order: [['id', 'DESC']],
+    });
+
+    return inputFinder;
+  }
+
+  async SearchByNameForUsers(name) {
+    const inputFinder = await InputHistory.findOne({
       where: {
         name,
       },
@@ -28,7 +40,7 @@ class InputSimpleStringSearch {
   }
 
   async SearchBySupplier(supplier) {
-    const inputFinder = await Input.findAll({
+    const inputFinder = await InputHistory.findAll({
       where: {
         supplier: { [Op.startsWith]: supplier },
       },
@@ -40,7 +52,7 @@ class InputSimpleStringSearch {
   }
 
   async SearchByEmployeeId(employeeId) {
-    const inputFinderByEmployeeId = await Input.findAll({
+    const inputFinderByEmployeeId = await InputHistory.findAll({
       where: {
         employee_id: employeeId,
       },
@@ -52,7 +64,7 @@ class InputSimpleStringSearch {
   }
 
   async SearchByReason(reason) {
-    const inputFinder = await Input.findAll({
+    const inputFinder = await InputHistory.findAll({
       where: {
         reason: { [Op.startsWith]: reason },
       },

@@ -96,7 +96,7 @@ class InputSearchSimpleStringsController {
 
       if (!salePriceFinder) throw new InternalServerError('Erro interno');
 
-      if (salePriceFinder.length < 1) throw new NotFound('Venda não encontrada');
+      if (salePriceFinder.length < 1) throw new NotFound('Insumo não encontrado');
 
       ReplaceDot(salePriceFinder);
 

@@ -1,10 +1,10 @@
 import { Op } from 'sequelize';
-import Input from '../../../models/InputHistory';
+import InputHistory from '../../models/InputHistory';
 import inputAttributes from './Attributes';
 
 class InputDatesSearch {
   async SearchByExpirationDate(expirationdate) {
-    const inputFinder = await Input.findAll({
+    const inputFinder = await InputHistory.findAll({
       where: {
         expirationdate: { [Op.startsWith]: expirationdate },
       },

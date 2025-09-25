@@ -2,20 +2,20 @@
 /* eslint-disable consistent-return */
 import { NotFound } from '../../errors/notFound';
 import { InternalServerError } from '../../errors/serverErrors';
-import InputSearchSimpleStrings from '../../repositories/Input/InputSearchSimpleStrings';
+import InputSearchSimpleStrings from '../../repositories/InputHistory/InputSearchSimpleStrings';
 import { InsertDotForSearch, ReplaceDot } from './ReplaceDot';
 
 class InputHistorySearchSimpleStringsController {
-  async SearchByType(req, res, next) {
+  async SearchByCategory(req, res, next) {
     try {
-      const { type } = req.params;
+      const { category } = req.params;
 
-      const inputTypeFinder = await InputSearchSimpleStrings.SearchByType(type);
+      const inputCategoryFinder = await InputSearchSimpleStrings.SearchByCategory(category);
 
-      if (!inputTypeFinder) throw new InternalServerError('Erro interno');
-      if (inputTypeFinder.length < 1) throw new NotFound('Insumo não encontrado');
+      if (!inputCategoryFinder) throw new InternalServerError('Erro interno');
+      if (inputCategoryFinder.length < 1) throw new NotFound('Insumo não encontrado');
 
-      return res.status(200).json(inputTypeFinder);
+      return res.status(200).json(inputCategoryFinder);
     } catch (err) {
       next(err);
     }
@@ -86,21 +86,21 @@ class InputHistorySearchSimpleStringsController {
     }
   }
 
-  async SearchByPrice(req, res, next) {
+  async SearchByReason(req, res, next) {
     try {
-      const { price } = req.params;
+      const { reason } = req.params;
 
-      const withDots = InsertDotForSearch(price);
+      const withDots = InsertDotForSearch(reason);
 
-      const salePriceFinder = await InputSearchSimpleStrings.SearchByPrice(withDots);
+      const saleReasonFinder = await InputSearchSimpleStrings.SearchByReason(withDots);
 
-      if (!salePriceFinder) throw new InternalServerError('Erro interno');
+      if (!saleReasonFinder) throw new InternalServerError('Erro interno');
 
-      if (salePriceFinder.length < 1) throw new NotFound('Venda não encontrada');
+      if (saleReasonFinder.length < 1) throw new NotFound('Venda não encontrada');
 
-      ReplaceDot(salePriceFinder);
+      ReplaceDot(saleReasonFinder);
 
-      return res.status(200).json(salePriceFinder);
+      return res.status(200).json(saleReasonFinder);
     } catch (err) {
       next(err);
     }

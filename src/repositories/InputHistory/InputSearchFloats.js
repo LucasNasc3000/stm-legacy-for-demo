@@ -1,10 +1,10 @@
 import { Op } from 'sequelize';
-import Input from '../../../models/InputHistory';
+import InputHistory from '../../models/InputHistory';
 import inputAttributes from './Attributes';
 
 class InputFloatsSearch {
   async SearchByTotalWeightPerRegister(totalWeightPerRegister) {
-    const inputFinder = await Input.findAll({
+    const inputFinder = await InputHistory.findAll({
       where: {
         totalweight_per_register: totalWeightPerRegister,
       },
@@ -16,7 +16,7 @@ class InputFloatsSearch {
   }
 
   async SearchByWeightPerUnit(weightperunit) {
-    const inputFinder = await Input.findAll({
+    const inputFinder = await InputHistory.findAll({
       where: {
         weightperunit,
       },
@@ -28,7 +28,7 @@ class InputFloatsSearch {
   }
 
   async SearchByPrice(price) {
-    const inputsFinderByPrice = await Input.findAll({
+    const inputsFinderByPrice = await InputHistory.findAll({
       where: {
         price: { [Op.startsWith]: price },
       },
@@ -40,7 +40,7 @@ class InputFloatsSearch {
   }
 
   async SearchByTotalPrice(totalprice) {
-    const inputsFinderByTotalPrice = await Input.findAll({
+    const inputsFinderByTotalPrice = await InputHistory.findAll({
       where: {
         totalprice: { [Op.startsWith]: totalprice },
       },
