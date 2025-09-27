@@ -49,8 +49,8 @@ export default class Output extends Model {
         defaultValue: '',
         validate: {
           len: {
-            args: [9, 50],
-            msg: 'O motivo não deve ultrapassar os 50 caracteres',
+            args: [5, 50],
+            msg: 'O motivo deve ter entre 5 e 50 caracteres',
           },
         },
       },

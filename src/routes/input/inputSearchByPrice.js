@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import inputSearchSimpleStrings from '../../controllers/Input/InputSearchSimpleStrings';
+import inputSearchSimpleStrings from '../../controllers/Input/InputSearchFloats';
 import inputsPermission from '../../middlewares/inputsPermission';
 import loginRequired from '../../middlewares/loginRequired';
 
