@@ -24,6 +24,7 @@ import inputSearchByTotalWeight from './routes/input/inputSearchByTotalWeight';
 import inputSearchByWeightPerUnit from './routes/input/inputSearchByWeightPerUnit';
 
 // input history routes
+import inputHistory from './routes/inputHistory/input';
 import inputHistorySearchByCategory from './routes/inputHistory/inputSearchByCategory';
 import inputHistorySearchByEmployeeId from './routes/inputHistory/inputSearchByEmployeeId';
 import inputHistorySearchByExpirationDate from './routes/inputHistory/inputSearchByExpirationDate';
@@ -127,6 +128,7 @@ class App {
     this.app.use('/inputs/search/price/', inputSearchByPrice);
 
     // input history routes
+    this.app.use('/inputsHistory/', inputHistory);
     this.app.use('/inputsHistory/search/id/', inputHistorySearchByID);
     this.app.use('/inputsHistory/search/category/', inputHistorySearchByCategory);
     this.app.use('/inputsHistory/search/name/', inputHistorySearchByName);

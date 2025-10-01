@@ -1,7 +1,8 @@
 import {
   alphabetRegex,
   dateAndHourErrorMsg,
-  dateRegex, decimalRegex, hourRegex,
+  dateRegex,
+  hourRegex,
 } from './DataRegex';
 
 class InputsValidations {
@@ -17,40 +18,7 @@ class InputsValidations {
         return 'Minimun_quantity must be a integer';
       }
     }
-    return this.CheckDecimals(IntegersFieldsData);
-  }
-
-  CheckDecimals(DecimalsFieldsData) {
-    if (DecimalsFieldsData.price) {
-      if (!decimalRegex.test(DecimalsFieldsData.price)) {
-        return 'Price must be a decimal positive type';
-      }
-    }
-
-    if (DecimalsFieldsData.totalprice) {
-      if (!decimalRegex.test(DecimalsFieldsData.totalprice)) {
-        return 'Total price must be a decimal positive type';
-      }
-    }
-
-    if (DecimalsFieldsData.totalweight) {
-      if (!decimalRegex.test(DecimalsFieldsData.totalweight)) {
-        return 'Totalweight must be a decimal positive type';
-      }
-    }
-
-    if (DecimalsFieldsData.totalweight_per_register) {
-      if (!decimalRegex.test(DecimalsFieldsData.totalweight_per_register)) {
-        return 'Totalweight per register must be a decimal positive type';
-      }
-    }
-
-    if (DecimalsFieldsData.weightperunit) {
-      if (!decimalRegex.test(DecimalsFieldsData.weightperunit)) {
-        return 'Weightperunit must be a decimal positive type';
-      }
-    }
-    return this.CheckStrings(DecimalsFieldsData);
+    return this.CheckStrings(IntegersFieldsData);
   }
 
   CheckStrings(StringsFieldsData) {
