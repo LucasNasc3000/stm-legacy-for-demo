@@ -188,9 +188,6 @@ class Validation {
       case 'client btd must be a short date string':
         return 'O anv. do cliente precisa ser uma data no formato dd-mm';
 
-      case 'Price must be a decimal positive type':
-        return 'O campo "preço" precisa ser do tipo decimal e positivo';
-
       default:
         return null;
     }
