@@ -3,7 +3,7 @@ const outputAttributes = [
   'date',
   'hour',
   'name',
-  'type',
+  'category',
   'unities',
   'reason',
   'employee_id',
