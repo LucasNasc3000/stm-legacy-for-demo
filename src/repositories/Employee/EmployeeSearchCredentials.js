@@ -51,6 +51,18 @@ class EmployeesSearchCredentials {
     return employeeFinderByEmail;
   }
 
+  async SearchByPermission(permission) {
+    const employeeFinderByPermission = await Employee.findAll({
+      where: {
+        permission,
+      },
+      attributes: employeeAttributes,
+      order: [['id', 'DESC']],
+    });
+
+    return employeeFinderByPermission;
+  }
+
   async SearchByAddressAllowed() {
     // const addressAllowed = SecretsHandler('addressAllowed');
     const employeeFinderByAddressAllowed = await Employee.findAll({
