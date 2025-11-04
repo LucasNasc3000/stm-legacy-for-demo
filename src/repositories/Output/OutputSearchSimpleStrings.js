@@ -3,10 +3,10 @@ import Output from '../../models/Output';
 import outputAttributes from './Attributes';
 
 class OutputSimpleStringSearch {
-  async SearchByType(type) {
+  async SearchByCategory(category) {
     const outputFinder = await Output.findAll({
       where: {
-        type: { [Op.startsWith]: type },
+        category: { [Op.startsWith]: category },
       },
       attributes: outputAttributes,
       order: [['id', 'DESC']],

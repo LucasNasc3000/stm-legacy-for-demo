@@ -9,7 +9,7 @@ class InputsList {
   async Update(id, data) {
     const input = await Input.findByPk(id);
 
-    if (!input) return 'Insumo não encontrado';
+    if (!input) return 'insumo não encontrado';
 
     const newInputData = await input.update(data);
 
