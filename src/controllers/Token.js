@@ -41,6 +41,8 @@ class TokenController {
         expiresIn: process.env.JWT_EXPIRATION,
       });
 
+      console.log(token);
+
       await Log.createLog(id, email);
 
       return res.json({ token, employee: { nome: employee.name, id, email } });

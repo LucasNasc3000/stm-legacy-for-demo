@@ -4,15 +4,14 @@ import { NotFound } from '../errors/notFound';
 import Employee from '../models/Employee';
 import Mfa from '../repositories/Mfa/Mfa';
 import SearchByEmail from '../repositories/Mfa/SearchMfaData';
-import SecretsHandler from '../secretsHandler';
 
 // eslint-disable-next-line consistent-return
 export default async (req, res, next) => {
   try {
-    const getSuperAdminPermission = SecretsHandler('superAdmin');
-    const getPass1 = SecretsHandler('Pass1');
-    const getPass2 = SecretsHandler('Pass2');
-    const correctEmail = SecretsHandler('correctEmail');
+    // const getSuperAdminPermission = SecretsHandler('superAdmin');
+    // const getPass1 = SecretsHandler('Pass1');
+    // const getPass2 = SecretsHandler('Pass2');
+    // const correctEmail = SecretsHandler('correctEmail');
     const {
       permission, verifyemail, adminpassword, password1, password2, password3,
     } = req.headers;
@@ -22,8 +21,8 @@ export default async (req, res, next) => {
       throw new Unauthorized('Dados de autenticação não enviados');
     }
 
-    if (password1 !== getPass1 && password2
-        !== getPass2 && verifyemail !== correctEmail) {
+    if (password1 !== process.env.PASSWORD_1 && password2
+        !== process.env.PASSWORD_2 && verifyemail !== process.env.CORRECT_EMAIL) {
       throw new Unauthorized('Credenciais inválidas');
     }
 
@@ -56,7 +55,7 @@ export default async (req, res, next) => {
       case superAdmin.dataValues.permission !== permission:
         throw new Unauthorized('Credenciais inválidas');
 
-      case getSuperAdminPermission !== permission:
+      case process.env.ADMIN_PERMISSION !== permission:
         throw new Unauthorized('Credenciais inválidas');
 
         // Para invalidar códigos anteriores
