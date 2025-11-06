@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import jwt from 'jsonwebtoken';
+import { Unauthorized } from '../errors/authErrors';
 import Employee from '../models/Employee';
 // import SecretsHandler from '../secretsHandler';
 
@@ -19,7 +20,9 @@ export default async (req, res, next) => {
 
   try {
     const dados = jwt.verify(token, process.env.JWT_SECRET);
-    const { email, id } = dados;
+    const { email, id, role } = dados;
+
+    if (!role || role !== 'superadmin') throw new Unauthorized('Credenciais inválidas');
 
     // Checa se o id e o email são os mesmos que foram usados para gerar o token
     const employee = await Employee.findOne({
@@ -27,12 +30,13 @@ export default async (req, res, next) => {
         id,
         email,
         is_active: 1,
+        permission: process.env.SUPER_ADMIN_PERMISSION,
       },
     });
 
     if (!employee) {
       return res.status(401).json({
-        errors: ['Funcionário inválido'], // Este erro quer dizer que o usuário que mudou seu próprio email precisa logar denovo porque o email não vai bater com o token
+        errors: ['Superadmin inválido'], // Este erro quer dizer que o usuário que mudou seu próprio email precisa logar denovo porque o email não vai bater com o token
       });
     }
 

@@ -41,6 +41,8 @@ class MfaController {
 
       const saveHash = await MfaList.Store(dataForStore);
 
+      console.log(saveHash);
+
       const { id } = saveHash.dataValues;
 
       setTimeout(async () => {
@@ -61,6 +63,7 @@ class MfaController {
 
       return res.status(200).send('Código de acesso enviado');
     } catch (err) {
+      console.log(err);
       next(err);
     }
   }

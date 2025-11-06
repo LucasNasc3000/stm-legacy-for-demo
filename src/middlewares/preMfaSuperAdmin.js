@@ -55,7 +55,7 @@ export default async (req, res, next) => {
       case superAdmin.dataValues.permission !== permission:
         throw new Unauthorized('Credenciais inválidas');
 
-      case process.env.ADMIN_PERMISSION !== permission:
+      case process.env.SUPER_ADMIN_PERMISSION !== permission:
         throw new Unauthorized('Credenciais inválidas');
 
         // Para invalidar códigos anteriores

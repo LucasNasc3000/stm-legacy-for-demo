@@ -3,11 +3,10 @@
 import { Unauthorized } from '../errors/authErrors';
 import { BadRequest } from '../errors/clientErrors';
 import Employee from '../models/Employee';
-import SecretsHandler from '../secretsHandler';
 
 export default async (req, res, next) => {
   try {
-    const getSuperAdminPermission = SecretsHandler('superAdmin');
+    // const getSuperAdminPermission = SecretsHandler('superAdmin');
     const {
       permission, email, adminpassword, password,
     } = req.headers;
@@ -32,7 +31,7 @@ export default async (req, res, next) => {
       case (superAdmin.permission !== permission):
         throw new Unauthorized('Acesso negado, permissao incorreta');
 
-      case (superAdmin.permission !== getSuperAdminPermission):
+      case (superAdmin.permission !== process.env.SUPER_ADMIN_PERMISSION):
         throw new Unauthorized('Acesso negado, permissao de super administrador necessaria');
 
       case (!adminPassValidator):

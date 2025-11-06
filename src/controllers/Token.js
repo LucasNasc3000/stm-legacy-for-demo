@@ -37,11 +37,22 @@ class TokenController {
 
       const { id } = employee;
 
+      // CRIAR O SUPERADMIN, MESMO EM DESENVOLVIMENTO
+      if (employee.dataValues.permission === process.env.SUPER_ADMIN_PERMISSION) {
+        const role = 'superadmin';
+
+        const token = jwt.sign({ id, email, role }, process.env.JWT_SECRET, {
+          expiresIn: process.env.JWT_EXPIRATION,
+        });
+
+        await Log.createLog(id, email);
+
+        return res.json({ token, employee: { nome: employee.name, id, email } });
+      }
+
       const token = jwt.sign({ id, email }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRATION,
       });
-
-      console.log(token);
 
       await Log.createLog(id, email);
 
