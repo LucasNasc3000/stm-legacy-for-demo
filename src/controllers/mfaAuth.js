@@ -41,8 +41,6 @@ class MfaController {
 
       const saveHash = await MfaList.Store(dataForStore);
 
-      console.log(saveHash);
-
       const { id } = saveHash.dataValues;
 
       setTimeout(async () => {
@@ -60,8 +58,9 @@ class MfaController {
       const send = await MfaSuperAdminSendEmail.SendEmail(saveHash.dataValues.phrase);
 
       if (!send) throw new InternalServerError('Erro ao enviar código de acesso');
+      if (send === 'Algo deu errado') throw new InternalServerError('Erro ao enviar código de acesso');
 
-      return res.status(200).send('Código de acesso enviado');
+      return res.status(200).send(send);
     } catch (err) {
       console.log(err);
       next(err);

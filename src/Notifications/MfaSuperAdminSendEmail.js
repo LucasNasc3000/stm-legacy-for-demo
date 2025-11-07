@@ -63,13 +63,11 @@ class MfaSendEmail {
       // html: '<strong>and easy to do anywhere, even with Node.js</strong>',
     };
 
-    return transporter.sendMail(msg, (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Código enviado: ', info.response);
-      }
-    });
+    const send = await transporter.sendMail(msg);
+
+    if (!send) return 'Algo deu errado';
+
+    return 'Código enviado';
   }
 }
 

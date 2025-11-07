@@ -65,7 +65,7 @@ export default async (req, res, next) => {
             is_valid: false,
           });
         }
-        next();
+        return next();
     }
 
     return next();
