@@ -32,8 +32,10 @@ class MfaController {
 
       const generateHash = await Hashing.Generate(getPhrase);
 
+      const phraseIndex = phrases.indexOf(getPhrase);
+
       const dataForStore = {
-        phrase: getPhrase,
+        phrase: phraseIndex,
         sequence_hash: generateHash,
         email: verifyemail,
         is_valid: true,
@@ -55,14 +57,13 @@ class MfaController {
         if (mfaCodeInvalidate === 'código não encontrado') throw new InternalServerError('Erro interno. Contate o suporte');
       }, 300000);
 
-      const send = await MfaSuperAdminSendEmail.SendEmail(saveHash.dataValues.phrase);
+      const send = await MfaSuperAdminSendEmail.SendEmail(getPhrase);
 
       if (!send) throw new InternalServerError('Erro ao enviar código de acesso');
       if (send === 'Algo deu errado') throw new InternalServerError('Erro ao enviar código de acesso');
 
       return res.status(200).send(send);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

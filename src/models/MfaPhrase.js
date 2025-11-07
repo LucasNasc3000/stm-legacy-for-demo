@@ -11,12 +11,11 @@ export default class Mfaphrase extends Model {
         allowNull: false,
       },
       phrase: {
-        type: Sequelize.STRING,
-        defaultValue: '',
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
         validate: {
-          len: {
-            args: [1, 255],
-            msg: 'A frase deve ter no máximo 255 caracteres',
+          isInt: {
+            msg: 'O campo frase precisa ser o índice da frase',
           },
         },
       },
