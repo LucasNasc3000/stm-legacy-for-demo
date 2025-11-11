@@ -14,23 +14,7 @@ export default async (req, res, next) => {
 
     const searchCode = await SearchByEmail.SearchByEmailAndIfIsValid(verifyemail);
 
-    if (!searchCode) throw new Unauthorized('Credenciais inválidas');
-
-    const { is_valid } = searchCode.dataValues;
-
-    // eslint-disable-next-line default-case
-    switch (true) {
-      case !is_valid:
-        throw new Unauthorized('Código expirado ou credenciais inválidas');
-
-      case typeof is_valid === 'boolean':
-        if (is_valid !== true) throw new Unauthorized('Código expirado ou credenciais inválidas');
-        break;
-
-      case typeof is_valid === 'number':
-        if (is_valid !== 1) throw new Unauthorized('Código expirado ou credenciais inválidas');
-        break;
-    }
+    if (!searchCode) throw new Unauthorized('Código expirado ou credenciais inválidas');
 
     const { sequence_hash } = searchCode.dataValues;
 

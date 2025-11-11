@@ -1,7 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable no-plusplus */
 import { Forbidden } from '../errors/forbidden';
-import EmployeeSearchCredentials from '../repositories/Employee/EmployeeSearchCredentials';
 
 // const sgMail = require('@sendgrid/mail');
 
@@ -12,26 +11,6 @@ import EmployeeSearchCredentials from '../repositories/Employee/EmployeeSearchCr
 class MfaSendEmail {
   constructor() {
     this.nodemailer = require('nodemailer');
-  }
-
-  async AddressesAllowed() {
-    // const getSuperAdminPermission = SecretsHandler('superAdmin');
-    const employeeSearch = await EmployeeSearchCredentials.SearchByAddressAllowed();
-    const addressesAllowed = [];
-    let correctPermission = false;
-
-    for (let i = 0; i < employeeSearch.length; i++) {
-      if (employeeSearch[i].dataValues.permission === process.env.ADMIN_PERMISSION) {
-        addressesAllowed.push(employeeSearch[i].dataValues.email);
-        correctPermission = true;
-      }
-    }
-
-    if (employeeSearch && correctPermission === true) {
-      return addressesAllowed;
-    }
-
-    return null;
   }
 
   Transporter() {
@@ -47,16 +26,15 @@ class MfaSendEmail {
     });
   }
 
-  async SendEmail(AccessCode) {
+  async SendEmail(AccessCode, email) {
     // const fromEmail1 = SecretsHandler('fromEmail1');
-    const destinataryVerify = await this.AddressesAllowed();
 
-    if (destinataryVerify === null) throw new Forbidden('Não há funcionários com permissão para receber e-mails');
+    if (!email) throw new Forbidden('Destinatário não informado');
 
     const transporter = this.Transporter();
 
     const msg = {
-      to: destinataryVerify[0],
+      to: email,
       from: process.env.FROM_EMAIL_2,
       subject: 'Código de acesso',
       text: AccessCode,

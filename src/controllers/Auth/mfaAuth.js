@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
-import MfaSuperAdminSendEmail from '../../Notifications/MfaSuperAdminSendEmail';
+import MfaSuperAdminSendEmail from '../../Notifications/MfaSendEmail';
 import { InternalServerError } from '../../errors/serverErrors';
 import Hashing from '../../hashing/hash';
 import { PhraseVerify } from '../../hashing/phraseVerify';
@@ -20,8 +20,9 @@ class MfaController {
       while (controlVar < phrases.length) {
         getPhrase = PhraseVerify();
 
+        // Vai procurar pelos índices das frases no array delas
         // eslint-disable-next-line no-await-in-loop
-        const searchPhrase = await SearchMfaData.SearchByPhrase(getPhrase);
+        const searchPhrase = await SearchMfaData.SearchByPhrase(controlVar);
 
         if (searchPhrase === null) break;
 
@@ -58,7 +59,7 @@ class MfaController {
         if (mfaCodeInvalidate === 'código não encontrado') throw new InternalServerError('Erro interno. Contate o suporte');
       }, 300000);
 
-      const send = await MfaSuperAdminSendEmail.SendEmail(getPhrase);
+      const send = await MfaSuperAdminSendEmail.SendEmail(getPhrase, verifyemail);
 
       if (!send) throw new InternalServerError('Erro ao enviar código de acesso');
       if (send === 'Algo deu errado') throw new InternalServerError('Erro ao enviar código de acesso');
@@ -72,16 +73,14 @@ class MfaController {
   async GenerateCodeUsers(req, res, next) {
     try {
       const { verifyemail } = req.headers;
-      let getPhrase = '';
 
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        getPhrase = SequenceGenerator();
+      let getPhrase = SequenceGenerator();
 
-        // eslint-disable-next-line no-await-in-loop
-        const searchPhrase = await SearchMfaData.SearchByPhrase(getPhrase);
+      const searchPhrase = await SearchMfaData.SearchByEmailAndIfIsValid(verifyemail);
 
-        if (searchPhrase === null) break;
+      if (searchPhrase) {
+        const compare = Hashing.Compare(getPhrase, searchPhrase.dataValues.sequence_hash);
+        if (compare !== false) getPhrase = SequenceGenerator();
       }
 
       const generateHash = await Hashing.Generate(getPhrase);
@@ -109,7 +108,7 @@ class MfaController {
         if (mfaCodeInvalidate === 'código não encontrado') throw new InternalServerError('Erro interno. Contate o suporte');
       }, 300000);
 
-      const send = await MfaSuperAdminSendEmail.SendEmail(getPhrase);
+      const send = await MfaSuperAdminSendEmail.SendEmail(getPhrase, verifyemail);
 
       if (!send) throw new InternalServerError('Erro ao enviar código de acesso');
       if (send === 'Algo deu errado') throw new InternalServerError('Erro ao enviar código de acesso');
