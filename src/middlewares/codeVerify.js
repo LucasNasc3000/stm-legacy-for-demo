@@ -12,11 +12,11 @@ export default async (req, res, next) => {
 
     if (!verifyemail || !code) throw new Unauthorized('Credenciais inválidas');
 
-    const searchByEmailMfa = await SearchByEmail.SearchByEmail(verifyemail);
+    const searchCode = await SearchByEmail.SearchByEmailAndIfIsValid(verifyemail);
 
-    if (!searchByEmailMfa) throw new Unauthorized('Credenciais inválidas');
+    if (!searchCode) throw new Unauthorized('Credenciais inválidas');
 
-    const { is_valid } = searchByEmailMfa.dataValues;
+    const { is_valid } = searchCode.dataValues;
 
     // eslint-disable-next-line default-case
     switch (true) {
@@ -32,13 +32,13 @@ export default async (req, res, next) => {
         break;
     }
 
-    const { sequence_hash } = searchByEmailMfa.dataValues;
+    const { sequence_hash } = searchCode.dataValues;
 
     const hashCompare = await Hashing.Compare(code, sequence_hash);
 
     if (hashCompare !== true) throw new Unauthorized('Código inválido');
 
-    const invalidateMfaData = await Mfa.Update(searchByEmailMfa.dataValues.id, {
+    const invalidateMfaData = await Mfa.Update(searchCode.dataValues.id, {
       is_valid: false,
     });
 

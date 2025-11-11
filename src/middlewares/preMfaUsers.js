@@ -13,20 +13,15 @@ export default async (req, res, next) => {
     // const getPass2 = SecretsHandler('Pass2');
     // const correctEmail = SecretsHandler('correctEmail');
     const {
-      permission, verifyemail, adminpassword, password1, password2, password3,
+      permission, verifyemail, adminpassword, password,
     } = req.headers;
 
-    if (!permission || !verifyemail || !adminpassword || !password1 || !password2 || !password3) {
+    if (!permission || !verifyemail || !adminpassword) {
       // mudar esta mensagem?
       throw new Unauthorized('Dados de autenticação não enviados');
     }
 
-    if (password1 !== process.env.PASSWORD_1 && password2
-        !== process.env.PASSWORD_2 && verifyemail !== process.env.CORRECT_EMAIL) {
-      throw new Unauthorized('Credenciais inválidas');
-    }
-
-    const superAdmin = await Employee.findOne({
+    const user = await Employee.findOne({
       where: {
         email: verifyemail,
         is_active: 1,
@@ -35,15 +30,15 @@ export default async (req, res, next) => {
 
     const searchCodeRegister = await SearchByEmail.SearchByEmail(verifyemail);
 
-    const passwordVerify = await superAdmin.PasswordValidator(password3);
-    const adminPasswordVerify = await superAdmin.AdminPasswordValidator(adminpassword);
+    const passwordVerify = await user.PasswordValidator(password);
+    const adminPasswordVerify = await user.AdminPasswordValidator(adminpassword);
 
     // eslint-disable-next-line default-case
     switch (true) {
-      case superAdmin === null:
+      case user === null:
         throw new NotFound('Super admin não encontrado');
 
-      case superAdmin.dataValues.email !== verifyemail:
+      case user.dataValues.email !== verifyemail:
         throw new Unauthorized('Credenciais inválidas');
 
       case passwordVerify !== true:
@@ -52,10 +47,7 @@ export default async (req, res, next) => {
       case adminPasswordVerify !== true:
         throw new Unauthorized('Credenciais inválidas');
 
-      case superAdmin.dataValues.permission !== permission:
-        throw new Unauthorized('Credenciais inválidas');
-
-      case process.env.SUPER_ADMIN_PERMISSION !== permission:
+      case user.dataValues.permission !== permission:
         throw new Unauthorized('Credenciais inválidas');
 
         // Para invalidar códigos anteriores associados ao email em "verifyemail"

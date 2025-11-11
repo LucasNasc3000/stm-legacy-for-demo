@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import mfaAuth from '../../controllers/Auth/mfaAuth';
-import preMfaSuperAdmin from '../../middlewares/preMfaSuperAdmin';
+import preMfaUsers from '../../middlewares/preMfaUsers';
 
 const router = new Router();
 
-router.post('/', preMfaSuperAdmin, mfaAuth.GenerateCode);
+router.post('/', preMfaUsers, mfaAuth.GenerateCodeUsers);
 
 export default router;

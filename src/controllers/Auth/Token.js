@@ -1,10 +1,10 @@
 /* eslint-disable consistent-return */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import jwt from 'jsonwebtoken';
-import Log from '../Logs/LogRegister';
-import { Unauthorized } from '../errors/authErrors';
-import { BadRequest } from '../errors/clientErrors';
-import Employee from '../models/Employee';
+import Log from '../../Logs/LogRegister';
+import { Unauthorized } from '../../errors/authErrors';
+import { BadRequest } from '../../errors/clientErrors';
+import Employee from '../../models/Employee';
 // import SecretsHandler from '../secretsHandler';
 
 class TokenController {
@@ -37,20 +37,46 @@ class TokenController {
 
       const { id } = employee;
 
-      // CRIAR O SUPERADMIN, MESMO EM DESENVOLVIMENTO
-      if (employee.dataValues.permission === process.env.SUPER_ADMIN_PERMISSION) {
-        const role = 'superadmin';
+      const token = jwt.sign({ id, email, role: 'superadmin' }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRATION,
+      });
 
-        const token = jwt.sign({ id, email, role }, process.env.JWT_SECRET, {
-          expiresIn: process.env.JWT_EXPIRATION,
-        });
+      await Log.createLog(id, email);
 
-        await Log.createLog(id, email);
+      return res.json({ token, employee: { nome: employee.name, id, email } });
+    } catch (err) {
+      next(err);
+    }
+  }
 
-        return res.json({ token, employee: { nome: employee.name, id, email } });
+  async StoreUsers(req, res, next) {
+    try {
+      const {
+        email = '', password = '', adminpassword = '', permission = '',
+      } = req.body;
+
+      if (!email || !password || !adminpassword || !permission) throw new BadRequest('Email, senha, senha de admin e permissao necessários para logar');
+
+      const employee = await Employee.findOne({ where: { email, is_active: 1 } });
+
+      // eslint-disable-next-line default-case
+      switch (true) {
+        case !employee:
+          throw new Unauthorized('O funcionário não existe ou está inativo');
+
+        case !(await employee.PasswordValidator(password)):
+          throw new Unauthorized('Senha inválida');
+
+        case !(await employee.AdminPasswordValidator(adminpassword)):
+          throw new Unauthorized('Senha de administrador inválida');
+
+        case permission !== employee.permission:
+          throw new Unauthorized('Permissão incorreta');
       }
 
-      const token = jwt.sign({ id, email }, process.env.JWT_SECRET, {
+      const { id } = employee;
+
+      const token = jwt.sign({ id, email, user: 'non-superadmin' }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRATION,
       });
 

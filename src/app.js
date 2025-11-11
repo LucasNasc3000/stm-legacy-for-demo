@@ -40,10 +40,10 @@ import inputHistorySearchByTotalWeightPerRegister from './routes/inputHistory/in
 import inputHistorySearchByWeightPerUnit from './routes/inputHistory/inputSearchByWeightPerUnit';
 
 // auth routes
+import tokenSuperAdmin from './routes/auth/authSuperAdmin';
+import tokenUser from './routes/auth/authUsers';
 import mfaSuperAdmin from './routes/mfa/preMfaSuperAdmin';
-// import mfaUser from './routes/mfa/preMfaUser';
-import tokenSuperAdmin from './routes/token';
-// import tokenUser from './routes/tokenUser';
+import mfaUser from './routes/mfa/preMfaUsers';
 
 // output routes
 import outputRoutes from './routes/output/output';
@@ -114,8 +114,8 @@ class App {
     // input routes
     this.app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-    this.app.use('/tokens/', tokenSuperAdmin);
-    // this.app.use('/usertokens/', tokenUser);
+    this.app.use('/auth-superadmin/', tokenSuperAdmin);
+    this.app.use('/auth/', tokenUser);
     this.app.use('/inputs/search/id/', inputSearchByID);
     this.app.use('/inputs/search/category/', inputSearchByCategory);
     this.app.use('/inputs/search/name/', inputSearchByName);
@@ -189,7 +189,7 @@ class App {
 
     // auth routes
     this.app.use('/spadmin/', mfaSuperAdmin);
-    // this.app.use('/spuser/', mfaUser);
+    this.app.use('/spuser/', mfaUser);
 
     this.app.use(errorHandler);
   }

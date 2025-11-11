@@ -21,6 +21,17 @@ class SearchMfaData {
     return findByEmail;
   }
 
+  async SearchByEmailAndIfIsValid(email) {
+    const findByEmail = await Mfa.findOne({
+      where: {
+        email,
+        is_valid: 1,
+      },
+    });
+
+    return findByEmail;
+  }
+
   // eslint-disable-next-line consistent-return
   async SearchByPhrase(phrase) {
     const findByPhrase = await Mfa.findOne({
