@@ -10,49 +10,26 @@ export default async (req, res, next) => {
     // const getInputsPermission = SecretsHandler('inputsAccess');
     // const getInputsOutputsPermission = SecretsHandler('inputsOutputsAccess');
     // const getSalesOutputsInputsPermission = SecretsHandler('salesOutputsInputsAccess');
-    const { permission, email, adminpassword } = req.headers;
-    let adminPassValidator = false;
+    const { employeeEmail, employeeId, role } = req;
 
-    if (!permission || !email) {
-      throw new Unauthorized('Permissao para insumos e id necessarios');
+    if (!employeeEmail || !employeeId || !role) {
+      throw new Unauthorized('Credenciais não enviadas');
     }
 
     const employee = await Employee.findOne({
       where: {
-        email,
+        id: employeeId,
+        email: employeeEmail,
         is_active: 1,
+        permission: process.env.INPUTS_PERMISSION,
       },
     });
 
-    if (!employee) {
-      throw new BadRequest('Funcionário não encontrado ou inativo');
-    }
+    if (!employee) throw new BadRequest('Funcionário não encontrado ou inativo');
 
-    if (req.role !== 'inputsRoutes') throw new Unauthorized('Acesso negado, permissao incorreta');
+    if (role !== 'inputsRoutes') throw new Unauthorized('Acesso negado, permissao incorreta');
 
-    if (adminpassword) {
-      adminPassValidator = await employee.AdminPasswordValidator(adminpassword);
-    }
-
-    // eslint-disable-next-line default-case
-    switch (true) {
-      case (employee.permission === process.env.ADMIN_PERMISSION
-        && adminPassValidator === true
-        && employee.permission === permission):
-        return next();
-
-      case (employee.permission === process.env.INPUTS_PERMISSION
-          && employee.permission === permission):
-        return next();
-
-      case (employee.permission === process.env.INPUTS_OUTPUTS_PERMISSION
-          && employee.permission === permission):
-        return next();
-
-      case (employee.permission === process.env.SOI_PERMISSION
-          && employee.permission === permission):
-        return next();
-    }
+    if (employee.permission === process.env.ADMIN_PERMISSION && role === 'admin') return next();
   } catch (err) {
     next(err);
   }
