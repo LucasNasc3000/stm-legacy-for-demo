@@ -8,55 +8,21 @@ import Employee from '../models/Employee';
 export default async (req, res, next) => {
   try {
     // const getAdminPermission = SecretsHandler('admin');
-    const {
-      email, adminpassword, headerid,
-    } = req.headers;
+    const { employeeEmail, role } = req;
 
-    if (!email || !adminpassword) {
-      throw new Unauthorized('Permissao, senha de admin e email necessarios');
-    }
-
-    if (headerid) {
-      const employeeById = await Employee.findOne({
-        where: {
-          id: headerid,
-          is_active: 1,
-        },
-      });
-
-      if (!employeeById) throw new Unauthorized('O funcionário não existe');
-    }
+    if (!employeeEmail) throw new Unauthorized('Email necessário para login');
 
     const employee = await Employee.findOne({
       where: {
-        email,
+        email: employeeEmail,
         is_active: 1,
+        permission: process.env.ADMIN_PERMISSION,
       },
     });
 
-    if (!employee) {
-      throw new BadRequest('Funcionário não encontrado ou inativo');
-    }
+    if (!employee) throw new BadRequest('Administrador não encontrado ou inativo');
+    if (role !== 'admin') throw new Unauthorized('Acesso negado, permissao incorreta');
 
-    const adminPassValidator = await employee.AdminPasswordValidator(adminpassword);
-
-    switch (true) {
-      case (employee.permission !== process.env.ADMIN_PERMISSION):
-        throw new Unauthorized('Acesso negado, permissao incorreta');
-
-      case (req.role !== 'admin'):
-        throw new Unauthorized('Acesso negado, permissao incorreta');
-
-        // ver isso aqui depois
-      case (headerid && employee.permission !== process.env.ADMIN_PERMISSION):
-        return next();
-
-      case (employee.permission !== process.env.ADMIN_PERMISSION && !headerid):
-        throw new Unauthorized('Acesso negado, permissao para administrador necessaria');
-
-      case (!adminPassValidator):
-        throw new Unauthorized('Senha incorreta');
-    }
     return next();
   } catch (err) {
     next(err);

@@ -1,19 +1,17 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import jwt from 'jsonwebtoken';
+import { Unauthorized } from '../errors/authErrors';
 import Employee from '../models/Employee';
 // import SecretsHandler from '../secretsHandler';
 
+// eslint-disable-next-line consistent-return
 export default async (req, res, next) => {
   // const jwtSecret = SecretsHandler('jwtSecret');
   // Das linhas 8 a 16 ocorre uma verificação da existência ou não do campo authorization no
   // cabeçalho da requisição
   const { authorization } = req.headers;
 
-  if (!authorization) {
-    return res.status(401).json({
-      errors: ['Login é necessário para esta operação'],
-    });
-  }
+  if (!authorization) throw new Unauthorized('Login é necessário para esta operação');
 
   const [, token] = authorization.split(' ');
 
@@ -30,19 +28,15 @@ export default async (req, res, next) => {
       },
     });
 
-    if (!employee) {
-      return res.status(401).json({
-        errors: ['Funcionário inválido'], // Este erro quer dizer que o usuário que mudou seu próprio email precisa logar denovo porque o email não vai bater com o token
-      });
-    }
+    // Este erro quer dizer que o usuário que mudou seu próprio email precisa
+    // logar denovo porque o email não vai bater com o token
+    if (!employee) throw new Unauthorized('Funcionário inválido');
 
     req.employeeId = id;
     req.employeeEmail = email;
     req.role = role;
     return next();
-  } catch (e) {
-    return res.status(401).json({
-      errors: [e.message],
-    });
+  } catch (err) {
+    next(err);
   }
 };
