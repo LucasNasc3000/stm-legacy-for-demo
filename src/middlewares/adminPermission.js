@@ -9,10 +9,10 @@ export default async (req, res, next) => {
   try {
     // const getAdminPermission = SecretsHandler('admin');
     const {
-      permission, email, adminpassword, headerid,
+      email, adminpassword, headerid,
     } = req.headers;
 
-    if (!permission || !email || !adminpassword) {
+    if (!email || !adminpassword) {
       throw new Unauthorized('Permissao, senha de admin e email necessarios');
     }
 
@@ -41,9 +41,13 @@ export default async (req, res, next) => {
     const adminPassValidator = await employee.AdminPasswordValidator(adminpassword);
 
     switch (true) {
-      case (employee.permission !== permission):
+      case (employee.permission !== process.env.ADMIN_PERMISSION):
         throw new Unauthorized('Acesso negado, permissao incorreta');
 
+      case (req.role !== 'admin'):
+        throw new Unauthorized('Acesso negado, permissao incorreta');
+
+        // ver isso aqui depois
       case (headerid && employee.permission !== process.env.ADMIN_PERMISSION):
         return next();
 

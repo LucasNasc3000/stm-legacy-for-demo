@@ -74,9 +74,30 @@ class TokenController {
           throw new Unauthorized('Permissão incorreta');
       }
 
+      let role = '';
+
+      // eslint-disable-next-line default-case
+      switch (permission) {
+        case process.env.ADMIN_PERMISSION:
+          role = 'admin';
+          break;
+
+        case process.env.INPUTS_PERMISSION:
+          role = 'inputsRoutes';
+          break;
+
+        case process.env.OUTPUTS_PERMISSION:
+          role = 'outputsRoutes';
+          break;
+
+        case process.env.SALES_PERMISSION:
+          role = 'salesRoutes';
+          break;
+      }
+
       const { id } = employee;
 
-      const token = jwt.sign({ id, email, user: 'non-superadmin' }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ id, email, role }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRATION,
       });
 

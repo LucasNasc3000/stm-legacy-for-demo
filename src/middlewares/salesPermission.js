@@ -28,6 +28,8 @@ export default async (req, res, next) => {
       throw new BadRequest('Funcionário não encontrado ou inativo');
     }
 
+    if (req.role !== 'salesRoutes') throw new Unauthorized('Acesso negado, permissao incorreta');
+
     if (adminpassword) {
       adminPassValidator = await employee.AdminPasswordValidator(adminpassword);
     }

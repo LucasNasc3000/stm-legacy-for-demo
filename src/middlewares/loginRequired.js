@@ -19,7 +19,7 @@ export default async (req, res, next) => {
 
   try {
     const dados = jwt.verify(token, process.env.JWT_SECRET);
-    const { email, id } = dados;
+    const { email, id, role } = dados;
 
     // Checa se o id e o email são os mesmos que foram usados para gerar o token
     const employee = await Employee.findOne({
@@ -38,6 +38,7 @@ export default async (req, res, next) => {
 
     req.employeeId = id;
     req.employeeEmail = email;
+    req.role = role;
     return next();
   } catch (e) {
     return res.status(401).json({
