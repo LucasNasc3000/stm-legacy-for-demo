@@ -16,6 +16,8 @@ export default async (req, res, next) => {
       throw new Unauthorized('Credenciais não enviadas');
     }
 
+    console.log(role);
+
     const employee = await Employee.findOne({
       where: {
         id: employeeId,

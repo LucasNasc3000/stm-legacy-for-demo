@@ -2,8 +2,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import jwt from 'jsonwebtoken';
 import Log from '../../Logs/LogRegister';
-import { Unauthorized } from '../../errors/authErrors';
-import { BadRequest } from '../../errors/clientErrors';
+import { InternalServerError } from '../../errors/serverErrors';
 import Employee from '../../models/Employee';
 // import SecretsHandler from '../secretsHandler';
 
@@ -12,30 +11,14 @@ class TokenController {
     try {
       // const jwtSecret = SecretsHandler('jwtSecret');
       // const jwtExpiration = SecretsHandler('jwtExpiration');
-      const {
-        email = '', password = '', adminpassword = '', permission = '',
-      } = req.body;
+      const { email = '' } = req.body;
 
-      if (!email || !password || !adminpassword || !permission) throw new BadRequest('Email, senha, senha de admin e permissao necessários para logar');
+      // Se o erro é 500 significa que o email se perdeu entre o codeVerify e este controller
+      if (!email) throw new InternalServerError('Email necessário para login');
 
       const employee = await Employee.findOne({ where: { email, is_active: 1 } });
 
-      // eslint-disable-next-line default-case
-      switch (true) {
-        case !employee:
-          throw new Unauthorized('O funcionário não existe ou está inativo');
-
-        case !(await employee.PasswordValidator(password)):
-          throw new Unauthorized('Senha inválida');
-
-        case !(await employee.AdminPasswordValidator(adminpassword)):
-          throw new Unauthorized('Senha de administrador inválida');
-
-        case permission !== employee.permission:
-          throw new Unauthorized('Permissão incorreta');
-      }
-
-      const { id } = employee;
+      const { id } = employee.dataValues;
 
       const token = jwt.sign({ id, email, role: 'superadmin' }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRATION,
@@ -43,7 +26,7 @@ class TokenController {
 
       await Log.createLog(id, email);
 
-      return res.json({ token, employee: { nome: employee.name, id, email } });
+      return res.json({ token, superadmin: { nome: employee.name, id, email } });
     } catch (err) {
       next(err);
     }
@@ -51,28 +34,14 @@ class TokenController {
 
   async StoreUsers(req, res, next) {
     try {
-      const {
-        email = '', password = '', adminpassword = '', permission = '',
-      } = req.body;
+      const { email = '' } = req.headers;
 
-      if (!email || !password || !adminpassword || !permission) throw new BadRequest('Email, senha, senha de admin e permissao necessários para logar');
+      // Se o erro é 500 significa que o email se perdeu entre o codeVerify e este controller
+      if (!email) throw new InternalServerError('Email necessário para login');
 
       const employee = await Employee.findOne({ where: { email, is_active: 1 } });
 
-      // eslint-disable-next-line default-case
-      switch (true) {
-        case !employee:
-          throw new Unauthorized('O funcionário não existe ou está inativo');
-
-        case !(await employee.PasswordValidator(password)):
-          throw new Unauthorized('Senha inválida');
-
-        case !(await employee.AdminPasswordValidator(adminpassword)):
-          throw new Unauthorized('Senha de administrador inválida');
-
-        case permission !== employee.permission:
-          throw new Unauthorized('Permissão incorreta');
-      }
+      const { permission, id } = employee.dataValues;
 
       let role = '';
 
@@ -94,8 +63,6 @@ class TokenController {
           role = 'salesRoutes';
           break;
       }
-
-      const { id } = employee;
 
       const token = jwt.sign({ id, email, role }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRATION,

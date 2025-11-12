@@ -13,10 +13,10 @@ export default async (req, res, next) => {
     // const getPass2 = SecretsHandler('Pass2');
     // const correctEmail = SecretsHandler('correctEmail');
     const {
-      permission, verifyemail, adminpassword, password,
-    } = req.headers;
+      verifyemail, adminpassword, password,
+    } = req.body;
 
-    if (!permission || !verifyemail || !adminpassword) {
+    if (!verifyemail || !adminpassword || !password) {
       // mudar esta mensagem?
       throw new Unauthorized('Dados de autenticação não enviados');
     }
@@ -36,7 +36,7 @@ export default async (req, res, next) => {
     // eslint-disable-next-line default-case
     switch (true) {
       case user === null:
-        throw new NotFound('Super admin não encontrado');
+        throw new NotFound('Usuário não encontrado');
 
       case user.dataValues.email !== verifyemail:
         throw new Unauthorized('Credenciais inválidas');
@@ -45,9 +45,6 @@ export default async (req, res, next) => {
         throw new Unauthorized('Credenciais inválidas');
 
       case adminPasswordVerify !== true:
-        throw new Unauthorized('Credenciais inválidas');
-
-      case user.dataValues.permission !== permission:
         throw new Unauthorized('Credenciais inválidas');
 
         // Para invalidar códigos anteriores associados ao email em "verifyemail"

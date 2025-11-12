@@ -8,7 +8,7 @@ import SearchByEmail from '../repositories/Mfa/SearchMfaData';
 // eslint-disable-next-line consistent-return
 export default async (req, res, next) => {
   try {
-    const { verifyemail, code } = req.headers;
+    const { verifyemail, code } = req.body;
 
     if (!verifyemail || !code) throw new Unauthorized('Credenciais inválidas');
 
