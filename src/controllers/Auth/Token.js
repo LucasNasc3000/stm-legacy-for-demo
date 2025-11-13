@@ -60,7 +60,12 @@ class TokenController {
 
       await Log.createLog(id, verifyemail);
 
-      return res.json({ token, employee: { nome: employee.name, id, email: verifyemail } });
+      return res.json({
+        token,
+        employee: {
+          nome: employee.name, id, email: verifyemail, role,
+        },
+      });
     } catch (err) {
       next(err);
     }
