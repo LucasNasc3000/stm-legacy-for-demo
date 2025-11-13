@@ -21,15 +21,23 @@ export default async (req, res, next) => {
         id: employeeId,
         email: employeeEmail,
         is_active: 1,
-        permission: process.env.SALES_PERMISSION,
       },
     });
 
-    if (!employee) throw new BadRequest('Funcionário não encontrado ou inativo');
+    // eslint-disable-next-line default-case
+    switch (true) {
+      case !employee:
+        throw new BadRequest('Funcionário não encontrado ou inativo');
 
-    if (role !== 'salesRoutes') throw new Unauthorized('Acesso negado, permissao incorreta');
+      case role !== 'employee-nonadmin':
+        throw new Unauthorized('Acesso negado, permissao incorreta');
 
-    if (employee.permission === process.env.ADMIN_PERMISSION && role === 'admin') return next();
+      case employee.dataValues.permission.includes(process.env.SALES_PERMISSION):
+        return next();
+
+      case employee.permission === process.env.ADMIN_PERMISSION && role === 'admin':
+        return next();
+    }
   } catch (err) {
     next(err);
   }

@@ -16,22 +16,30 @@ export default async (req, res, next) => {
       throw new Unauthorized('Credenciais não enviadas');
     }
 
-    console.log(role);
-
     const employee = await Employee.findOne({
       where: {
         id: employeeId,
         email: employeeEmail,
         is_active: 1,
-        permission: process.env.INPUTS_PERMISSION,
       },
     });
 
-    if (!employee) throw new BadRequest('Funcionário não encontrado ou inativo');
+    const { permission } = employee.dataValues;
 
-    if (role !== 'inputsRoutes') throw new Unauthorized('Acesso negado, permissao incorreta');
+    // eslint-disable-next-line default-case
+    switch (true) {
+      case !employee:
+        throw new BadRequest('Funcionário não encontrado ou inativo');
 
-    if (employee.permission === process.env.ADMIN_PERMISSION && role === 'admin') return next();
+      case role !== 'employee-nonadmin':
+        throw new Unauthorized('Acesso negado, permissao incorreta');
+
+      case permission.includes(process.env.INPUTS_PERMISSION):
+        return next();
+
+      case employee.permission === process.env.ADMIN_PERMISSION && role === 'admin':
+        return next();
+    }
   } catch (err) {
     next(err);
   }

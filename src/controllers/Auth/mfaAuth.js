@@ -72,7 +72,7 @@ class MfaController {
 
   async GenerateCodeUsers(req, res, next) {
     try {
-      const { verifyemail } = req.headers;
+      const { verifyemail } = req.body;
 
       let getPhrase = SequenceGenerator();
 
