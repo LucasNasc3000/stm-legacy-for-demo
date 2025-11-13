@@ -52,7 +52,7 @@ class TokenController {
 
       // eslint-disable-next-line default-case
       if (permission === process.env.ADMIN_PERMISSION) role = 'admin';
-      if (permission !== process.env.ADMIN_PERMISSION) role = 'employee-nonadmin';
+      else role = 'employee-nonadmin';
 
       const token = jwt.sign({ id, email: verifyemail, role }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRATION,

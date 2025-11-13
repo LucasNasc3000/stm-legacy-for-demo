@@ -26,7 +26,6 @@ class MfaController {
 
         if (searchPhrase === null) break;
 
-        // VOLTAR AQUI
         controlVar += 1;
       }
 
