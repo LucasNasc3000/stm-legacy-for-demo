@@ -72,6 +72,9 @@ import employeeAdminSearchByEmail from './routes/employee/employeeAdmin/employee
 import employeeAdminSearchByID from './routes/employee/employeeAdmin/employeeSearchById';
 import employeeAdminSearchByName from './routes/employee/employeeAdmin/employeeSearchByName';
 
+// employee self routes
+import employeeSelfRoutes from './routes/employee/employeeSelf/employeeSelf';
+
 // sales routes
 import salesRoutes from './routes/sales/sale';
 import saleSearchAddress from './routes/sales/saleSearchAddress';
@@ -170,6 +173,9 @@ class App {
     this.app.use('/employees/admin/search/id/', employeeAdminSearchByID);
     this.app.use('/employees/admin/search/name', employeeAdminSearchByName);
     this.app.use('/employees/admin/search/actives/', employeeAdminSearchByActives);
+
+    // employee self routes
+    this.app.use('/employees/self/', employeeSelfRoutes);
 
     // sales routes
     this.app.use('/sales/', salesRoutes);

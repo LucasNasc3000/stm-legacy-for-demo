@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable consistent-return */
 import { BadRequest } from '../../errors/clientErrors';
 import { Conflict } from '../../errors/conflict';
@@ -94,6 +95,42 @@ class EmployeeController {
       const empSearch = await EmployeeSearch.SearchById(id);
 
       return res.status(200).send(empSearch);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async UpdateSelf(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const validations = Validation.MainValidations(req.body, true, false, false, true);
+      const usersValidations = Validation.EmployeeValidation(req.body, false, true);
+
+      if (validations !== null) throw new BadRequest(validations);
+      if (usersValidations !== null) throw new BadRequest(usersValidations);
+
+      if (req.body.email) {
+        const emailExists = await EmployeeSearch.SearchByEmail(req.body.email);
+        if (emailExists) throw new Conflict('E-mail em uso');
+      }
+
+      if (req.employeeId !== id) throw new Forbidden('Ação não autorizada');
+
+      const { is_active, boss, permission, address_allowed, ...allowedDataForUpdate } = req.body
+
+      const employeeSelfUpdate = await Employees.Update(id, req.body);
+
+      if (employeeSelfUpdate === 'funcionário não encontrado') throw new NotFound('Funcionário não registrado');
+      if (!employeeSelfUpdate) throw new InternalServerError('Erro interno');
+
+      const employeeUpdated = employeeSelfUpdate.dataValues;
+
+      const {
+        password_hash, adminpassword_hash, permission, address_allowed, boss, ...allowedData
+      } = employeeUpdated;
+
+      return res.status(200).send(allowedData);
     } catch (err) {
       next(err);
     }
