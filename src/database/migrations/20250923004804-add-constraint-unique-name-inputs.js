@@ -7,6 +7,11 @@ module.exports = {
       allowNull: false,
       unique: true,
     });
+
+    await queryInterface.addIndex('inputs', ['name'], {
+      unique: true,
+      name: 'inputs_name_unique',
+    });
   },
 
   async down(queryInterface) {
