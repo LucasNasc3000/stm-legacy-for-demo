@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.addColumn('inputs', 'price', {
-      type: Sequelize.DECIMAL,
+      type: Sequelize.DECIMAL(10, 2),
       allowNull: false,
     });
   },
