@@ -33,6 +33,10 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false,
       },
+      price: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
+      },
       supplier: {
         type: Sequelize.STRING,
         allowNull: false,
