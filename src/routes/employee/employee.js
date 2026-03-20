@@ -6,6 +6,6 @@ import loginRequired from '../../middlewares/loginRequired';
 const router = new Router();
 
 router.post('/', loginRequired, adminPermission, Employee.Store);
-router.put('/:id', loginRequired, adminPermission, Employee.Update);
+router.put('/:employeeid', loginRequired, adminPermission, Employee.Update);
 
 export default router;

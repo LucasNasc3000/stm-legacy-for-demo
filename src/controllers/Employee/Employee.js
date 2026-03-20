@@ -8,6 +8,7 @@ import { InternalServerError } from '../../errors/serverErrors';
 import Validation from '../../middlewares/fieldValidations/Validation';
 import Employees from '../../repositories/Employee/Employee';
 import EmployeeSearch from '../../repositories/Employee/EmployeeSearchCredentials';
+import { ReturnAllowedData } from './utils/ReturnAllowedDataEmployeeSelfUpdate';
 
 class EmployeeController {
   async Store(req, res, next) {
@@ -47,8 +48,8 @@ class EmployeeController {
 
   async Update(req, res, next) {
     try {
-      const { id } = req.params;
-      const { headerid } = req.headers;
+      const { employeeid } = req.params;
+      const toUpdateData = {};
 
       const validations = Validation.MainValidations(req.body, true, false, false, true);
       const usersValidations = Validation.EmployeeValidation(req.body, false, true);
@@ -56,45 +57,38 @@ class EmployeeController {
       if (validations !== null) throw new BadRequest(validations);
       if (usersValidations !== null) throw new BadRequest(usersValidations);
 
+      if (req.body.boss && req.body.boss === null) throw new Forbidden('Ação não permitida');
+
       if (req.body.email) {
         const emailExists = await EmployeeSearch.SearchByEmail(req.body.email);
         if (emailExists) throw new Conflict('E-mail em uso');
       }
 
-      // Funciona sem await mas não retorna os dados na requisição caso ela seja feita com um app de
-      // requisições como insomnia.
-
-      if (headerid) {
-        if (headerid !== id) throw new Forbidden('Ação não autorizada para funcionários');
-
-        if (req.body.permission
-           || req.body.address_allowed
-            || req.body.boss) {
-          throw new Forbidden('Ação não autorizada para funcionários');
-        }
-
-        if (typeof req.body.is_active === 'string' || typeof req.body.is_active === 'number' || typeof req.body.is_active === 'boolean') {
-          throw new Forbidden('Ação não autorizada para funcionários');
-        }
-
-        const employeeSelfUpdate = await Employees.Update(headerid, req.body);
-
-        if (employeeSelfUpdate === 'funcionário não encontrado') throw new NotFound('Funcionário não registrado');
-        if (!employeeSelfUpdate) throw new InternalServerError('Erro interno');
-
-        const empSearch = await EmployeeSearch.SearchById(id);
-
-        return res.status(200).send(empSearch);
+      if (req.role === 'employee-nonadmin') {
+        const {
+          id, name, email, password, adminpassword, ...allowedData
+        } = req.body;
+        Object.assign(toUpdateData, allowedData);
       }
 
-      const employeeUpdate = await Employees.Update(id, req.body);
+      if (req.body.boss && req.body.boss === null) throw new Forbidden('Ação não permitida');
+
+      const {
+        id, boss, is_active, ...allowedData
+      } = req.body;
+
+      Object.assign(toUpdateData, allowedData);
+
+      const employeeUpdate = await Employees.Update(employeeid, toUpdateData);
 
       if (employeeUpdate === 'funcionário não encontrado') throw new NotFound('Funcionário não registrado');
       if (!employeeUpdate) throw new InternalServerError('Erro interno');
 
-      const empSearch = await EmployeeSearch.SearchById(id);
+      const employeeUpdated = employeeUpdate.dataValues;
 
-      return res.status(200).send(empSearch);
+      const allowedDataUpdated = ReturnAllowedData(employeeUpdated);
+
+      return res.status(200).send(allowedDataUpdated);
     } catch (err) {
       next(err);
     }
@@ -117,18 +111,18 @@ class EmployeeController {
 
       if (req.employeeId !== id) throw new Forbidden('Ação não autorizada');
 
-      const { is_active, boss, permission, address_allowed, ...allowedDataForUpdate } = req.body
+      const {
+        is_active, boss, permission, address_allowed, ...allowedDataForUpdate
+      } = req.body;
 
-      const employeeSelfUpdate = await Employees.Update(id, req.body);
+      const employeeSelfUpdate = await Employees.Update(id, allowedDataForUpdate);
 
       if (employeeSelfUpdate === 'funcionário não encontrado') throw new NotFound('Funcionário não registrado');
       if (!employeeSelfUpdate) throw new InternalServerError('Erro interno');
 
       const employeeUpdated = employeeSelfUpdate.dataValues;
 
-      const {
-        password_hash, adminpassword_hash, permission, address_allowed, boss, ...allowedData
-      } = employeeUpdated;
+      const allowedData = ReturnAllowedData(employeeUpdated);
 
       return res.status(200).send(allowedData);
     } catch (err) {
